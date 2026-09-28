@@ -122,7 +122,8 @@ app.post('/api/generate', async (req, res) => {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
+
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: buildUserPrompt(body) }
@@ -158,7 +159,8 @@ app.post('/api/modify', async (req, res) => {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
+
         messages: [
           { role: 'system', content: 'Tu es un développeur web expert. Tu reçois un fichier HTML complet ET une demande de modification. Applique UNIQUEMENT la modification demandée sans rien casser d\'autre. Réponds UNIQUEMENT avec le fichier HTML complet modifié, sans aucun texte avant ou après.' },
           { role: 'user', content: 'HTML ACTUEL :\n' + html + '\n\nMODIFICATION DEMANDÉE : ' + request + '\n\nRéponds avec le fichier HTML complet modifié.' }
@@ -186,7 +188,8 @@ app.post('/api/improve', async (req, res) => {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
+
         messages: [
           { role: 'system', content: 'Tu es un conseiller web expert. Tu reçois le brief d\'un client pour un site web. Réponds avec 3 à 5 suggestions courtes et concrètes (une par ligne, commençant par "💡 ") pour améliorer ce brief : sections manquantes, fonctionnalités utiles, éléments oubliés. Réponds UNIQUEMENT avec les suggestions, en français, maximum 5 lignes.' },
           { role: 'user', content: JSON.stringify(body) }
