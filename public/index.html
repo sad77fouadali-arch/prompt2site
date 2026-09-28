@@ -30,7 +30,6 @@
 <!-- ===== VUE FORMULAIRE ===== -->
 <main id="formView" class="max-w-2xl mx-auto px-4 pb-16 space-y-6">
 
-  <!-- Section 1 : Type de site -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">🎯 1. QUEL TYPE DE SITE ?</h2>
     <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-500 outline-none">
@@ -53,7 +52,6 @@
     </select>
   </div>
 
-  <!-- Section 2 : Identité -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. IDENTITÉ DU PROJET</h2>
     <label class="block text-sm text-gray-400 mb-1">Nom du projet / business *</label>
@@ -73,46 +71,36 @@
     <input id="couleurs" type="text" placeholder="Ex : violet et or, bleu marine et blanc, noir et rouge..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
   </div>
 
-  <!-- Section 3 : Cible -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">👥 3. TA CIBLE</h2>
     <label class="block text-sm text-gray-400 mb-1">À qui s'adresse le site ? *</label>
     <input id="cible" type="text" placeholder="Ex : jeunes 18-35 ans à Djibouti, hommes actifs, familles, entreprises..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
   </div>
 
-  <!-- Section 4 : Sections (chips) -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">🏗️ 4. SECTIONS DU SITE <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
     <div id="sectionsChips" class="flex flex-wrap gap-2"></div>
   </div>
 
-  <!-- Section 4BIS : Produits (optionnel) -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-1">🛍️ 4BIS. TES PRODUITS <span class="text-gray-500 font-normal text-sm">(optionnel — pour boutiques)</span></h2>
-    <p class="text-gray-400 text-sm mb-4">Ajoute tes produits avec leurs vrais prix et photos (URL de l'image). Le site les affichera exactement comme ici.</p>
+    <p class="text-gray-400 text-sm mb-4">Ajoute tes produits avec leurs vrais prix et photos (URL de l'image).</p>
     <div id="productsList" class="space-y-3"></div>
     <button type="button" onclick="addProductRow()" class="mt-3 w-full bg-gray-800 border border-purple-500/40 rounded-lg py-2 font-semibold hover:border-purple-500 transition">➕ AJOUTER UN PRODUIT</button>
   </div>
 
-  <!-- Section 5 : Fonctionnalités (chips) -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">✨ 5. FONCTIONNALITÉS <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
     <div id="featuresChips" class="flex flex-wrap gap-2"></div>
   </div>
 
-  <!-- Section 6 : Détails libres -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">📄 6. DÉTAILS SUPPLÉMENTAIRES</h2>
-    <textarea id="details" rows="4" placeholder="Décris ici tout ce qui te passe par la tête : les services exacts avec prix (ex : coupe 5$, barbe 3$), les horaires, l'adresse, le téléphone/WhatsApp, le ton (sérieux, fun...), les exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
+    <textarea id="details" rows="4" placeholder="Décris tout : services exacts avec prix (ex : coupe 5$, barbe 3$), horaires, adresse, téléphone/WhatsApp, ton souhaité, exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
   </div>
 
-  <!-- Boutons -->
-  <button onclick="generate()" class="w-full font-cyber font-bold text-lg bg-purple-500 text-gray-950 py-4 rounded-2xl glow hover:scale-[1.02] transition">
-    ⚡ GÉNÉRER MON SITE WEB
-  </button>
-  <button onclick="improveBrief()" id="improveBtn" class="w-full font-cyber font-bold bg-cyan-500/20 border border-cyan-400 text-cyan-300 py-3 rounded-2xl hover:bg-cyan-500/30 transition">
-    ✨ AMÉLIORER MON BRIEF AVEC L'IA (avant de générer)
-  </button>
+  <button onclick="generate()" class="w-full font-cyber font-bold text-lg bg-purple-500 text-gray-950 py-4 rounded-2xl glow hover:scale-[1.02] transition">⚡ GÉNÉRER MON SITE WEB</button>
+  <button onclick="improveBrief()" id="improveBtn" class="w-full font-cyber font-bold bg-cyan-500/20 border border-cyan-400 text-cyan-300 py-3 rounded-2xl hover:bg-cyan-500/30 transition">✨ AMÉLIORER MON BRIEF AVEC L'IA (avant de générer)</button>
   <div id="suggestionsBox" class="hidden section-card rounded-2xl p-4">
     <h3 class="font-cyber text-cyan-400 font-bold mb-2">💡 SUGGESTIONS DE L'IA</h3>
     <pre id="suggestionsText" class="whitespace-pre-wrap text-gray-300 text-sm font-body"></pre>
@@ -122,17 +110,13 @@
 
 <!-- ===== VUE RÉSULTAT ===== -->
 <main id="resultView" class="hidden max-w-5xl mx-auto px-4 pb-16">
-  <div id="demoBanner" class="hidden mb-4 p-4 bg-yellow-500/20 border border-yellow-500 rounded-xl text-yellow-300 text-center font-semibold">
-    ⚠️ MODE DÉMO — La clé Groq n'est pas configurée sur le serveur. Contacte l'administrateur.
-  </div>
+  <div id="demoBanner" class="hidden mb-4 p-4 bg-yellow-500/20 border border-yellow-500 rounded-xl text-yellow-300 text-center font-semibold">⚠️ MODE DÉMO — La clé Groq n'est pas configurée sur le serveur.</div>
   <div class="flex flex-wrap gap-3 mb-4">
-    <button onclick="downloadSite()" class="flex-1 min-w-[150px] bg-purple-500 text-gray-950 font-cyber font-bold py-3 rounded-xl glow">📥 TÉLÉCHARGER index.html</button>
+    <button onclick="downloadSite()" class="flex-1 min-w-[150px] bg-purple-500 text-gray-950 font-cyber font-bold py-3 rounded-xl glow">📥 TÉLÉCHARGER</button>
     <button onclick="copyCode()" class="flex-1 min-w-[150px] bg-cyan-500 text-gray-950 font-cyber font-bold py-3 rounded-xl">📋 COPIER LE CODE</button>
     <button onclick="backToForm()" class="flex-1 min-w-[150px] bg-gray-700 font-cyber font-bold py-3 rounded-xl">🔄 MODIFIER MON BRIEF</button>
   </div>
   <p id="copyMsg" class="text-cyan-400 text-center font-bold mb-3 hidden">✅ Code copié !</p>
-
-  <!-- Chat de modification (mode Bloxks) -->
   <div class="section-card rounded-2xl p-4 mb-4">
     <h3 class="font-cyber text-purple-400 font-bold mb-1">💬 MODIFIER MON SITE</h3>
     <p class="text-gray-400 text-sm mb-3">Dis à l'IA ce que tu veux changer : couleurs, sections, textes... Elle modifie le site en direct.</p>
@@ -142,11 +126,32 @@
       <button onclick="sendModification()" class="bg-purple-500 text-gray-950 font-bold px-4 rounded-lg">ENVOYER</button>
     </div>
   </div>
-
   <div class="rounded-2xl overflow-hidden border border-purple-500/40" style="height:60vh;">
     <iframe id="preview" class="w-full h-full bg-white" title="Aperçu du site généré"></iframe>
   </div>
 </main>
+
+<!-- ===== PAYWALL (abonnement) ===== -->
+<div id="paywallView" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center px-6 text-center">
+  <div class="text-6xl mb-4">💎</div>
+  <p class="font-cyber text-2xl font-bold text-purple-400">PASSES À LA VERSION COMPLÈTE !</p>
+  <p class="text-gray-300 mt-3 max-w-md">Ton essai gratuit est terminé. Avec l'abonnement : <strong class="text-white">générations illimitées + modifications par chat IA + assistant de brief</strong>.</p>
+  <div class="bg-purple-500/20 border border-purple-500 rounded-2xl p-4 mt-4">
+    <p class="font-cyber text-3xl font-black text-white">30$ / mois</p>
+    <p class="text-cyan-300 font-bold">= 5 330 FDJ / mois</p>
+    <p class="text-gray-400 text-sm mt-1">Paiement : DjibCash · D-Money · Waafi</p>
+  </div>
+  <a href="https://wa.me/25377098637?text=Salut%20!%20Je%20veux%20m%27abonner%20%C3%A0%20Prompt2Site%20(30%24%2Fmois%20%3D%205%20330%20FDJ)" class="mt-5 bg-green-500 text-gray-950 font-cyber font-bold px-8 py-4 rounded-xl text-lg">💬 S'ABONNER VIA WHATSAPP</a>
+  <div class="mt-6 w-full max-w-sm">
+    <p class="text-gray-400 text-sm mb-2">Déjà payé ? Entre ton code d'activation :</p>
+    <div class="flex gap-2">
+      <input id="activationInput" type="text" placeholder="Ex : P2S-2026-DJ01" class="flex-1 bg-gray-900 border border-cyan-400/50 rounded-lg p-3 text-center uppercase tracking-widest focus:border-cyan-400 outline-none">
+      <button onclick="activateCode()" class="bg-cyan-500 text-gray-950 font-bold px-5 rounded-lg">OK</button>
+    </div>
+    <p id="activationError" class="text-red-400 text-sm mt-2 hidden">❌ Code invalide. Vérifie ou contacte-nous sur WhatsApp.</p>
+  </div>
+  <button onclick="document.getElementById('paywallView').classList.add('hidden')" class="mt-6 text-gray-500 underline text-sm">← Retour</button>
+</div>
 
 <!-- ===== CHARGEMENT ===== -->
 <div id="loadingView" class="hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center px-6 text-center">
@@ -161,6 +166,47 @@ const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Prise de rendez-vou
 
 let generatedHtml = '';
 
+// ===== SYSTÈME D'ABONNEMENT =====
+function getAccessCode(){ return localStorage.getItem('p2s_code') || ''; }
+function setAccessCode(code){ localStorage.setItem('p2s_code', code); }
+function isFreeUsed(){ return localStorage.getItem('p2s_free_used') === '1'; }
+function setFreeUsed(){ localStorage.setItem('p2s_free_used', '1'); }
+
+async function checkAccess(){
+  const code = getAccessCode();
+  if(code){
+    const res = await fetch('/api/activate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+    if(data.success) return true;
+    localStorage.removeItem('p2s_code');
+  }
+  return !isFreeUsed();
+}
+
+async function activateCode(){
+  const input = document.getElementById('activationInput');
+  const code = input.value.trim().toUpperCase();
+  if(!code) return;
+  const res = await fetch('/api/activate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ code })
+  });
+  const data = await res.json();
+  if(data.success){
+    setAccessCode(code);
+    document.getElementById('paywallView').classList.add('hidden');
+    document.getElementById('activationError').classList.add('hidden');
+    alert('🎉 Abonnement activé ! Générations illimitées pour toi.');
+  } else {
+    document.getElementById('activationError').classList.remove('hidden');
+  }
+}
+
 function buildChips(containerId, items){
   const box = document.getElementById(containerId);
   box.innerHTML = items.map(s =>
@@ -174,9 +220,7 @@ function getSelected(containerId){
   return [...document.getElementById(containerId).querySelectorAll('.chip.selected')].map(c => c.textContent);
 }
 
-// ===== GESTION DES PRODUITS =====
 let productRowCount = 0;
-
 function addProductRow(){
   productRowCount++;
   const row = document.createElement('div');
@@ -206,7 +250,6 @@ function collectProducts(){
   })).filter(p => p.nom && p.prix);
 }
 
-// ===== COLLECTE DU BRIEF =====
 function buildBrief(){
   return {
     type: document.getElementById('type').value,
@@ -230,7 +273,6 @@ function validateBrief(brief){
   return true;
 }
 
-// ===== ASSISTANT DE BRIEF =====
 async function improveBrief(){
   const brief = buildBrief();
   if(!validateBrief(brief)) return;
@@ -256,10 +298,15 @@ async function improveBrief(){
   btn.textContent = '✨ AMÉLIORER MON BRIEF AVEC L\'IA (avant de générer)';
 }
 
-// ===== GÉNÉRATION =====
 async function generate(){
   const brief = buildBrief();
   if(!validateBrief(brief)) return;
+
+  if(!(await checkAccess())){
+    document.getElementById('paywallView').classList.remove('hidden');
+    return;
+  }
+  brief.code = getAccessCode();
 
   document.getElementById('loadingView').classList.remove('hidden');
 
@@ -272,12 +319,17 @@ async function generate(){
     const data = await res.json();
     document.getElementById('loadingView').classList.add('hidden');
 
+    if(data.paywall){
+      document.getElementById('paywallView').classList.remove('hidden');
+      return;
+    }
     if(!data.success){
       alert('❌ Erreur : ' + (data.error || 'inconnue'));
       return;
     }
 
     generatedHtml = data.html;
+    if(!getAccessCode()) setFreeUsed();
     document.getElementById('preview').srcdoc = generatedHtml;
     document.getElementById('demoBanner').classList.toggle('hidden', !data.demo);
     document.getElementById('chatHistory').innerHTML = '';
@@ -290,7 +342,6 @@ async function generate(){
   }
 }
 
-// ===== CHAT DE MODIFICATION (mode Bloxks) =====
 function addChatMsg(who, text){
   const box = document.getElementById('chatHistory');
   const div = document.createElement('div');
@@ -317,10 +368,11 @@ async function sendModification(){
     const res = await fetch('/api/modify', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ html: generatedHtml, request })
+      body: JSON.stringify({ html: generatedHtml, request, code: getAccessCode() })
     });
     const data = await res.json();
     removeLastAiMsg();
+    if(data.paywall){ addChatMsg('ai', '💎 Abonnement requis pour modifier.'); return; }
     if(!data.success){ addChatMsg('ai', '❌ ' + (data.error || 'erreur')); return; }
     generatedHtml = data.html;
     document.getElementById('preview').srcdoc = generatedHtml;
@@ -331,7 +383,6 @@ async function sendModification(){
   }
 }
 
-// ===== EXPORT =====
 function downloadSite(){
   const blob = new Blob([generatedHtml], {type: 'text/html'});
   const a = document.createElement('a');
@@ -355,3 +406,4 @@ function backToForm(){
 </script>
 </body>
 </html>
+
