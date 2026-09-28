@@ -1,0 +1,12 @@
+{
+  "name": "prompt2site",
+  "version": "1.0.0",
+  "description": "Générateur de sites web par IA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
