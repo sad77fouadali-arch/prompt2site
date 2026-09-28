@@ -1,5 +1,6 @@
 // ============================================
 // PROMPT2SITE — Moteur de génération de sites
+// Phase 1 : génération + chat de modification + assistant brief
 // ============================================
 const express = require('express');
 const path = require('path');
@@ -13,7 +14,7 @@ console.log('🔑 Clé Groq : ' + (GROQ_API_KEY
   ? '✅ PRÉSENTE (' + GROQ_API_KEY.length + ' caractères)'
   : '❌ ABSENTE — mode démo actif'));
 
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '4mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ---------- SYSTEM PROMPT (le cerveau du moteur) ----------
@@ -24,7 +25,7 @@ RÈGLES STRICTES :
 2. Intègre le design via le CDN Tailwind CSS (https://cdn.tailwindcss.com).
 3. Intègre toute la logique JavaScript en pur JS à la fin du fichier.
 4. Le site doit être responsive (mobile + desktop), en français.
-5. Utilise des émojis à la place des images.
+5. Utilise des émojis à la place des images sauf si des URLs d'images sont fournies dans le brief.
 6. Sois créatif : animations CSS, effets hover, sections bien structurées.
 7. Si c'est un e-commerce : panier dynamique en JavaScript avec sidebar.
 8. Le code doit être prêt à enregistrer sous index.html et fonctionner immédiatement.`;
@@ -55,7 +56,6 @@ function buildUserPrompt(body) {
 
 Génère maintenant le fichier HTML complet.`;
 }
-
 
 // ---------- NETTOYAGE DE LA RÉPONSE IA ----------
 function cleanHtml(raw) {
@@ -128,6 +128,63 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
+// ---------- ROUTE : MODIFICATION DU SITE (mode chat Bloxks) ----------
+app.post('/api/modify', async (req, res) => {
+  const { html, request } = req.body || {};
+  if (!html || !request) return res.status(400).json({ success: false, error: 'Données manquantes' });
+  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo : modification impossible' });
+
+  try {
+    console.log('💬 Modification demandée : ' + request);
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'Tu es un développeur web expert. Tu reçois un fichier HTML complet ET une demande de modification. Applique UNIQUEMENT la modification demandée sans rien casser d\'autre. Réponds UNIQUEMENT avec le fichier HTML complet modifié, sans aucun texte avant ou après.' },
+          { role: 'user', content: 'HTML ACTUEL :\n' + html + '\n\nMODIFICATION DEMANDÉE : ' + request + '\n\nRéponds avec le fichier HTML complet modifié.' }
+        ],
+        temperature: 0.4,
+        max_tokens: 8000
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    const newHtml = cleanHtml(data.choices[0].message.content);
+    console.log('✅ Site modifié (' + newHtml.length + ' caractères)');
+    res.json({ success: true, html: newHtml });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ---------- ROUTE : AMÉLIORATION DU BRIEF ----------
+app.post('/api/improve', async (req, res) => {
+  const body = req.body || {};
+  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'Tu es un conseiller web expert. Tu reçois le brief d\'un client pour un site web. Réponds avec 3 à 5 suggestions courtes et concrètes (une par ligne, commençant par "💡 ") pour améliorer ce brief : sections manquantes, fonctionnalités utiles, éléments oubliés. Réponds UNIQUEMENT avec les suggestions, en français, maximum 5 lignes.' },
+          { role: 'user', content: JSON.stringify(body) }
+        ],
+        temperature: 0.7,
+        max_tokens: 600
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq' });
+    res.json({ success: true, suggestions: data.choices[0].message.content });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ---------- ROUTE : SANTÉ ----------
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', groq: !!GROQ_API_KEY, service: 'Prompt2Site v1.0' });
@@ -137,3 +194,4 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
+
