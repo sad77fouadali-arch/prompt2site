@@ -27,7 +27,7 @@
   <p class="text-gray-400 mt-2 text-lg">Décris ton idée en détail → reçois ton site web complet en 3 minutes ⚡</p>
 </header>
 
-<!-- ===== ÉTAPE 1 : LE FORMULAIRE ===== -->
+<!-- ===== VUE FORMULAIRE ===== -->
 <main id="formView" class="max-w-2xl mx-auto px-4 pb-16 space-y-6">
 
   <!-- Section 1 : Type de site -->
@@ -35,13 +35,20 @@
     <h2 class="font-cyber text-purple-400 font-bold mb-4">🎯 1. QUEL TYPE DE SITE ?</h2>
     <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-500 outline-none">
       <option value="">— Choisis le type de site —</option>
-      <option>Boutique e-commerce</option>
+      <option>Boutique e-commerce (vendre des produits)</option>
+      <option>Salle de sport / Coach sportif</option>
+      <option>Salon de coiffure / Barbier</option>
+      <option>Salon de beauté / Institut / Spa</option>
+      <option>Restaurant / Fast-food / Café</option>
       <option>Site vitrine pour une entreprise</option>
-      <option>Portfolio</option>
-      <option>Restaurant / Fast-food</option>
+      <option>Clinique / Cabinet médical / Pharmacie</option>
+      <option>Agence immobilière / Location</option>
+      <option>Transport / Livraison / Logistique</option>
+      <option>École / Formation / Centre de cours</option>
+      <option>Portfolio (photographe, designer, artiste)</option>
       <option>Landing page (page de vente)</option>
-      <option>Blog</option>
-      <option>Site pour école / formation</option>
+      <option>Blog / Magazine</option>
+      <option>Événement / Mariage / Conférence</option>
       <option>Autre (précise dans les détails)</option>
     </select>
   </div>
@@ -50,7 +57,7 @@
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. IDENTITÉ DU PROJET</h2>
     <label class="block text-sm text-gray-400 mb-1">Nom du projet / business *</label>
-    <input id="nom" type="text" placeholder="Ex : Djibouti Fashion Store" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
+    <input id="nom" type="text" placeholder="Ex : Djibouti Fashion Store, Iron Gym, Salon Prestige..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
     <label class="block text-sm text-gray-400 mb-1">Slogan (optionnel)</label>
     <input id="slogan" type="text" placeholder="Ex : Le style qui te ressemble" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
     <label class="block text-sm text-gray-400 mb-1">Style visuel</label>
@@ -63,14 +70,14 @@
       <option>Cyberpunk / futuriste</option>
     </select>
     <label class="block text-sm text-gray-400 mb-1">Couleurs principales (optionnel)</label>
-    <input id="couleurs" type="text" placeholder="Ex : violet et or, bleu marine et blanc..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
+    <input id="couleurs" type="text" placeholder="Ex : violet et or, bleu marine et blanc, noir et rouge..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
   </div>
 
   <!-- Section 3 : Cible -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">👥 3. TA CIBLE</h2>
     <label class="block text-sm text-gray-400 mb-1">À qui s'adresse le site ? *</label>
-    <input id="cible" type="text" placeholder="Ex : jeunes 18-35 ans à Djibouti, parents, entreprises..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
+    <input id="cible" type="text" placeholder="Ex : jeunes 18-35 ans à Djibouti, hommes actifs, familles, entreprises..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
   </div>
 
   <!-- Section 4 : Sections (chips) -->
@@ -96,17 +103,24 @@
   <!-- Section 6 : Détails libres -->
   <div class="section-card rounded-2xl p-6 fade-in">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">📄 6. DÉTAILS SUPPLÉMENTAIRES</h2>
-    <textarea id="details" rows="4" placeholder="Décris ici tout ce qui te passe par la tête : les textes exacts, les prix, les services, le ton (sérieux, fun...), les exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
+    <textarea id="details" rows="4" placeholder="Décris ici tout ce qui te passe par la tête : les services exacts avec prix (ex : coupe 5$, barbe 3$), les horaires, l'adresse, le téléphone/WhatsApp, le ton (sérieux, fun...), les exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
   </div>
 
-  <!-- Bouton générer -->
-  <button id="generateBtn" onclick="generate()" class="w-full font-cyber font-bold text-lg bg-purple-500 text-gray-950 py-4 rounded-2xl glow hover:scale-[1.02] transition">
+  <!-- Boutons -->
+  <button onclick="generate()" class="w-full font-cyber font-bold text-lg bg-purple-500 text-gray-950 py-4 rounded-2xl glow hover:scale-[1.02] transition">
     ⚡ GÉNÉRER MON SITE WEB
   </button>
+  <button onclick="improveBrief()" id="improveBtn" class="w-full font-cyber font-bold bg-cyan-500/20 border border-cyan-400 text-cyan-300 py-3 rounded-2xl hover:bg-cyan-500/30 transition">
+    ✨ AMÉLIORER MON BRIEF AVEC L'IA (avant de générer)
+  </button>
+  <div id="suggestionsBox" class="hidden section-card rounded-2xl p-4">
+    <h3 class="font-cyber text-cyan-400 font-bold mb-2">💡 SUGGESTIONS DE L'IA</h3>
+    <pre id="suggestionsText" class="whitespace-pre-wrap text-gray-300 text-sm font-body"></pre>
+  </div>
   <p id="formError" class="text-red-400 text-center font-semibold hidden">⚠️ Remplis au minimum : le type de site, le nom et la cible.</p>
 </main>
 
-<!-- ===== ÉTAPE 2 : LE RÉSULTAT ===== -->
+<!-- ===== VUE RÉSULTAT ===== -->
 <main id="resultView" class="hidden max-w-5xl mx-auto px-4 pb-16">
   <div id="demoBanner" class="hidden mb-4 p-4 bg-yellow-500/20 border border-yellow-500 rounded-xl text-yellow-300 text-center font-semibold">
     ⚠️ MODE DÉMO — La clé Groq n'est pas configurée sur le serveur. Contacte l'administrateur.
@@ -117,7 +131,19 @@
     <button onclick="backToForm()" class="flex-1 min-w-[150px] bg-gray-700 font-cyber font-bold py-3 rounded-xl">🔄 MODIFIER MON BRIEF</button>
   </div>
   <p id="copyMsg" class="text-cyan-400 text-center font-bold mb-3 hidden">✅ Code copié !</p>
-  <div class="rounded-2xl overflow-hidden border border-purple-500/40" style="height:70vh;">
+
+  <!-- Chat de modification (mode Bloxks) -->
+  <div class="section-card rounded-2xl p-4 mb-4">
+    <h3 class="font-cyber text-purple-400 font-bold mb-1">💬 MODIFIER MON SITE</h3>
+    <p class="text-gray-400 text-sm mb-3">Dis à l'IA ce que tu veux changer : couleurs, sections, textes... Elle modifie le site en direct.</p>
+    <div id="chatHistory" class="space-y-2 mb-3 max-h-40 overflow-y-auto"></div>
+    <div class="flex gap-2">
+      <input id="chatInput" type="text" placeholder="Ex : rends le header bleu, ajoute une section tarifs..." class="flex-1 bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-sm focus:border-purple-500 outline-none" onkeydown="if(event.key==='Enter')sendModification()">
+      <button onclick="sendModification()" class="bg-purple-500 text-gray-950 font-bold px-4 rounded-lg">ENVOYER</button>
+    </div>
+  </div>
+
+  <div class="rounded-2xl overflow-hidden border border-purple-500/40" style="height:60vh;">
     <iframe id="preview" class="w-full h-full bg-white" title="Aperçu du site généré"></iframe>
   </div>
 </main>
@@ -130,8 +156,8 @@
 </div>
 
 <script>
-const SECTIONS = ['Accueil / Hero','À propos','Services','Produits','Tarifs','Témoignages','Galerie','Équipe','FAQ','Blog','Contact','Footer complet'];
-const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Panier d\'achat','Galerie photos','Mode sombre','Menu burger mobile','Carte Google Maps','Newsletter','Boutons animés','Compte à rebours','Barre de navigation fixe','Réseaux sociaux'];
+const SECTIONS = ['Accueil / Hero','À propos','Services','Produits','Tarifs','Témoignages','Galerie','Équipe','FAQ','Blog','Horaires','Contact','Footer complet'];
+const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Prise de rendez-vous','Panier d\'achat','Galerie photos','Mode sombre','Menu burger mobile','Carte Google Maps','Newsletter','Boutons animés','Compte à rebours','Barre de navigation fixe','Réseaux sociaux','Planning / Horaires'];
 
 let generatedHtml = '';
 
@@ -180,28 +206,60 @@ function collectProducts(){
   })).filter(p => p.nom && p.prix);
 }
 
-async function generate(){
-  const type = document.getElementById('type').value;
-  const nom = document.getElementById('nom').value.trim();
-  const cible = document.getElementById('cible').value.trim();
-
-  if(!type || !nom || !cible){
-    document.getElementById('formError').classList.remove('hidden');
-    return;
-  }
-  document.getElementById('formError').classList.add('hidden');
-
-  const brief = {
-    type: type,
-    nom: nom + (document.getElementById('slogan').value ? ' — ' + document.getElementById('slogan').value : ''),
+// ===== COLLECTE DU BRIEF =====
+function buildBrief(){
+  return {
+    type: document.getElementById('type').value,
+    nom: document.getElementById('nom').value.trim() + (document.getElementById('slogan').value ? ' — ' + document.getElementById('slogan').value : ''),
     style: document.getElementById('style').value,
     couleurs: document.getElementById('couleurs').value,
-    cible: cible,
+    cible: document.getElementById('cible').value.trim(),
     sections: getSelected('sectionsChips').join(', '),
     fonctionnalites: getSelected('featuresChips').join(', '),
     details: document.getElementById('details').value,
     produits: collectProducts()
   };
+}
+
+function validateBrief(brief){
+  if(!brief.type || !brief.cible || !document.getElementById('nom').value.trim()){
+    document.getElementById('formError').classList.remove('hidden');
+    return false;
+  }
+  document.getElementById('formError').classList.add('hidden');
+  return true;
+}
+
+// ===== ASSISTANT DE BRIEF =====
+async function improveBrief(){
+  const brief = buildBrief();
+  if(!validateBrief(brief)) return;
+  const btn = document.getElementById('improveBtn');
+  btn.textContent = '⏳ L\'IA analyse ton brief...';
+  try {
+    const res = await fetch('/api/improve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(brief)
+    });
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('suggestionsText').textContent = data.suggestions;
+      document.getElementById('suggestionsBox').classList.remove('hidden');
+      document.getElementById('suggestionsBox').scrollIntoView({behavior:'smooth'});
+    } else {
+      alert('❌ ' + (data.error || 'erreur'));
+    }
+  } catch(e){
+    alert('❌ Erreur de connexion.');
+  }
+  btn.textContent = '✨ AMÉLIORER MON BRIEF AVEC L\'IA (avant de générer)';
+}
+
+// ===== GÉNÉRATION =====
+async function generate(){
+  const brief = buildBrief();
+  if(!validateBrief(brief)) return;
 
   document.getElementById('loadingView').classList.remove('hidden');
 
@@ -222,6 +280,7 @@ async function generate(){
     generatedHtml = data.html;
     document.getElementById('preview').srcdoc = generatedHtml;
     document.getElementById('demoBanner').classList.toggle('hidden', !data.demo);
+    document.getElementById('chatHistory').innerHTML = '';
     document.getElementById('formView').classList.add('hidden');
     document.getElementById('resultView').classList.remove('hidden');
     window.scrollTo(0,0);
@@ -231,6 +290,48 @@ async function generate(){
   }
 }
 
+// ===== CHAT DE MODIFICATION (mode Bloxks) =====
+function addChatMsg(who, text){
+  const box = document.getElementById('chatHistory');
+  const div = document.createElement('div');
+  div.className = who === 'user'
+    ? 'bg-purple-500/20 border border-purple-500/40 rounded-lg p-2 text-sm text-right'
+    : 'bg-gray-800 border border-gray-600 rounded-lg p-2 text-sm';
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+function removeLastAiMsg(){
+  const box = document.getElementById('chatHistory');
+  if(box.lastChild) box.lastChild.remove();
+}
+
+async function sendModification(){
+  const input = document.getElementById('chatInput');
+  const request = input.value.trim();
+  if(!request || !generatedHtml) return;
+  addChatMsg('user', request);
+  input.value = '';
+  addChatMsg('ai', '⏳ Modification en cours...');
+  try {
+    const res = await fetch('/api/modify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ html: generatedHtml, request })
+    });
+    const data = await res.json();
+    removeLastAiMsg();
+    if(!data.success){ addChatMsg('ai', '❌ ' + (data.error || 'erreur')); return; }
+    generatedHtml = data.html;
+    document.getElementById('preview').srcdoc = generatedHtml;
+    addChatMsg('ai', '✅ Modifié ! Regarde l\'aperçu.');
+  } catch(e){
+    removeLastAiMsg();
+    addChatMsg('ai', '❌ Erreur de connexion.');
+  }
+}
+
+// ===== EXPORT =====
 function downloadSite(){
   const blob = new Blob([generatedHtml], {type: 'text/html'});
   const a = document.createElement('a');
