@@ -31,6 +31,18 @@ RÈGLES STRICTES :
 
 // ---------- CONSTRUCTION DU PROMPT UTILISATEUR ----------
 function buildUserPrompt(body) {
+  let productsText = '';
+  if (body.produits && body.produits.length > 0) {
+    productsText = '\n🛍️ PRODUITS À AFFICHER — crée une grille produits avec EXACTEMENT ces noms, prix et descriptions :\n';
+    body.produits.forEach((p, i) => {
+      productsText += (i + 1) + '. ' + p.nom + ' — ' + p.prix;
+      if (p.desc) productsText += ' — ' + p.desc;
+      if (p.image) productsText += '\n   Photo : utiliser <img src="' + p.image + '"> pour ce produit';
+      productsText += '\n';
+    });
+    productsText += 'Règle images : utilise les vraies URLs fournies en <img src="...">. Si un produit n\'a pas d\'image, mets un bel emoji à la place.\n';
+  }
+
   return `Génère un site web complet selon ce brief :
 
 🎯 Type de site : ${body.type || 'Non précisé'}
@@ -38,11 +50,12 @@ function buildUserPrompt(body) {
 🎨 Style visuel : ${body.style || 'Moderne'} | Couleurs : ${body.couleurs || 'Au choix de l\'IA'}
 👥 Cible : ${body.cible || 'Grand public'}
 🏗️ Sections souhaitées : ${body.sections || 'Accueil, Services, Contact'}
-✨ Fonctionnalités : ${body.fonctionnalites || 'Navigation fluide, formulaires'}
+✨ Fonctionnalités : ${body.fonctionnalites || 'Navigation fluide, formulaires'}${productsText}
 📄 Détails supplémentaires : ${body.details || 'Aucun'}
 
 Génère maintenant le fichier HTML complet.`;
 }
+
 
 // ---------- NETTOYAGE DE LA RÉPONSE IA ----------
 function cleanHtml(raw) {
