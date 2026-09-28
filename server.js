@@ -1,6 +1,6 @@
 // ============================================
 // PROMPT2SITE — Moteur de génération de sites
-// Phase 1 : génération + chat de modification + assistant brief
+// Phase 3 : système d'abonnement par codes
 // ============================================
 const express = require('express');
 const path = require('path');
@@ -14,10 +14,19 @@ console.log('🔑 Clé Groq : ' + (GROQ_API_KEY
   ? '✅ PRÉSENTE (' + GROQ_API_KEY.length + ' caractères)'
   : '❌ ABSENTE — mode démo actif'));
 
+// 💳 SYSTÈME D'ABONNEMENT
+const ACTIVATION_CODES = (process.env.ACTIVATION_CODES || '')
+  .split(',').map(c => c.trim()).filter(Boolean);
+console.log('💳 Codes d\'activation : ' + ACTIVATION_CODES.length + ' configuré(s)');
+
+function isValidCode(code) {
+  return code && ACTIVATION_CODES.includes(code.trim());
+}
+
 app.use(express.json({ limit: '4mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ---------- SYSTEM PROMPT (le cerveau du moteur) ----------
+// ---------- SYSTEM PROMPT ----------
 const SYSTEM_PROMPT = `Tu agis comme un Générateur de Site Web Révolutionnaire. Ton but est de créer un site web complet, moderne et fonctionnel en un seul essai, à partir du brief détaillé de l'utilisateur.
 
 RÈGLES STRICTES :
@@ -30,7 +39,7 @@ RÈGLES STRICTES :
 7. Si c'est un e-commerce : panier dynamique en JavaScript avec sidebar.
 8. Le code doit être prêt à enregistrer sous index.html et fonctionner immédiatement.`;
 
-// ---------- CONSTRUCTION DU PROMPT UTILISATEUR ----------
+// ---------- PROMPT UTILISATEUR ----------
 function buildUserPrompt(body) {
   let productsText = '';
   if (body.produits && body.produits.length > 0) {
@@ -57,15 +66,12 @@ function buildUserPrompt(body) {
 Génère maintenant le fichier HTML complet.`;
 }
 
-// ---------- NETTOYAGE DE LA RÉPONSE IA ----------
+// ---------- NETTOYAGE ----------
 function cleanHtml(raw) {
-  return raw
-    .replace(/```html/gi, '')
-    .replace(/```/g, '')
-    .trim();
+  return raw.replace(/```html/gi, '').replace(/```/g, '').trim();
 }
 
-// ---------- MODE DÉMO (si pas de clé Groq) ----------
+// ---------- MODE DÉMO ----------
 function demoSite(body) {
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${body.nom || 'Mon Site'}</title><script src="https://cdn.tailwindcss.com"><\/script></head>
@@ -82,11 +88,29 @@ function demoSite(body) {
 </ul></main></body></html>`;
 }
 
+// ---------- ROUTE : ACTIVATION ----------
+app.post('/api/activate', (req, res) => {
+  const { code } = req.body || {};
+  if (isValidCode(code)) {
+    console.log('✅ Code activé : ' + code);
+    return res.json({ success: true });
+  }
+  res.json({ success: false, error: 'Code invalide. Vérifie ou contacte l\'administrateur.' });
+});
+
+// ---------- VÉRIFICATION ACCÈS (abonnement) ----------
+function checkAccess(req, res) {
+  if (isValidCode(req.body?.code)) return true;
+  res.json({ success: false, paywall: true, error: 'Abonnement requis' });
+  return false;
+}
+
 // ---------- ROUTE : GÉNÉRATION ----------
 app.post('/api/generate', async (req, res) => {
   const body = req.body || {};
 
-  // Mode démo si pas de clé
+  if (!checkAccess(req, res)) return;
+
   if (!GROQ_API_KEY) {
     console.log('⚠️ Mode démo utilisé (pas de clé Groq)');
     return res.json({ success: true, html: demoSite(body), demo: true });
@@ -96,10 +120,7 @@ app.post('/api/generate', async (req, res) => {
     console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + GROQ_API_KEY,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
@@ -110,27 +131,24 @@ app.post('/api/generate', async (req, res) => {
         max_tokens: 8000
       })
     });
-
     const data = await response.json();
-
     if (!response.ok) {
       console.log('❌ Erreur Groq :', JSON.stringify(data.error || data));
       return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
     }
-
     const html = cleanHtml(data.choices[0].message.content);
     console.log('✅ Site généré (' + html.length + ' caractères)');
     res.json({ success: true, html, demo: false });
-
   } catch (err) {
     console.log('❌ Erreur serveur :', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// ---------- ROUTE : MODIFICATION DU SITE (mode chat Bloxks) ----------
+// ---------- ROUTE : MODIFICATION ----------
 app.post('/api/modify', async (req, res) => {
   const { html, request } = req.body || {};
+  if (!checkAccess(req, res)) return;
   if (!html || !request) return res.status(400).json({ success: false, error: 'Données manquantes' });
   if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo : modification impossible' });
 
@@ -187,11 +205,10 @@ app.post('/api/improve', async (req, res) => {
 
 // ---------- ROUTE : SANTÉ ----------
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', groq: !!GROQ_API_KEY, service: 'Prompt2Site v1.0' });
+  res.json({ status: 'OK', groq: !!GROQ_API_KEY, codes: ACTIVATION_CODES.length, service: 'Prompt2Site v1.2' });
 });
 
 // ---------- LANCEMENT ----------
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
-
