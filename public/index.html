@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt2Site — Génère ton site web en 3 minutes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Rajdhani',sans-serif; background:#0a0a12; }
+  .font-cyber { font-family:'Orbitron',sans-serif; }
+  .glow { box-shadow:0 0 25px rgba(168,85,247,.35); }
+  .section-card { background:#12121f; border:1px solid rgba(168,85,247,.25); }
+  .chip { transition:all .2s ease; cursor:pointer; }
+  .chip.selected { background:#a855f7; color:#0a0a12; border-color:#a855f7; font-weight:700; }
+  .fade-in { animation:fadeIn .4s ease both; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+  ::-webkit-scrollbar { width:8px; }
+  ::-webkit-scrollbar-thumb { background:#a855f7; border-radius:4px; }
+</style>
+</head>
+<body class="text-white">
+
+<!-- ===== HEADER ===== -->
+<header class="text-center pt-10 pb-8 px-4">
+  <h1 class="font-cyber text-4xl md:text-5xl font-black">PROMPT<span class="text-purple-500">2</span><span class="text-cyan-400">SITE</span></h1>
+  <p class="text-gray-400 mt-2 text-lg">Décris ton idée en détail → reçois ton site web complet en 3 minutes ⚡</p>
+</header>
+
+<!-- ===== ÉTAPE 1 : LE FORMULAIRE ===== -->
+<main id="formView" class="max-w-2xl mx-auto px-4 pb-16 space-y-6">
+
+  <!-- Section 1 : Type de site -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">🎯 1. QUEL TYPE DE SITE ?</h2>
+    <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-500 outline-none">
+      <option value="">— Choisis le type de site —</option>
+      <option>Boutique e-commerce</option>
+      <option>Site vitrine pour une entreprise</option>
+      <option>Portfolio</option>
+      <option>Restaurant / Fast-food</option>
+      <option>Landing page (page de vente)</option>
+      <option>Blog</option>
+      <option>Site pour école / formation</option>
+      <option>Autre (précise dans les détails)</option>
+    </select>
+  </div>
+
+  <!-- Section 2 : Identité -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. IDENTITÉ DU PROJET</h2>
+    <label class="block text-sm text-gray-400 mb-1">Nom du projet / business *</label>
+    <input id="nom" type="text" placeholder="Ex : Djibouti Fashion Store" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
+    <label class="block text-sm text-gray-400 mb-1">Slogan (optionnel)</label>
+    <input id="slogan" type="text" placeholder="Ex : Le style qui te ressemble" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
+    <label class="block text-sm text-gray-400 mb-1">Style visuel</label>
+    <select id="style" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
+      <option>Moderne et épuré</option>
+      <option>Sombre et luxueux</option>
+      <option>Coloré et énergique</option>
+      <option>Minimaliste pastel</option>
+      <option>Corporate / sérieux</option>
+      <option>Cyberpunk / futuriste</option>
+    </select>
+    <label class="block text-sm text-gray-400 mb-1">Couleurs principales (optionnel)</label>
+    <input id="couleurs" type="text" placeholder="Ex : violet et or, bleu marine et blanc..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
+  </div>
+
+  <!-- Section 3 : Cible -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">👥 3. TA CIBLE</h2>
+    <label class="block text-sm text-gray-400 mb-1">À qui s'adresse le site ? *</label>
+    <input id="cible" type="text" placeholder="Ex : jeunes 18-35 ans à Djibouti, parents, entreprises..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
+  </div>
+
+  <!-- Section 4 : Sections (chips) -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">🏗️ 4. SECTIONS DU SITE <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
+    <div id="sectionsChips" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <!-- Section 4BIS : Produits (optionnel) -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-1">🛍️ 4BIS. TES PRODUITS <span class="text-gray-500 font-normal text-sm">(optionnel — pour boutiques)</span></h2>
+    <p class="text-gray-400 text-sm mb-4">Ajoute tes produits avec leurs vrais prix et photos (URL de l'image). Le site les affichera exactement comme ici.</p>
+    <div id="productsList" class="space-y-3"></div>
+    <button type="button" onclick="addProductRow()" class="mt-3 w-full bg-gray-800 border border-purple-500/40 rounded-lg py-2 font-semibold hover:border-purple-500 transition">➕ AJOUTER UN PRODUIT</button>
+  </div>
+
+  <!-- Section 5 : Fonctionnalités (chips) -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">✨ 5. FONCTIONNALITÉS <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
+    <div id="featuresChips" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <!-- Section 6 : Détails libres -->
+  <div class="section-card rounded-2xl p-6 fade-in">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">📄 6. DÉTAILS SUPPLÉMENTAIRES</h2>
+    <textarea id="details" rows="4" placeholder="Décris ici tout ce qui te passe par la tête : les textes exacts, les prix, les services, le ton (sérieux, fun...), les exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
+  </div>
+
+  <!-- Bouton générer -->
+  <button id="generateBtn" onclick="generate()" class="w-full font-cyber font-bold text-lg bg-purple-500 text-gray-950 py-4 rounded-2xl glow hover:scale-[1.02] transition">
+    ⚡ GÉNÉRER MON SITE WEB
+  </button>
+  <p id="formError" class="text-red-400 text-center font-semibold hidden">⚠️ Remplis au minimum : le type de site, le nom et la cible.</p>
+</main>
+
+<!-- ===== ÉTAPE 2 : LE RÉSULTAT ===== -->
+<main id="resultView" class="hidden max-w-5xl mx-auto px-4 pb-16">
+  <div id="demoBanner" class="hidden mb-4 p-4 bg-yellow-500/20 border border-yellow-500 rounded-xl text-yellow-300 text-center font-semibold">
+    ⚠️ MODE DÉMO — La clé Groq n'est pas configurée sur le serveur. Contacte l'administrateur.
+  </div>
+  <div class="flex flex-wrap gap-3 mb-4">
+    <button onclick="downloadSite()" class="flex-1 min-w-[150px] bg-purple-500 text-gray-950 font-cyber font-bold py-3 rounded-xl glow">📥 TÉLÉCHARGER index.html</button>
+    <button onclick="copyCode()" class="flex-1 min-w-[150px] bg-cyan-500 text-gray-950 font-cyber font-bold py-3 rounded-xl">📋 COPIER LE CODE</button>
+    <button onclick="backToForm()" class="flex-1 min-w-[150px] bg-gray-700 font-cyber font-bold py-3 rounded-xl">🔄 MODIFIER MON BRIEF</button>
+  </div>
+  <p id="copyMsg" class="text-cyan-400 text-center font-bold mb-3 hidden">✅ Code copié !</p>
+  <div class="rounded-2xl overflow-hidden border border-purple-500/40" style="height:70vh;">
+    <iframe id="preview" class="w-full h-full bg-white" title="Aperçu du site généré"></iframe>
+  </div>
+</main>
+
+<!-- ===== CHARGEMENT ===== -->
+<div id="loadingView" class="hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center px-6 text-center">
+  <div class="text-6xl mb-4 animate-pulse">⚡</div>
+  <p class="font-cyber text-xl font-bold text-purple-400">GÉNÉRATION EN COURS...</p>
+  <p class="text-gray-400 mt-2">L'IA construit ton site sur mesure. Ça prend 30 secondes à 2 minutes.<br>⚠️ Ne ferme pas cette page.</p>
+</div>
+
+<script>
+const SECTIONS = ['Accueil / Hero','À propos','Services','Produits','Tarifs','Témoignages','Galerie','Équipe','FAQ','Blog','Contact','Footer complet'];
+const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Panier d\'achat','Galerie photos','Mode sombre','Menu burger mobile','Carte Google Maps','Newsletter','Boutons animés','Compte à rebours','Barre de navigation fixe','Réseaux sociaux'];
+
+let generatedHtml = '';
+
+function buildChips(containerId, items){
+  const box = document.getElementById(containerId);
+  box.innerHTML = items.map(s =>
+    `<span class="chip bg-gray-900 border border-purple-500/40 rounded-full px-4 py-2 text-sm select-none" onclick="this.classList.toggle('selected')">${s}</span>`
+  ).join('');
+}
+buildChips('sectionsChips', SECTIONS);
+buildChips('featuresChips', FEATURES);
+
+function getSelected(containerId){
+  return [...document.getElementById(containerId).querySelectorAll('.chip.selected')].map(c => c.textContent);
+}
+
+// ===== GESTION DES PRODUITS =====
+let productRowCount = 0;
+
+function addProductRow(){
+  productRowCount++;
+  const row = document.createElement('div');
+  row.className = 'bg-gray-900 border border-purple-500/30 rounded-xl p-3 space-y-2';
+  row.id = 'productRow' + productRowCount;
+  row.innerHTML = `
+    <div class="flex justify-between items-center">
+      <span class="font-cyber text-purple-400 text-sm font-bold">PRODUIT #${productRowCount}</span>
+      <button type="button" onclick="document.getElementById('productRow${productRowCount}').remove()" class="text-red-400 font-bold px-2">🗑️</button>
+    </div>
+    <input type="text" class="prod-nom w-full bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Nom du produit *">
+    <div class="flex gap-2">
+      <input type="text" class="prod-prix w-1/3 bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Prix * (ex : 25 $)">
+      <input type="text" class="prod-desc flex-1 bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Description courte (optionnel)">
+    </div>
+    <input type="text" class="prod-image w-full bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="URL de la photo (optionnel — ex : https://.../photo.jpg)">`;
+  document.getElementById('productsList').appendChild(row);
+}
+addProductRow();
+
+function collectProducts(){
+  return [...document.querySelectorAll('#productsList > div')].map(row => ({
+    nom: row.querySelector('.prod-nom').value.trim(),
+    prix: row.querySelector('.prod-prix').value.trim(),
+    desc: row.querySelector('.prod-desc').value.trim(),
+    image: row.querySelector('.prod-image').value.trim()
+  })).filter(p => p.nom && p.prix);
+}
+
+async function generate(){
+  const type = document.getElementById('type').value;
+  const nom = document.getElementById('nom').value.trim();
+  const cible = document.getElementById('cible').value.trim();
+
+  if(!type || !nom || !cible){
+    document.getElementById('formError').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('formError').classList.add('hidden');
+
+  const brief = {
+    type: type,
+    nom: nom + (document.getElementById('slogan').value ? ' — ' + document.getElementById('slogan').value : ''),
+    style: document.getElementById('style').value,
+    couleurs: document.getElementById('couleurs').value,
+    cible: cible,
+    sections: getSelected('sectionsChips').join(', '),
+    fonctionnalites: getSelected('featuresChips').join(', '),
+    details: document.getElementById('details').value,
+    produits: collectProducts()
+  };
+
+  document.getElementById('loadingView').classList.remove('hidden');
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(brief)
+    });
+    const data = await res.json();
+    document.getElementById('loadingView').classList.add('hidden');
+
+    if(!data.success){
+      alert('❌ Erreur : ' + (data.error || 'inconnue'));
+      return;
+    }
+
+    generatedHtml = data.html;
+    document.getElementById('preview').srcdoc = generatedHtml;
+    document.getElementById('demoBanner').classList.toggle('hidden', !data.demo);
+    document.getElementById('formView').classList.add('hidden');
+    document.getElementById('resultView').classList.remove('hidden');
+    window.scrollTo(0,0);
+  } catch(e){
+    document.getElementById('loadingView').classList.add('hidden');
+    alert('❌ Erreur de connexion au serveur. Réessaie.');
+  }
+}
+
+function downloadSite(){
+  const blob = new Blob([generatedHtml], {type: 'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+}
+
+async function copyCode(){
+  await navigator.clipboard.writeText(generatedHtml);
+  const msg = document.getElementById('copyMsg');
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 3000);
+}
+
+function backToForm(){
+  document.getElementById('resultView').classList.add('hidden');
+  document.getElementById('formView').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
