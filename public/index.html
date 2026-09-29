@@ -17,6 +17,7 @@
   @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
   ::-webkit-scrollbar { width:8px; }
   ::-webkit-scrollbar-thumb { background:#a855f7; border-radius:4px; }
+.apk-status{margin:12px 0;padding:13px;border-radius:10px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45);color:#d8b4fe;font-size:.88rem;line-height:1.5;word-break:break-word}
 </style>
 </head>
 <body class="text-white">
@@ -117,7 +118,12 @@
     <button onclick="backToForm()" class="flex-1 min-w-[150px] bg-gray-700 font-cyber font-bold py-3 rounded-xl">🔄 MODIFIER MON BRIEF</button>
   </div>
   <p id="copyMsg" class="text-cyan-400 text-center font-bold mb-3 hidden">✅ Code copié !</p>
-  <div class="section-card rounded-2xl p-4 mb-4">
+  <div class="flex flex-wrap gap-3 mb-4">
+  <button onclick="dlApk()" class="flex-1 min-w-[150px] bg-emerald-600 text-white font-cyber font-bold py-3 rounded-lg">🤖 APP ANDROID (APK)</button>
+  <button onclick="dlPlay()" class="flex-1 min-w-[150px] bg-gray-800 border border-purple-500/40 text-purple-300 font-cyber font-bold py-3 rounded-lg">🚀 GOOGLE PLAY (PREMIUM)</button>
+</div>
+<div id="apkStatus" class="apk-status hidden"></div>
+<div class="section-card rounded-2xl p-4 mb-4">
     <h3 class="font-cyber text-purple-400 font-bold mb-1">💬 MODIFIER MON SITE</h3>
     <p class="text-gray-400 text-sm mb-3">Dis à l'IA ce que tu veux changer : couleurs, sections, textes... Elle modifie le site en direct.</p>
     <div id="chatHistory" class="space-y-2 mb-3 max-h-40 overflow-y-auto"></div>
@@ -402,6 +408,54 @@ function backToForm(){
   document.getElementById('resultView').classList.add('hidden');
   document.getElementById('formView').classList.remove('hidden');
   window.scrollTo(0,0);
+}
+// ===== SEMAINE 1 : APP ANDROID + GOOGLE PLAY =====
+function apkMsg(t){
+  var el = document.getElementById('apkStatus');
+  if(!el) return;
+  el.textContent = t;
+  el.classList.remove('hidden');
+}
+
+async function dlApk(){
+  if(!generatedHtml){ alert('Génère d\'abord ton site.'); return; }
+  apkMsg('🤖 Envoi du projet vers le cloud Expo…');
+  try {
+    var res = await fetch('/api/generate-apk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ html: generatedHtml, code: getAccessCode() })
+    });
+    var data = await res.json();
+    if(!data.success){ apkMsg('⚠️ ' + (data.error || 'Erreur serveur')); return; }
+    pollApk(data.buildId);
+  } catch(e){ apkMsg('⚠️ ' + e.message); }
+}
+
+async function pollApk(id){
+  apkMsg('⚙️ Compilation de l\'APK en cours dans le cloud Expo… (~10-15 min). Laisse cette page ouverte.');
+  try {
+    var res = await fetch('/api/apk-status/' + id);
+    var data = await res.json();
+    if(!data.success){ apkMsg('⚠️ ' + data.error); return; }
+    if(data.status === 'finished' && data.downloadUrl){
+      apkMsg('✅ TON APP EST PRÊTE ! Télécharge ici : ' + data.downloadUrl);
+      window.open(data.downloadUrl, '_blank');
+      return;
+    }
+    if(data.status === 'errored' || data.status === 'canceled'){
+      apkMsg('❌ Compilation échouée. Réessaie ou contacte le support.');
+      return;
+    }
+    setTimeout(function(){ pollApk(id); }, 15000);
+  } catch(e){
+    setTimeout(function(){ pollApk(id); }, 15000);
+  }
+}
+
+function dlPlay(){
+  alert('🚀 Option Premium. Contacte-nous sur WhatsApp pour publier ton app sur le Google Play Store !');
+  window.open('https://wa.me/25377098637?text=Bonjour%2C%20je%20veux%20publier%20mon%20app%20sur%20Google%20Play%20%28Premium%29', '_blank');
 }
 </script>
 </body>
