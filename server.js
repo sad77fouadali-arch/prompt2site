@@ -220,6 +220,9 @@ app.post('/api/improve', async (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK' });
 });
+// ===== SEMAINE 1 : GÉNÉRATION D'APK ANDROID =====
+const apkBuilder = require('./lib/apk-builder');
+apkBuilder.registerRoutes(app, checkAccess);
 
 // -------- LANCEMENT --------
 app.listen(PORT, () => {
