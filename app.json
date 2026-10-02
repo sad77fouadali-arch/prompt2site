@@ -1,0 +1,8 @@
+{
+  "expo": {
+    "owner": "prompt2site-djibouti",
+    "name": "Prompt2Site",
+    "slug": "prompt2site-apps",
+    "extra": { "eas": { "projectId": "96ef6a63-5dee-40aa-b1b6-75ade4c2eef5" } }
+  }
+}
