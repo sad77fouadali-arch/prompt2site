@@ -424,9 +424,9 @@ async function dlApk(){
     var res = await fetch('/api/generate-apk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ html: generatedHtml, code: getAccessCode() })
-    });
-    var data = await res.json();
+         body: JSON.stringify({ html: generatedHtml, code: getAccessCode(), nom: document.getElementById('nom').value.trim() })
+      });
+      var data = await res.json();
     if(!data.success){ apkMsg('⚠️ ' + (data.error || 'Erreur serveur')); return; }
     pollApk(data.buildId);
   } catch(e){ apkMsg('⚠️ ' + e.message); }
