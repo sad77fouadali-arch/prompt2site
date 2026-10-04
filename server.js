@@ -220,6 +220,40 @@ app.post('/api/improve', async (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK' });
 });
+// ------ ROUTE : MENU EXPRESS (S3 Jour 2) ------
+// Reçoit une liste brute de produits et renvoie des fiches propres
+app.post('/api/parse-menu', async (req, res) => {
+  const { menu } = req.body || {};
+  if (!menu || typeof menu !== 'string' || !menu.trim()) {
+    return res.status(400).json({ success: false, error: 'Menu manquant' });
+  }
+  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'openai/gpt-oss-120b',
+        messages: [
+          { role: 'system', content: 'Tu es un parseur de menus de restaurant/boutique. Tu reçois une liste brute de produits avec leurs prix, et tu réponds UNIQUEMENT avec un JSON valide (aucun texte avant ni après) au format : [{"nom":"...","prix":"...","desc":"..."}]. Règles STRICTES : 1. Garde les prix EXACTEMENT comme écrits par le client (ex : "1500 FD", "3$", "500 FD"). 2. Si un produit n\'a pas de prix, mets "Sur demande". 3. La description "desc" : 5 à 10 mots max, générée par toi si absente. 4. Ne traduis PAS les noms de produits, garde le texte original.' },
+          { role: 'user', content: menu }
+        ],
+        temperature: 0.2,
+        max_tokens: 2000
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    const raw = data.choices[0].message.content.trim();
+    const jsonText = raw.replace(/^```(json)?/i, '').replace(/```$/, '').trim();
+    const produits = JSON.parse(jsonText);
+    res.json({ success: true, produits: produits });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 // ===== SEMAINE 1 : GÉNÉRATION D'APK ANDROID =====
 const apkBuilder = require('./lib/apk-builder');
 apkBuilder.registerRoutes(app, checkAccess);
