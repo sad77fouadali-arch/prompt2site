@@ -422,9 +422,14 @@ function backToForm(){
 function apkMsg(t){
   var el = document.getElementById('apkStatus');
   if(!el) return;
-  el.textContent = t;
+  if(t.indexOf('/api/apk-download/') !== -1){
+    el.innerHTML = '✅ TON APP EST PRÊTE ! <a href="' + t + '" style="color:#22d3ee;font-weight:700;text-decoration:underline;">📥 TÉLÉCHARGE L\'APK ICI</a>';
+  } else {
+    el.textContent = t;
+  }
   el.classList.remove('hidden');
 }
+
 
 async function dlApk(){
   if(!generatedHtml){ alert('Génère d\'abord ton site.'); return; }
