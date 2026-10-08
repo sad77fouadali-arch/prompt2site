@@ -255,7 +255,7 @@ app.post('/api/parse-menu', async (req, res) => {
 
 
 // ===== SEMAINE 1 : GÉNÉRATION D'APK ANDROID =====
-const apkBuilder = require('./lib/apk-builder');
+const apkBuilder = require('./lib/github-apk');
 apkBuilder.registerRoutes(app, checkAccess);
 
 // -------- LANCEMENT --------
