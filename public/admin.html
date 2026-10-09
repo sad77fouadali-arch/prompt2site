@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Espace — Mes produits</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+<div id="app" class="max-w-md mx-auto p-4">
+
+  <!-- CONNEXION -->
+  <div id="loginView" class="mt-10">
+    <div class="bg-white rounded-2xl shadow-md p-6">
+      <h1 class="text-2xl font-bold text-indigo-600 mb-1">🛍️ Mon Espace</h1>
+      <p class="text-sm text-gray-500 mb-4">Connecte-toi pour gérer tes produits</p>
+      <input id="loginEmail" type="email" placeholder="Ton email" class="w-full border rounded-lg p-3 mb-3">
+      <input id="loginPassword" type="password" placeholder="Ton mot de passe" class="w-full border rounded-lg p-3 mb-3">
+      <button onclick="doLogin()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg">SE CONNECTER</button>
+      <p id="loginError" class="text-red-500 text-sm mt-2 hidden"></p>
+    </div>
+  </div>
+
+  <!-- GESTION -->
+  <div id="adminView" class="hidden mt-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-xl font-bold text-indigo-600">🛍️ Mes produits</h1>
+      <button onclick="doLogout()" class="text-sm text-gray-400 underline">Déconnexion</button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-md p-4 mb-4">
+      <h2 class="font-bold mb-3">➕ Ajouter un produit</h2>
+      <input id="pNom" type="text" placeholder="Nom (ex: Tiramisu fraise)" class="w-full border rounded-lg p-3 mb-2">
+      <input id="pPrix" type="text" placeholder="Prix (ex: 1800 FD)" class="w-full border rounded-lg p-3 mb-2">
+      <input id="pDesc" type="text" placeholder="Description courte (optionnel)" class="w-full border rounded-lg p-3 mb-2">
+      <input id="pImage" type="text" placeholder="Lien photo (optionnel, https://...)" class="w-full border rounded-lg p-3 mb-3">
+      <button onclick="addProduct()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg">AJOUTER</button>
+      <p id="addMsg" class="text-sm mt-2 hidden"></p>
+    </div>
+
+    <div id="productList" class="space-y-2"></div>
+  </div>
+</div>
+
+<script>
+let slug = localStorage.getItem('admin_slug') || '';
+let email = localStorage.getItem('admin_email') || '';
+let password = localStorage.getItem('admin_password') || '';
+
+function show(el){ document.getElementById(el).classList.remove('hidden'); }
+function hide(el){ document.getElementById(el).classList.add('hidden'); }
+
+async function doLogin(){
+  const e = document.getElementById('loginEmail').value.trim();
+  const p = document.getElementById('loginPassword').value.trim();
+  hide('loginError');
+  const res = await fetch('/api/client-login', { method:'POST', headers:{'x-email':e,'x-password':p,'Content-Type':'application/json'} });
+  const data = await res.json();
+  if(data.success){
+    slug = data.slug; email = e; password = p;
+    localStorage.setItem('admin_slug', slug);
+    localStorage.setItem('admin_email', email);
+    localStorage.setItem('admin_password', password);
+    enterAdmin();
+  } else {
+    const err = document.getElementById('loginError');
+    err.textContent = data.error || 'Erreur de connexion';
+    show('loginError');
+  }
+}
+
+async function enterAdmin(){
+  hide('loginView'); show('adminView');
+  await refreshList();
+}
+
+async function refreshList(){
+  const res = await fetch('/api/products/' + slug);
+  const data = await res.json();
+  const box = document.getElementById('productList');
+  const liste = data.products || [];
+  if(liste.length === 0){
+    box.innerHTML = '<p class="text-center text-gray-400 py-6">Aucun produit pour le moment.<br>Ajoute ton premier produit ci-dessus !</p>';
+    return;
+  }
+  box.innerHTML = liste.map(function(p, i){
+    const img = p.image ? '<img src="' + p.image + '" class="w-12 h-12 rounded-lg object-cover mr-3">' : '<div class="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center mr-3 text-xl">🛍️</div>';
+    return '<div class="bg-white rounded-xl shadow p-3 flex items-center">' + img +
+      '<div class="flex-1"><p class="font-bold">' + escapeHtml(p.nom) + '</p>' +
+      '<p class="text-indigo-600 font-bold text-sm">' + escapeHtml(p.prix) + '</p>' +
+      (p.desc ? '<p class="text-xs text-gray-500">' + escapeHtml(p.desc) + '</p>' : '') + '</div>' +
+      '<button onclick="delProduct(' + i + ')" class="text-red-400 font-bold px-2">🗑️</button></div>';
+  }).join('');
+}
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function addProduct(){
+  const msg = document.getElementById('addMsg');
+  hide('addMsg');
+  const body = {
+    nom: document.getElementById('pNom').value.trim(),
+    prix: document.getElementById('pPrix').value.trim(),
+    desc: document.getElementById('pDesc').value.trim(),
+    image: document.getElementById('pImage').value.trim()
+  };
+  if(!body.nom || !body.prix){ msg.textContent = '⚠️ Nom et prix obligatoires'; msg.className='text-sm mt-2 text-red-500'; show('addMsg'); return; }
+  const res = await fetch('/api/products/' + slug, { method:'POST', headers:{'x-email':email,'x-password':password,'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const data = await res.json();
+  if(data.success){
+    msg.textContent = '✅ Produit ajouté !';
+    msg.className='text-sm mt-2 text-green-600';
+    show('addMsg');
+    document.getElementById('pNom').value='';
+    document.getElementById('pPrix').value='';
+    document.getElementById('pDesc').value='';
+    document.getElementById('pImage').value='';
+    await refreshList();
+  } else {
+    msg.textContent = '❌ ' + (data.error || 'Erreur');
+    msg.className='text-sm mt-2 text-red-500';
+    show('addMsg');
+  }
+}
+
+async function delProduct(i){
+  if(!confirm('Supprimer ce produit ?')) return;
+  const res = await fetch('/api/products/' + slug + '/' + i, { method:'DELETE', headers:{'x-email':email,'x-password':password} });
+  const data = await res.json();
+  if(data.success) await refreshList();
+}
+
+function doLogout(){
+  localStorage.removeItem('admin_slug');
+  localStorage.removeItem('admin_email');
+  localStorage.removeItem('admin_password');
+  location.reload();
+}
+
+if(slug && email && password){ enterAdmin(); }
+</script>
+</body>
+</html>
