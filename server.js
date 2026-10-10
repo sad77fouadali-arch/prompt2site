@@ -253,8 +253,43 @@ app.post('/api/parse-menu', async (req, res) => {
 });
 
 
-
 // ==== SEMAINE 1 : GÉNÉRATION D'APK ANDROID ====
+// ------ ROUTE : MODE EXPRESS PAR PHOTO ------
+// Recoit une photo de menu et renvoie tout structure via Groq Vision
+app.post('/api/parse-menu-image', async (req, res) => {
+  const { image } = req.body || {};
+  if (!image || typeof image !== 'string' || !image.startsWith('data:image')) {
+    return res.status(400).json({ success: false, error: 'Image manquante' });
+  }
+  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'llama-3.2-11b-vision-preview',
+        messages: [
+          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commercant. Tu recois une photo de menu ou de carte. Reponds UNIQUEMENT avec un JSON valide (sans texte avant ni apres) de cette forme : {"infos":{"type":"Restaurant / Fast-food / Café","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, telephone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]} . Dans "type", choisis UNE valeur parmi : Boutique e-commerce, Salle de sport, Salon de coiffure, Salon de beauté, Restaurant / Fast-food / Café, Site vitrine entreprise, Clinique / Cabinet médical, Agence immobilière, Transport / Livraison, École / Formation, Portfolio, Landing page, Blog, Événement, Autre. Extrais les vrais noms et prix visibles sur la photo, n\'invente rien.' },
+          { role: 'user', content: [
+              { type: 'text', text: 'Lis cette photo et extrais le menu en JSON.' },
+              { type: 'image_url', image_url: { url: image } }
+          ]}
+        ],
+        temperature: 0.2,
+        max_tokens: 2500
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    const raw = data.choices[0].message.content.trim();
+    const jsonText = raw.replace(/^```(json)?/i, '').replace(/```$/, '').trim();
+    res.json({ success: true, data: JSON.parse(jsonText) });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 const apkBuilder = require('./lib/github-apk');
 apkBuilder.registerRoutes(app, checkAccess);
 const produitsRoutes = require('./lib/produits');
