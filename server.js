@@ -267,7 +267,7 @@ app.post('/api/parse-menu-image', async (req, res) => {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-                    model: 'openai/gpt-oss-120b',
+                            model: 'qwen/qwen3.8-27b',
         messages: [
           { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commercant. Tu recois une photo de menu ou de carte. Reponds UNIQUEMENT avec un JSON valide (sans texte avant ni apres) de cette forme : {"infos":{"type":"Restaurant / Fast-food / Café","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, telephone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]} . Dans "type", choisis UNE valeur parmi : Boutique e-commerce, Salle de sport, Salon de coiffure, Salon de beauté, Restaurant / Fast-food / Café, Site vitrine entreprise, Clinique / Cabinet médical, Agence immobilière, Transport / Livraison, École / Formation, Portfolio, Landing page, Blog, Événement, Autre. Extrais les vrais noms et prix visibles sur la photo, n\'invente rien.' },
           { role: 'user', content: [
