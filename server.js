@@ -36,18 +36,23 @@ globalThis.fetch = function(url, opts) {
 app.use(express.json({ limit: '4mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// -------- SYSTEM PROMPT --------
-const SYSTEM_PROMPT = `Tu agis comme un Générateur de Site Web Révolutionnaire. Ton but est de créer un site web complet, professionnel et prêt à l'emploi en un seul fichier HTML.
+// ========== PROMPT SYSTÈME GÉNÉRATION — DESKTOP-FIRST OBLIGATOIRE ==========
+const GENERATION_SYSTEM = `Tu es le moteur de génération de sites web de Prompt2Site.
+Tu DOIS générer UN SEUL fichier HTML complet avec Tailwind CSS (CDN).
 
-RÈGLES STRICTES :
-1. Réponds UNIQUEMENT avec le code HTML complet, sans aucun texte avant ou après.
-2. Intègre le design via le CDN Tailwind CSS (https://cdn.tailwindcss.com).
-3. Intègre toute la logique JavaScript en pur JS à la fin du fichier.
-4. Le site doit être responsive (mobile + desktop), en français.
-5. Utilise des émojis à la place des images sauf si des URLs d'images sont fournies dans le brief.
-6. Sois créatif : animations CSS, effets hover, sections bien structurées.
-7. Si c'est un e-commerce : panier dynamique en JavaScript avec sidebar.
-8. Le code doit être prêt à enregistrer sous index.html et fonctionner immédiatement.`;
+RÈGLES ABSOLUES (aucune exception) :
+1. DESKTOP-FIRST : conçois TOUJOURS comme pour un écran d'ordinateur large (1920px), puis adapte au mobile avec les préfixes md: et lg:. La richesse visuelle de la version PC doit être 100% présente sur mobile.
+2. CONTENEUR : toutes les sections utilisent la classe "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8".
+3. TYPOGRAPHIE : titres en "text-4xl md:text-5xl" minimum, textes en "text-lg". Jamais de texte minuscule.
+4. GRILLE PRODUITS : minimum 3 colonnes sur grand écran ("grid md:grid-cols-3 lg:grid-cols-4"), passage en 1-2 colonnes sur mobile UNIQUEMENT via les breakpoints.
+5. INTERDICTIONS STRICTES : ne jamais supprimer d'images, d'arrière-plans, de sections ou de boutons sur mobile. Tout élément du desktop DOIT exister sur mobile.
+6. STRUCTURE OBLIGATOIRE dans cet ordre : header sticky avec navigation → hero 2 colonnes avec grand titre + boutons CTA → section produits en grille → section à propos → footer complet avec contact + WhatsApp.
+7. Chaque produit a : image, nom, description, prix, bouton "Commander" qui ouvre wa.me.
+8. Couleurs : respecte la demande du client. Accent jaune (#facc15) par défaut.
+9. Réponds UNIQUEMENT avec le code HTML complet, sans texte avant ou après, sans \`\`\`.`;
+
+// Puis dans ta route de génération, utilise :
+// { role: 'system', content: GENERATION_SYSTEM }
 
 // -------- PROMPT UTILISATEUR --------
 function buildUserPrompt(body) {
@@ -137,9 +142,10 @@ app.post('/api/generate', async (req, res) => {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: buildUserPrompt(body) }
-        ],
+              { role: 'system', content: GENERATION_SYSTEM },
+  { role: 'user', content: buildUserPrompt(body) }
+],
+   
         temperature: 0.7,
         max_tokens: 8000
       })
