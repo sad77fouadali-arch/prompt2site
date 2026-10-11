@@ -181,6 +181,9 @@
 </div>
 
 <script>
+// Pré-chauffe le serveur dès l'arrivée du visiteur
+  fetch('/api/warm').catch(() => {});
+  setInterval(() => fetch('/api/warm').catch(() => {}), 4 * 60 * 1000);
 const SECTIONS = ['Accueil / Hero','À propos','Services','Produits','Tarifs','Témoignages','Galerie','Équipe','FAQ','Blog','Horaires','Contact','Footer complet'];
 const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Prise de rendez-vous','Panier d\'achat','Galerie photos','Mode sombre','Menu burger mobile','Carte Google Maps','Newsletter','Boutons animés','Compte à rebours','Barre de navigation fixe','Réseaux sociaux','Planning / Horaires'];
 
