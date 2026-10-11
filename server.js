@@ -301,9 +301,12 @@ apkBuilder.registerRoutes(app, checkAccess);
 const produitsRoutes = require('./lib/produits');
 produitsRoutes.registerRoutes(app);
 
+// ========== PREWARM (anti cold-start) ==========
+app.get('/api/warm', (req, res) => {
+  res.json({ status: 'hot', ts: Date.now() });
+});
 
-// -------- LANCEMENT --------
+// ------ LANCEMENT ------
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
-
