@@ -295,6 +295,33 @@ app.post('/api/parse-menu-image', async (req, res) => {
   }
 });
 
+// ------ ROUTE : DICTÉE VOCALE (Whisper Groq) — PHASE 2 ------
+// Reçoit un audio en base64 et renvoie le texte transcrit
+app.post('/api/transcribe', async (req, res) => {
+  const { audio } = req.body || {};
+  if (!audio || typeof audio !== 'string') {
+    return res.status(400).json({ success: false, error: 'Audio manquant' });
+  }
+  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  try {
+    const buffer = Buffer.from(audio, 'base64');
+    const form = new FormData();
+    form.append('file', new Blob([buffer], { type: 'audio/webm' }), 'dictation.webm');
+    form.append('model', 'whisper-large-v3');
+    form.append('language', 'fr');
+    const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY },
+      body: form
+    });
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    console.log('🎤 Dictée reçue (' + buffer.length + ' octets) → ' + (data.text || '').length + ' caractères');
+    res.json({ success: true, text: data.text || '' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 const apkBuilder = require('./lib/github-apk');
 apkBuilder.registerRoutes(app, checkAccess);
