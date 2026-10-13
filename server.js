@@ -284,14 +284,14 @@ app.post('/api/parse-menu-image', async (req, res) => {
       body: JSON.stringify({
                                                 model: 'qwen/qwen3.8-27b',
         messages: [
-          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commercant. Tu recois une photo de menu ou de carte. Reponds UNIQUEMENT avec un JSON valide (sans texte avant ni apres) de cette forme : {"infos":{"type":"Restaurant / Fast-food / Café","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, telephone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]} . Dans "type", choisis UNE valeur parmi : Boutique e-commerce, Salle de sport, Salon de coiffure, Salon de beauté, Restaurant / Fast-food / Café, Site vitrine entreprise, Clinique / Cabinet médical, Agence immobilière, Transport / Livraison, École / Formation, Portfolio, Landing page, Blog, Événement, Autre. Extrais les vrais noms et prix visibles sur la photo, n\'invente rien.' },
+          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commercant a partir d\'une photo de menu, carte ou flyer. Tu reponds UNIQUEMENT avec un JSON valide, sans texte avant ni apres, de cette forme exacte : {"infos":{"type":"...","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, telephone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]}. Regles obligatoires : 1. LISTE EXHAUSTIVE : extrais TOUS les produits et services visibles sur la photo, un par un, sans en oublier aucun. 2. "desc" reprend la categorie exacte du produit (ex : Formations informatique, Langues, Soutien scolaire). 3. Dans "type", choisis UNE valeur parmi : Boutique e-commerce, Salle de sport, Salon de coiffure, Salon de beauté, Restaurant / Fast-food / Café, Site vitrine entreprise, Clinique / Cabinet médical, Agence immobilière, Transport / Livraison, École / Formation, Portfolio, Landing page, Blog, Événement, Autre. 4. Extrais les vrais noms et prix exactement comme ils sont ecrits, n\'invente rien.' },
           { role: 'user', content: [
-              { type: 'text', text: 'Lis cette photo et extrais le menu en JSON.' },
+              { type: 'text', text: 'Extrais TOUT le contenu visible de cette photo en respectant le format JSON. Ne neglige aucun produit, aucun prix.' },
               { type: 'image_url', image_url: { url: image } }
           ]}
         ],
         temperature: 0.2,
-        max_tokens: 2500
+        max_tokens: 4000
       })
     });
     const data = await response.json();
@@ -355,3 +355,4 @@ app.get('/api/warm', (req, res) => {
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
+
