@@ -115,7 +115,10 @@ function checkAccess(req, res) {
 app.post('/api/generate', async (req, res) => {
   const body = req.body || {};
 
-  if (!checkAccess(req, res)) return;
+  const hasCode = isValidCode(body.code);
+  if (!hasCode && body.preview !== true) {
+    return res.json({ success: false, paywall: true, error: 'Abonnement requis' });
+  }
 
   if (!GROQ_API_KEY) {
     console.error('❌ Génération refusée : GROQ_API_KEY absente (vérifie Render)');
@@ -145,7 +148,7 @@ app.post('/api/generate', async (req, res) => {
     }
     const html = cleanHtml(data.choices[0].message.content);
     console.log('✅ Site généré (' + html.length + ' caractères)');
-    res.json({ success: true, html });
+    res.json({ success: true, html, preview: !hasCode });
   } catch (err) {
     console.log('❌ Erreur serveur :', err.message);
     res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
