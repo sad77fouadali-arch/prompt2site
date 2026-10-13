@@ -124,7 +124,6 @@
 
 <!-- ===== VUE RÉSULTAT ===== -->
 <main id="resultView" class="hidden max-w-5xl mx-auto px-4 pb-16">
-  <div id="demoBanner" class="hidden mb-4 p-4 bg-yellow-500/20 border border-yellow-500 rounded-xl text-yellow-300 text-center font-semibold">⚠️ MODE DÉMO — La clé Groq n'est pas configurée sur le serveur.</div>
   <div class="flex flex-wrap gap-3 mb-4">
     <button onclick="downloadSite()" class="flex-1 min-w-[150px] bg-purple-500 text-gray-950 font-cyber font-bold py-3 rounded-xl glow">📥 TÉLÉCHARGER</button>
     <button onclick="copyCode()" class="flex-1 min-w-[150px] bg-cyan-500 text-gray-950 font-cyber font-bold py-3 rounded-xl">📋 COPIER LE CODE</button>
@@ -355,7 +354,6 @@ async function generate(){
     generatedHtml = data.html;
     if(!getAccessCode()) setFreeUsed();
     document.getElementById('preview').srcdoc = generatedHtml;
-    document.getElementById('demoBanner').classList.toggle('hidden', !data.demo);
     document.getElementById('chatHistory').innerHTML = '';
     document.getElementById('formView').classList.add('hidden');
     document.getElementById('resultView').classList.remove('hidden');
