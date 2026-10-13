@@ -10,9 +10,14 @@ const PORT = process.env.PORT || 3000;
 
 // 🔐 VERROU CLÉ GROQ
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-console.log('🔑 Clé Groq : ' + (GROQ_API_KEY
-  ? '✅ PRÉSENTE (' + GROQ_API_KEY.length + ' caractères)'
-  : '❌ ABSENTE — mode démo actif'));
+if (!GROQ_API_KEY) {
+  console.error('❌ CONFIG MANQUANTE : GROQ_API_KEY absente. La génération IA renverra un message propre aux utilisateurs.');
+} else if (GROQ_API_KEY.length < 50) {
+  console.error('⚠️ CONFIG SUSPECTE : GROQ_API_KEY trop courte (' + GROQ_API_KEY.length + ' caracteres). Verifie qu elle commence par gsk_.');
+} else {
+  console.log('🔑 Clé Groq : ✅ PRÉSENTE (' + GROQ_API_KEY.length + ' caracteres)');
+}
+const MSG_SERVICE_INDISPONIBLE = 'Le service est temporairement indisponible, réessaie dans quelques minutes.';
 
 // 💳 SYSTÈME D'ABONNEMENT
 const ACTIVATION_CODES = (process.env.ACTIVATION_CODES || '')
@@ -89,23 +94,6 @@ function cleanHtml(raw) {
   return h;
 }
 
-// -------- MODE DÉMO --------
-function demoSite(body) {
-  return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${body.nom || 'Mon Site'}</title><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-gray-900 text-white font-sans">
-<header class="p-6 text-center bg-gradient-to-r from-purple-600 to-blue-500">
-<h1 class="text-4xl font-bold">🚀 ${body.nom || 'Mon Site'}</h1>
-<p class="mt-2 text-lg">⚠️ MODE DÉMO — Ajoute ta clé GROQ_API_KEY sur Render pour la vraie génération IA</p>
-</header>
-<main class="p-8 max-w-4xl mx-auto">
-<h2 class="text-2xl font-bold mb-4">Brief reçu :</h2>
-<ul class="list-disc pl-6 space-y-2 text-gray-300">
-<li>Type : ${body.type || '-'}</li><li>Style : ${body.style || '-'}</li>
-<li>Cible : ${body.cible || '-'}</li><li>Sections : ${body.sections || '-'}</li>
-</ul></main></body></html>`;
-}
-
 // -------- ROUTE : ACTIVATION --------
 app.post('/api/activate', (req, res) => {
   const { code } = req.body || {};
@@ -130,8 +118,8 @@ app.post('/api/generate', async (req, res) => {
   if (!checkAccess(req, res)) return;
 
   if (!GROQ_API_KEY) {
-    console.log('⚠️ Mode démo utilisé (pas de clé Groq)');
-    return res.json({ success: true, html: demoSite(body), demo: true });
+    console.error('❌ Génération refusée : GROQ_API_KEY absente (vérifie Render)');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 
   try {
@@ -152,15 +140,15 @@ app.post('/api/generate', async (req, res) => {
     });
     const data = await response.json();
     if (!response.ok) {
-      console.log('❌ Erreur Groq :', JSON.stringify(data.error || data));
-      return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+      console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+      return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
     }
     const html = cleanHtml(data.choices[0].message.content);
     console.log('✅ Site généré (' + html.length + ' caractères)');
-    res.json({ success: true, html, demo: false });
+    res.json({ success: true, html });
   } catch (err) {
     console.log('❌ Erreur serveur :', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
@@ -169,7 +157,10 @@ app.post('/api/modify', async (req, res) => {
   const { html, request } = req.body || {};
   if (!checkAccess(req, res)) return;
   if (!html || !request) return res.status(400).json({ success: false, error: 'Données manquantes' });
-  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo : modification impossible' });
+  if (!GROQ_API_KEY) {
+    console.error('❌ GROQ_API_KEY absente sur cette route');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+  }
 
   try {
     console.log('✏️ Modification demandée : ' + request);
@@ -187,19 +178,25 @@ app.post('/api/modify', async (req, res) => {
       })
     });
     const data = await response.json();
-    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    if (!response.ok) {
+        console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+        return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+      }
     const newHtml = cleanHtml(data.choices[0].message.content);
     console.log('✅ Site modifié (' + newHtml.length + ' caractères)');
     res.json({ success: true, html: newHtml });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
 // -------- ROUTE : AMÉLIORATION DU BRIEF --------
 app.post('/api/improve', async (req, res) => {
   const body = req.body || {};
-  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  if (!GROQ_API_KEY) {
+    console.error('❌ GROQ_API_KEY absente sur cette route');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+  }
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -215,10 +212,13 @@ app.post('/api/improve', async (req, res) => {
       })
     });
     const data = await response.json();
-    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq' });
+    if (!response.ok) {
+        console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+        return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+      }
     res.json({ success: true, suggestions: data.choices[0].message.content });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
@@ -233,7 +233,10 @@ app.post('/api/parse-menu', async (req, res) => {
   if (!menu || typeof menu !== 'string' || !menu.trim()) {
     return res.status(400).json({ success: false, error: 'Texte manquant' });
   }
-  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  if (!GROQ_API_KEY) {
+    console.error('❌ GROQ_API_KEY absente sur cette route');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+  }
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -249,12 +252,15 @@ app.post('/api/parse-menu', async (req, res) => {
       })
     });
     const data = await response.json();
-    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    if (!response.ok) {
+        console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+        return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+      }
     const raw = data.choices[0].message.content.trim();
     const jsonText = raw.replace(/^```(json)?/i, '').replace(/```$/, '').trim();
     res.json({ success: true, data: JSON.parse(jsonText) });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
@@ -267,7 +273,10 @@ app.post('/api/parse-menu-image', async (req, res) => {
   if (!image || typeof image !== 'string' || !image.startsWith('data:image')) {
     return res.status(400).json({ success: false, error: 'Image manquante' });
   }
-  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  if (!GROQ_API_KEY) {
+    console.error('❌ GROQ_API_KEY absente sur cette route');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+  }
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -286,12 +295,15 @@ app.post('/api/parse-menu-image', async (req, res) => {
       })
     });
     const data = await response.json();
-    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    if (!response.ok) {
+        console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+        return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+      }
     const raw = data.choices[0].message.content.trim();
     const jsonText = raw.replace(/^```(json)?/i, '').replace(/```$/, '').trim();
     res.json({ success: true, data: JSON.parse(jsonText) });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
@@ -302,7 +314,10 @@ app.post('/api/transcribe', async (req, res) => {
   if (!audio || typeof audio !== 'string') {
     return res.status(400).json({ success: false, error: 'Audio manquant' });
   }
-  if (!GROQ_API_KEY) return res.json({ success: false, error: 'Mode démo' });
+  if (!GROQ_API_KEY) {
+    console.error('❌ GROQ_API_KEY absente sur cette route');
+    return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+  }
   try {
     const buffer = Buffer.from(audio, 'base64');
     const form = new FormData();
@@ -315,11 +330,14 @@ app.post('/api/transcribe', async (req, res) => {
       body: form
     });
     const data = await response.json();
-    if (!response.ok) return res.status(500).json({ success: false, error: 'Erreur Groq : ' + (data.error?.message || 'inconnue') });
+    if (!response.ok) {
+        console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
+        return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
+      }
     console.log('🎤 Dictée reçue (' + buffer.length + ' octets) → ' + (data.text || '').length + ' caractères');
     res.json({ success: true, text: data.text || '' });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 });
 
