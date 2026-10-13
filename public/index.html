@@ -175,9 +175,15 @@
 
 <!-- ===== CHARGEMENT ===== -->
 <div id="loadingView" class="hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center px-6 text-center">
-  <div class="text-6xl mb-4 animate-pulse">⚡</div>
-  <p class="font-cyber text-xl font-bold text-purple-400">GÉNÉRATION EN COURS...</p>
-  <p class="text-gray-400 mt-2">L'IA construit ton site sur mesure. Ça prend 30 secondes à 2 minutes.<br>⚠️ Ne ferme pas cette page.</p>
+  <div class="bg-gray-900 border border-purple-500/40 rounded-2xl p-6 max-w-sm w-full">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">⚡ CRÉATION DE TON SITE</h2>
+    <div id="genStep1" class="gen-step text-left py-2 text-sm text-yellow-300 font-bold">⏳ Analyse de ton brief</div>
+    <div id="genStep2" class="gen-step text-left py-2 text-sm text-gray-500">Rédaction des sections</div>
+    <div id="genStep3" class="gen-step text-left py-2 text-sm text-gray-500">Mise en forme finale</div>
+    <p class="text-gray-500 text-xs mt-3">Ton brouillon est sauvegardé automatiquement.</p>
+    <p id="genError" class="hidden text-red-400 text-sm mt-3"></p>
+    <button id="genRetry" type="button" onclick="retryGenerate()" class="hidden mt-4 w-full font-cyber font-bold bg-purple-500 text-gray-950 py-3 rounded-xl">🔄 RÉESSAYER</button>
+  </div>
 </div>
 
 <script>
@@ -321,6 +327,111 @@ async function improveBrief(){
   btn.textContent = '✨ AMÉLIORER MON BRIEF AVEC L\'IA (avant de générer)';
 }
 
+// ========== ÉTAPE 2 : SAUVEGARDE DU BROUILLON + PROGRESSION ==========
+function saveBrief(){
+  try{
+    const b = {
+      type: document.getElementById('type').value,
+      nom: document.getElementById('nom').value,
+      slogan: document.getElementById('slogan').value,
+      style: document.getElementById('style').value,
+      couleurs: document.getElementById('couleurs').value,
+      cible: document.getElementById('cible').value,
+      details: document.getElementById('details').value,
+      expressText: document.getElementById('expressText') ? document.getElementById('expressText').value : '',
+      sections: getSelected('sectionsChips'),
+      fonctionnalites: getSelected('featuresChips'),
+      produits: collectProducts()
+    };
+    localStorage.setItem('p2s_brief', JSON.stringify(b));
+  }catch(e){}
+}
+
+function restoreBrief(){
+  try{
+    const raw = localStorage.getItem('p2s_brief');
+    if(!raw) return;
+    const b = JSON.parse(raw);
+    const set = (id, v) => { const el = document.getElementById(id); if(el && typeof v === 'string') el.value = v; };
+    set('type', b.type); set('nom', b.nom); set('slogan', b.slogan); set('style', b.style);
+    set('couleurs', b.couleurs); set('cible', b.cible); set('details', b.details);
+    if(document.getElementById('expressText')) set('expressText', b.expressText);
+    (b.sections || []).forEach(t => {
+      [...document.getElementById('sectionsChips').children].forEach(c => { if(c.textContent === t) c.classList.add('selected'); });
+    });
+    (b.fonctionnalites || []).forEach(t => {
+      [...document.getElementById('featuresChips').children].forEach(c => { if(c.textContent === t) c.classList.add('selected'); });
+    });
+    document.getElementById('productsList').innerHTML = '';
+    productRowCount = 0;
+    if(b.produits && b.produits.length){
+      b.produits.forEach(p => {
+        addProductRow();
+        const row = document.getElementById('productRow' + productRowCount);
+        row.querySelector('.prod-nom').value = p.nom || '';
+        row.querySelector('.prod-prix').value = p.prix || '';
+        row.querySelector('.prod-desc').value = p.desc || '';
+        row.querySelector('.prod-image').value = p.image || '';
+      });
+    } else {
+      addProductRow();
+    }
+  }catch(e){}
+}
+restoreBrief();
+document.getElementById('formView').addEventListener('input', saveBrief);
+document.getElementById('formView').addEventListener('change', saveBrief);
+
+const GEN_STEPS = ['Analyse de ton brief', 'Rédaction des sections', 'Mise en forme finale'];
+let genTimers = [];
+let genAbort = null;
+
+function setGenStep(n){
+  for(let i = 1; i <= 3; i++){
+    const el = document.getElementById('genStep' + i);
+    if(i < n){
+      el.textContent = '✅ ' + GEN_STEPS[i - 1];
+      el.className = 'gen-step text-left py-2 text-sm text-green-400';
+    } else if(i === n){
+      el.textContent = '⏳ ' + GEN_STEPS[i - 1];
+      el.className = 'gen-step text-left py-2 text-sm text-yellow-300 font-bold';
+    } else {
+      el.textContent = GEN_STEPS[i - 1];
+      el.className = 'gen-step text-left py-2 text-sm text-gray-500';
+    }
+  }
+}
+function startGenProgress(){
+  setGenStep(1);
+  document.getElementById('genError').classList.add('hidden');
+  document.getElementById('genRetry').classList.add('hidden');
+  genTimers.forEach(clearTimeout);
+  genTimers = [];
+  genTimers.push(setTimeout(() => setGenStep(2), 8000));
+  genTimers.push(setTimeout(() => setGenStep(3), 25000));
+}
+function stopGenProgress(){
+  genTimers.forEach(clearTimeout);
+  genTimers = [];
+  for(let i = 1; i <= 3; i++){
+    const el = document.getElementById('genStep' + i);
+    el.textContent = '✅ ' + GEN_STEPS[i - 1];
+    el.className = 'gen-step text-left py-2 text-sm text-green-400';
+  }
+}
+function showGenError(msg){
+  genTimers.forEach(clearTimeout);
+  genTimers = [];
+  const err = document.getElementById('genError');
+  err.textContent = '❌ ' + msg;
+  err.classList.remove('hidden');
+  document.getElementById('genRetry').classList.remove('hidden');
+}
+function retryGenerate(){
+  document.getElementById('loadingView').classList.add('hidden');
+  generate();
+}
+
 async function generate(){
   const brief = buildBrief();
   if(!validateBrief(brief)) return;
@@ -330,27 +441,35 @@ async function generate(){
     return;
   }
   brief.code = getAccessCode();
+  saveBrief();
 
   document.getElementById('loadingView').classList.remove('hidden');
+  startGenProgress();
 
+  genAbort = new AbortController();
+  const genTimeout = setTimeout(() => { if(genAbort) genAbort.abort(); }, 100000);
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(brief)
+      body: JSON.stringify(brief),
+      signal: genAbort.signal
     });
+    clearTimeout(genTimeout);
     const data = await res.json();
-    document.getElementById('loadingView').classList.add('hidden');
 
     if(data.paywall){
+      document.getElementById('loadingView').classList.add('hidden');
       document.getElementById('paywallView').classList.remove('hidden');
       return;
     }
     if(!data.success){
-      alert('❌ Erreur : ' + (data.error || 'inconnue'));
+      showGenError(data.error || 'Le service est temporairement indisponible, réessaie dans quelques minutes.');
       return;
     }
 
+    stopGenProgress();
+    setTimeout(() => { document.getElementById('loadingView').classList.add('hidden'); }, 800);
     generatedHtml = data.html;
     if(!getAccessCode()) setFreeUsed();
     document.getElementById('preview').srcdoc = generatedHtml;
@@ -359,8 +478,8 @@ async function generate(){
     document.getElementById('resultView').classList.remove('hidden');
     window.scrollTo(0,0);
   } catch(e){
-    document.getElementById('loadingView').classList.add('hidden');
-    alert('❌ Erreur de connexion au serveur. Réessaie.');
+    clearTimeout(genTimeout);
+    showGenError('Connexion lente ou coupée. Ton brouillon est sauvegardé, appuie sur RÉESSAYER.');
   }
 }
 
@@ -661,4 +780,5 @@ function slugifyClient(text){
 </script>
 </body>
 </html>
+
 
