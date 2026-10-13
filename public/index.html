@@ -146,7 +146,10 @@
       <button onclick="sendModification()" class="bg-purple-500 text-gray-950 font-bold px-4 rounded-lg">ENVOYER</button>
     </div>
   </div>
-  <div class="rounded-2xl overflow-hidden border border-purple-500/40" style="height:60vh;">
+  <div class="relative rounded-2xl overflow-hidden border border-purple-500/40" style="height:60vh;">
+    <div id="previewWatermark" class="hidden absolute top-2 left-0 right-0 z-10 flex justify-center pointer-events-none">
+      <span class="bg-black/75 text-yellow-300 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">👁 APERÇU — version complète après activation</span>
+    </div>
     <iframe id="preview" class="w-full h-full bg-white" title="Aperçu du site généré"></iframe>
   </div>
 </main>
@@ -161,7 +164,10 @@
     <p class="text-cyan-300 font-bold">= 5 330 FDJ / mois</p>
     <p class="text-gray-400 text-sm mt-1">Paiement : DjibCash · D-Money · Waafi</p>
   </div>
-  <a href="https://wa.me/25377098637?text=Salut%20!%20Je%20veux%20m%27abonner%20%C3%A0%20Prompt2Site%20(30%24%2Fmois%20%3D%205%20330%20FDJ)" class="mt-5 bg-green-500 text-gray-950 font-cyber font-bold px-8 py-4 rounded-xl text-lg">💬 S'ABONNER VIA WHATSAPP</a>
+  <div class="mt-5 bg-gray-900/70 border border-green-500/40 rounded-2xl p-4 max-w-md text-left">
+    <p class="text-gray-300 text-sm leading-relaxed">1️⃣ Appuie sur le bouton vert : le message est déjà prêt, envoie-le.<br>2️⃣ On te répond sur WhatsApp avec ton code et les infos de paiement.<br>3️⃣ Colle ton code dans le champ ci-dessous : ton site est activé, illimité.</p>
+  </div>
+  <a href="https://wa.me/25377098637?text=Salut%20!%20Je%20veux%20m%27abonner%20%C3%A0%20Prompt2Site%20(30%24%2Fmois%20%3D%205%20330%20FDJ)" class="mt-4 bg-green-500 text-gray-950 font-cyber font-bold px-8 py-4 rounded-xl text-lg">💬 S'ABONNER VIA WHATSAPP</a>
   <div class="mt-6 w-full max-w-sm">
     <p class="text-gray-400 text-sm mb-2">Déjà payé ? Entre ton code d'activation :</p>
     <div class="flex gap-2">
@@ -419,6 +425,80 @@ function stopGenProgress(){
     el.className = 'gen-step text-left py-2 text-sm text-green-400';
   }
 }
+function showGenError(msg){
+  genTimers.forEach(clearTimeout);
+  genTimers = [];
+  const err = document.getElementById('genError');
+  err.textContent = '❌ ' + msg;
+  err.classList.remove('hidden');
+  document.getElementById('genRetry').classList.remove('hidden');
+}
+function retryGenerate(){
+  document.getElementById('loadingView').classList.add('hidden');
+  generate();
+}
+
+async function generate(){
+  const brief = buildBrief();
+  if(!validateBrief(brief)) return;
+
+  const code = getAccessCode();
+  if(!code && isFreeUsed()){
+    document.getElementById('paywallView').classList.remove('hidden');
+    return;
+  }
+  brief.code = code;
+  brief.preview = !code;
+  saveBrief();
+
+  document.getElementById('loadingView').classList.remove('hidden');
+  startGenProgress();
+
+  genAbort = new AbortController();
+  const genTimeout = setTimeout(() => { if(genAbort) genAbort.abort(); }, 100000);
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(brief),
+      signal: genAbort.signal
+    });
+    clearTimeout(genTimeout);
+    const data = await res.json();
+
+    if(data.paywall){
+      document.getElementById('loadingView').classList.add('hidden');
+      document.getElementById('paywallView').classList.remove('hidden');
+      return;
+    }
+    if(!data.success){
+      showGenError(data.error || 'Le service est temporairement indisponible, réessaie dans quelques minutes.');
+      return;
+    }
+
+    stopGenProgress();
+    setTimeout(() => { document.getElementById('loadingView').classList.add('hidden'); }, 800);
+    generatedHtml = data.html;
+    if(!getAccessCode()) setFreeUsed();
+    document.getElementById('preview').srcdoc = generatedHtml;
+    document.getElementById('chatHistory').innerHTML = '';
+    const wm = document.getElementById('previewWatermark');
+    if(data.preview && wm) wm.classList.remove('hidden');
+    document.getElementById('formView').classList.add('hidden');
+    document.getElementById('resultView').classList.remove('hidden');
+    window.scrollTo(0,0);
+    if(data.preview){
+      setTimeout(() => {
+        const pw = document.getElementById('paywallView');
+        if(pw && !getAccessCode()) pw.classList.remove('hidden');
+      }, 8000);
+    }
+  } catch(e){
+    clearTimeout(genTimeout);
+    showGenError('Connexion lente ou coupée. Ton brouillon est sauvegardé, appuie sur RÉESSAYER.');
+  }
+}
+
 function showGenError(msg){
   genTimers.forEach(clearTimeout);
   genTimers = [];
@@ -780,5 +860,6 @@ function slugifyClient(text){
 </script>
 </body>
 </html>
+
 
 
