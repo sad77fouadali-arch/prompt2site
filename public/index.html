@@ -49,10 +49,10 @@ input,select,textarea{color-scheme:dark;}
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="restaurant" onclick="pickTemplate(this)">🍽️ Restaurant</button>
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="beauty" onclick="pickTemplate(this)">💇 Salon de beauté</button>
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="ecole" onclick="pickTemplate(this)">🎓 École</button>
-    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="boutique" onclick="pickTemplate(this)">🛍️ Boutique</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="autre" onclick="pickTemplate(this)">✨ Autre business</button>
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="boutique" onclick="pickTemplate(this)">🛍️ Boutique</button>
   </div>
-  <button onclick="document.getElementById('formView').scrollIntoView({behavior:'smooth'})" class="btn-cta mt-7 bg-purple-600 hover:bg-purple-500 font-cyber font-bold px-8 py-4 rounded-2xl text-lg">✨ Créer mon site maintenant</button>
+  <button onclick="location.href='/tunnel.html'" class="btn-cta mt-7 bg-purple-600 hover:bg-purple-500 font-cyber font-bold px-8 py-4 rounded-2xl text-lg">✨ Créer mon site maintenant</button>
   <br>
   <button onclick="openGuide()" class="mt-4 text-cyan-400 underline text-sm">📖 Voir le guide complet (6 étapes)</button>
 </header>
@@ -111,15 +111,15 @@ input,select,textarea{color-scheme:dark;}
     <h2 class="font-cyber text-purple-400 font-bold mb-4">❓ QUESTIONS FRÉQUENTES</h2>
     <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
       <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Combien ça coûte ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Le tarif est affiché dans l'accueil du site. Paiement par Mobile Money (DjabPlus / Waafi) avec activation par WhatsApp.</p></div>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">10 000 DJF — paiement unique par Waafi ou DahabPlus. Voir la page Commander pour toute l'offre.</p></div>
     </div>
     <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
       <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je reçois quoi exactement ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Un site web complet ( responsive mobile + ordinateur ) ET une application Android (APK) téléchargeable avec le nom de ton business.</p></div>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Un site web complet (mobile + ordinateur) ET une application Android (APK) téléchargeable avec le nom de ton business.</p></div>
     </div>
     <div class="faq-item border border-purple-500/20 rounded-xl">
       <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je peux modifier après génération ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Oui — tu peux relancer la génération avec un texte modifié, ou demander des ajustements via WhatsApp.</p></div>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Oui — une modification gratuite est incluse après livraison.</p></div>
     </div>
   </div>
 </main>
@@ -160,7 +160,7 @@ input,select,textarea{color-scheme:dark;}
         <li><b class="text-purple-300">6.</b> Vérifie l'aperçu → clique <b>« App Android (APK) »</b> → télécharge et partage.</li>
       </ol>
       <div class="mt-6 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-sm text-gray-300">
-        💳 <b>Paiement :</b> après validation de ton site, paie par Mobile Money (DjabPlus / Waafi) et envoie la confirmation sur WhatsApp pour activation.
+        💳 <b>Paiement :</b> 10 000 DJF par Waafi ou DahabPlus. Clique « Créer mon site maintenant » en haut pour voir l'offre complète.
       </div>
       <button onclick="closeGuide();document.getElementById('formView').scrollIntoView({behavior:'smooth'})" class="btn-cta mt-6 w-full font-cyber font-bold bg-purple-600 py-3 rounded-xl">🚀 Commencer maintenant</button>
     </div>
@@ -333,5 +333,3 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
-
-  
