@@ -3,959 +3,334 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt2Site — Génère ton site web en 3 minutes</title>
-<meta name="description" content="Prompt2Site crée ton site web et ton application Android en 3 minutes depuis ton téléphone. Essai gratuit, activation WhatsApp, Djibouti.">
+<title>Prompt2Site — Ton site web + App Android en 3 minutes</title>
+<meta name="description" content="Prompt2Site crée ton site web professionnel et ton application Android à ton nom. Décris ton business, l'IA fait le reste. Paiement Mobile Money.">
 <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family:'Rajdhani',sans-serif; background:#0a0a12; }
-  .font-cyber { font-family:'Orbitron',sans-serif; }
-  .glow { box-shadow:0 0 25px rgba(168,85,247,.35); }
-  .section-card { background:#12121f; border:1px solid rgba(168,85,247,.25); }
-  .chip { transition:all .2s ease; cursor:pointer; }
-  .chip.selected { background:#a855f7; color:#0a0a12; border-color:#a855f7; font-weight:700; }
-  .fade-in { animation:fadeIn .4s ease both; }
-  @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
-  ::-webkit-scrollbar { width:8px; }
-  ::-webkit-scrollbar-thumb { background:#a855f7; border-radius:4px; }
-.apk-status{margin:12px 0;padding:13px;border-radius:10px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45);color:#d8b4fe;font-size:.88rem;line-height:1.5;word-break:break-word}
-
-/* ===== REFONTE UX/UI PREMIUM ===== */
-body { line-height:1.55; }
-h1,h2,h3 { letter-spacing:.015em; }
-.btn-cta { transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, filter .25s ease; will-change:transform; }
-.btn-cta:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(168,85,247,.45); filter:brightness(1.06); }
-.btn-cta:active { transform:translateY(-1px) scale(.98); }
-.section-card { transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
-.section-card:hover { transform:translateY(-3px); border-color:rgba(168,85,247,.5); box-shadow:0 16px 44px rgba(0,0,0,.5); }
-.chip:hover { transform:translateY(-2px); }
-.reveal { opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
-.reveal.visible { opacity:1; transform:none; }
-@media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none;} .btn-cta:hover,.section-card:hover,.chip:hover{transform:none;} }
-input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline:2px solid #a855f7; outline-offset:2px; border-radius:6px; }
-.faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease; }
-.faq-item.open .faq-answer { max-height:340px; }
-.faq-chevron { transition:transform .3s ease; display:inline-block; }
-.faq-item.open .faq-chevron { transform:rotate(180deg); }
-.faq-question:hover { border-color:#a855f7; }
+body{font-family:'Rajdhani',sans-serif;background:#0a0a12;}
+.font-cyber{font-family:'Orbitron',sans-serif;}
+.section-card{background:#12121f;border:1px solid rgba(168,85,247,.25);}
+.chip{transition:all .2s ease;cursor:pointer;}
+.chip.selected{background:#a855f7;color:#0a0a12;border-color:#a855f7;font-weight:700;}
+.fade-in{animation:fadeIn .4s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-thumb{background:#a855f7;border-radius:4px;}
+.btn-cta{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease;}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(168,85,247,.45);filter:brightness(1.06);}
+.btn-cta:active{transform:translateY(-1px) scale(.98);}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1);}
+.reveal.visible{opacity:1;transform:none;}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-item.open .faq-answer{max-height:420px;}
+.faq-chevron{transition:transform .3s ease;display:inline-block;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.modal-bg{background:rgba(5,5,12,.88);backdrop-filter:blur(4px);}
+input,select,textarea{color-scheme:dark;}
 </style>
 </head>
 <body class="text-white">
 
-<!-- ===== HEADER ===== -->
-<header class="text-center pt-10 pb-8 px-4">
-  <h1 class="font-cyber text-4xl md:text-5xl font-black">PROMPT<span class="text-purple-500">2</span><span class="text-cyan-400">SITE</span></h1>
-  <p class="text-gray-400 mt-2 text-lg">Décris ton idée en détail → reçois ton site web complet en 3 minutes ⚡</p>
-  <div class="flex flex-wrap justify-center gap-2 mt-4">
-    <span class="text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-3 py-1 rounded-full">✅ Sans carte bancaire</span>
-    <span class="text-xs bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 px-3 py-1 rounded-full">📱 Depuis ton téléphone</span>
-    <span class="text-xs bg-green-500/15 border border-green-500/40 text-green-300 px-3 py-1 rounded-full">💬 Activation WhatsApp</span>
+<!-- ===== HEADER + HERO PREMIUM ===== -->
+<header class="text-center pt-8 pb-10 px-4">
+  <div class="inline-block text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-4 py-1 rounded-full mb-5">🚀 Site web + App Android générés par IA</div>
+  <h1 class="font-cyber text-4xl md:text-5xl font-black leading-tight">PROMPT<span class="text-purple-500">2</span><span class="text-cyan-400">SITE</span></h1>
+  <p class="text-xl md:text-2xl font-bold mt-3">Ton business en ligne commence ici.</p>
+  <p class="text-gray-400 text-base mt-3 max-w-xl mx-auto">Décris ton activité à l'IA → reçois un site web professionnel + une application Android à ton nom. Simple, rapide, paiement Mobile Money.</p>
+  <div class="flex flex-wrap justify-center gap-2 mt-6">
+    <span class="text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-3 py-1 rounded-full">✅ Sans coder</span>
+    <span class="text-xs bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 px-3 py-1 rounded-full">📱 App Android incluse</span>
+    <span class="text-xs bg-green-500/15 border border-green-500/40 text-green-300 px-3 py-1 rounded-full">💳 Mobile Money</span>
+    <span class="text-xs bg-pink-500/15 border border-pink-500/40 text-pink-300 px-3 py-1 rounded-full">🎙️ Dictée vocale</span>
   </div>
+  <div class="flex flex-wrap justify-center gap-2 mt-6">
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="restaurant" onclick="pickTemplate(this)">🍽️ Restaurant</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="beauty" onclick="pickTemplate(this)">💇 Salon de beauté</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="ecole" onclick="pickTemplate(this)">🎓 École</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="boutique" onclick="pickTemplate(this)">🛍️ Boutique</button>
+  </div>
+  <button onclick="document.getElementById('formView').scrollIntoView({behavior:'smooth'})" class="btn-cta mt-7 bg-purple-600 hover:bg-purple-500 font-cyber font-bold px-8 py-4 rounded-2xl text-lg">✨ Créer mon site maintenant</button>
+  <br>
+  <button onclick="openGuide()" class="mt-4 text-cyan-400 underline text-sm">📖 Voir le guide complet (6 étapes)</button>
 </header>
 
 <!-- ===== VUE FORMULAIRE ===== -->
 <main id="formView" class="max-w-2xl mx-auto px-4 pb-20 space-y-8">
 
-  <!-- ===== MODE EXPRESS (S3 Jour 2) ===== -->
+  <!-- MODE EXPRESS -->
   <div class="section-card rounded-2xl p-7 fade-in reveal" style="border-color:rgba(34,211,238,.45);">
-    <h2 class="font-cyber text-cyan-400 font-bold mb-1">⚡ MODE EXPRESS <span class="text-gray-500 font-normal text-sm">(le plus rapide)</span></h2>
-    <p class="text-gray-400 text-sm mb-3">Colle ton texte libre : menu, prix, liens de photos, coordonnées... L'IA remplit tout le formulaire à ta place.</p>
-    <textarea id="expressText" rows="6" placeholder="Ex : Tiramisu Spot, restaurant à Djibouti. Tiramisu classique 1500 FD, tiramisu pistache 2000 FD. Photo : https://.../tiramisu.jpg. WhatsApp : 77 00 00 00. Clientèle : jeunes et familles." class="w-full bg-gray-900 border border-cyan-400/40 rounded-lg p-3 focus:border-cyan-400 outline-none text-sm"></textarea>
-    <button type="button" onclick="fillExpress()" id="expressBtn" class="mt-3 w-full font-cyber font-bold bg-cyan-500 text-gray-950 py-3 rounded-xl hover:scale-[1.02] transition">⚡ REMPLIR AUTOMATIQUEMENT</button>
-    <button type="button" onclick="document.getElementById('expressImage').click()" id="expressImgBtn" class="mt-3 w-full font-cyber font-bold bg-purple-500/20 border border-purple-500 text-purple-300 py-3 rounded-xl">📷 ENVOYER MON MENU (PHOTO)</button>
-<input type="file" id="expressImage" accept="image/*" class="hidden" onchange="handleExpressImage(this)">
+    <h2 class="font-cyber text-cyan-400 font-bold mb-1">⚡ MODE EXPRESS</h2>
+    <p class="text-gray-400 text-sm mb-3">Colle ton texte libre : menu, prix, liens de photos, coordonnées… L'IA remplit le formulaire pour toi.</p>
+    <textarea id="expressText" rows="6" placeholder="Ex : Tiramisu Spot, restaurant à Djibouti. Tiramisu classique 1500 DJF…" class="w-full bg-gray-900 border border-cyan-500/40 rounded-lg p-3 text-white focus:border-cyan-400 outline-none"></textarea>
+    <button type="button" onclick="fillExpress()" id="expressBtn" class="mt-3 w-full font-cyber font-bold bg-cyan-500 text-black py-3 rounded-xl">🧠 Remplir avec l'IA</button>
+    <button type="button" onclick="document.getElementById('expressImage').click()" id="expressImgBtn" class="mt-3 w-full font-cyber bg-gray-800 border border-cyan-500/40 py-3 rounded-xl">🖼️ Ajouter une image / capture de menu</button>
+    <input type="file" id="expressImage" accept="image/*" class="hidden" onchange="handleExpressImage(this)">
+    <div id="expressPreview" class="mt-3 hidden"><img id="previewImg" class="max-h-40 rounded-lg mx-auto" alt="aperçu"></div>
     <p id="expressError" class="text-red-400 text-sm mt-2 hidden"></p>
   </div>
 
+  <!-- ÉTAPE 1 : TYPE DE SITE -->
   <div class="section-card rounded-2xl p-7 fade-in reveal">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">🎯 1. QUEL TYPE DE SITE ?</h2>
-    <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-500 outline-none">
+    <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none">
       <option value="">— Choisis le type de site —</option>
-      <option>Boutique e-commerce (vendre des produits)</option>
-      <option>Salle de sport / Coach sportif</option>
-      <option>Salon de coiffure / Barbier</option>
-      <option>Salon de beauté / Institut / Spa</option>
-      <option>Restaurant / Fast-food / Café</option>
-      <option>Site vitrine pour une entreprise</option>
-      <option>Clinique / Cabinet médical / Pharmacie</option>
-      <option>Agence immobilière / Location</option>
-      <option>Transport / Livraison / Logistique</option>
-      <option>École / Formation / Centre de cours</option>
-      <option>Portfolio (photographe, designer, artiste)</option>
-      <option>Landing page (page de vente)</option>
-      <option>Blog / Magazine</option>
-      <option>Événement / Mariage / Conférence</option>
-      <option>Autre (précise dans les détails)</option>
+      <option value="restaurant">🍽️ Restaurant / Café / Fast-food</option>
+      <option value="beauty">💇 Salon de beauté / Coiffure / Barbier</option>
+      <option value="ecole">🎓 École / Formation / Centre de cours</option>
+      <option value="boutique">🛍️ Boutique / Vêtements</option>
+      <option value="portfolio">📷 Photographe / Artiste / Portfolio</option>
+      <option value="services">🛠️ Services / Entreprise</option>
+      <option value="autre">✨ Autre</option>
     </select>
   </div>
 
+  <!-- ÉTAPE 2 : INFOS -->
   <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. IDENTITÉ DU PROJET</h2>
-    <label class="block text-sm text-gray-400 mb-1">Nom du projet / business *</label>
-    <input id="nom" type="text" placeholder="Ex : Djibouti Fashion Store, Iron Gym, Salon Prestige..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
-    <label class="block text-sm text-gray-400 mb-1">Slogan (optionnel)</label>
-    <input id="slogan" type="text" placeholder="Ex : Le style qui te ressemble" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
-    <label class="block text-sm text-gray-400 mb-1">Style visuel</label>
-    <select id="style" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 mb-4 focus:border-purple-500 outline-none">
-      <option>Moderne et épuré</option>
-      <option>Sombre et luxueux</option>
-      <option>Coloré et énergique</option>
-      <option>Minimaliste pastel</option>
-      <option>Corporate / sérieux</option>
-      <option>Cyberpunk / futuriste</option>
-    </select>
-    <label class="block text-sm text-gray-400 mb-1">Couleurs principales (optionnel)</label>
-    <input id="couleurs" type="text" placeholder="Ex : violet et or, bleu marine et blanc, noir et rouge..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
-  </div>
-
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">👥 3. TA CIBLE</h2>
-    <label class="block text-sm text-gray-400 mb-1">À qui s'adresse le site ? *</label>
-    <input id="cible" type="text" placeholder="Ex : jeunes 18-35 ans à Djibouti, hommes actifs, familles, entreprises..." class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none">
-  </div>
-
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">🏗️ 4. SECTIONS DU SITE <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
-    <div id="sectionsChips" class="flex flex-wrap gap-2"></div>
-  </div>
-
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-1">🛍️ 4BIS. TES PRODUITS <span class="text-gray-500 font-normal text-sm">(optionnel — pour boutiques)</span></h2>
-    <p class="text-gray-400 text-sm mb-4">Ajoute tes produits avec leurs vrais prix et photos (URL de l'image).</p>
-    <div id="productsList" class="space-y-3"></div>
-    <button type="button" onclick="addProductRow()" class="mt-3 w-full bg-gray-800 border border-purple-500/40 rounded-lg py-2 font-semibold hover:border-purple-500 transition">➕ AJOUTER UN PRODUIT</button>
-  </div>
-
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">✨ 5. FONCTIONNALITÉS <span class="text-gray-500 font-normal text-sm">(touche pour sélectionner)</span></h2>
-    <div id="featuresChips" class="flex flex-wrap gap-2"></div>
-  </div>
-
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">📄 6. DÉTAILS SUPPLÉMENTAIRES</h2>
-    <textarea id="details" rows="4" placeholder="Décris tout : services exacts avec prix (ex : coupe 5$, barbe 3$), horaires, adresse, téléphone/WhatsApp, ton souhaité, exemples de sites que tu aimes... PLUS tu détailles, MIEUX c'est ! 🎯" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 focus:border-purple-500 outline-none"></textarea>
-      <button type="button" id="micBtn" class="mt-3 w-full font-cyber font-bold bg-red-500/20 border border-red-500 text-red-300 py-3 rounded-xl">🎤 DICTER MON BRIEF À VOIX HAUTE</button>
-  </div>
-
-  <button onclick="generate()" class="btn-cta w-full font-cyber font-bold text-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-gray-950 py-5 rounded-2xl glow">⚡ GÉNÉRER MON SITE WEB GRATUITEMENT</button>
-  <button onclick="improveBrief()" id="improveBtn" class="w-full font-cyber font-bold bg-cyan-500/20 border border-cyan-400 text-cyan-300 py-3 rounded-2xl hover:bg-cyan-500/30 transition">✨ AMÉLIORER MON BRIEF AVEC L'IA (avant de générer)</button>
-  <div id="suggestionsBox" class="hidden section-card rounded-2xl p-4">
-    <h3 class="font-cyber text-cyan-400 font-bold mb-2">💡 SUGGESTIONS DE L'IA</h3>
-    <pre id="suggestionsText" class="whitespace-pre-wrap text-gray-300 text-sm font-body"></pre>
-  </div>
-  <p id="formError" class="text-red-400 text-center font-semibold hidden">⚠️ Remplis au minimum : le type de site, le nom et la cible.</p>
-
-<!-- ===== FAQ ACCORDÉON ===== -->
-<section class="section-card rounded-2xl p-7 fade-in reveal" aria-label="Questions fréquentes">
-  <h2 class="font-cyber text-purple-400 font-bold mb-5 text-xl">❓ QUESTIONS FRÉQUENTES</h2>
-  <div class="space-y-3">
-
-    <div class="faq-item">
-      <button type="button" class="faq-question w-full flex justify-between items-center gap-3 text-left bg-gray-900 border border-purple-500/30 rounded-xl p-4 font-semibold text-white transition" aria-expanded="false">
-        L'essai est-il vraiment gratuit ?
-        <span class="faq-chevron text-purple-400" aria-hidden="true">▾</span>
-      </button>
-      <div class="faq-answer">
-        <p class="px-4 pt-3 pb-4 text-gray-400 text-sm">Oui. Tu génères ton site complet et tu le vois en aperçu avant de payer quoi que ce soit. Un essai par téléphone.</p>
-      </div>
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. TON BUSINESS</h2>
+    <label class="block text-sm text-gray-400 mb-1">Nom du business *</label>
+    <input id="businessName" type="text" placeholder="Ex : Tiramisu Spot" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+    <label class="block text-sm text-gray-400 mb-1">Clientèle cible</label>
+    <input id="target" type="text" placeholder="Ex : jeunes, familles, étudiants…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+    <label class="block text-sm text-gray-400 mb-1">Décris ton activité en détail</label>
+    <div class="relative">
+      <textarea id="details" rows="5" placeholder="Services, prix, horaires, adresse, WhatsApp, couleurs préférées…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 pr-12 text-white focus:border-purple-400 outline-none"></textarea>
+      <button type="button" id="voiceBtn" onclick="toggleVoice()" title="Dictée vocale" class="absolute right-2 bottom-2 bg-purple-600 rounded-full w-10 h-10 text-lg">🎙️</button>
     </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question w-full flex justify-between items-center gap-3 text-left bg-gray-900 border border-purple-500/30 rounded-xl p-4 font-semibold text-white transition" aria-expanded="false">
-        Combien coûte l'abonnement ?
-        <span class="faq-chevron text-purple-400" aria-hidden="true">▾</span>
-      </button>
-      <div class="faq-answer">
-        <p class="px-4 pt-3 pb-4 text-gray-400 text-sm">30$/mois tout inclus : site web, application Android à ton nom, QR code et modifications illimitées. Paiement par DjibCash, D-Money ou Waafi via WhatsApp.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question w-full flex justify-between items-center gap-3 text-left bg-gray-900 border border-purple-500/30 rounded-xl p-4 font-semibold text-white transition" aria-expanded="false">
-        Puis-je modifier mon site après la génération ?
-        <span class="faq-chevron text-purple-400" aria-hidden="true">▾</span>
-      </button>
-      <div class="faq-answer">
-        <p class="px-4 pt-3 pb-4 text-gray-400 text-sm">Oui, illimité. Dis à l'IA « change les couleurs » ou « ajoute une section » dans le chat Modifier mon site, c'est appliqué en direct.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question w-full flex justify-between items-center gap-3 text-left bg-gray-900 border border-purple-500/30 rounded-xl p-4 font-semibold text-white transition" aria-expanded="false">
-        Faut-il un ordinateur ?
-        <span class="faq-chevron text-purple-400" aria-hidden="true">▾</span>
-      </button>
-      <div class="faq-answer">
-        <p class="px-4 pt-3 pb-4 text-gray-400 text-sm">Non. Tout se fait depuis ton téléphone : tu parles au micro, tu envoies une photo de ton menu, ou tu colles ton texte.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question w-full flex justify-between items-center gap-3 text-left bg-gray-900 border border-purple-500/30 rounded-xl p-4 font-semibold text-white transition" aria-expanded="false">
-        En combien de temps mon site est-il prêt ?
-        <span class="faq-chevron text-purple-400" aria-hidden="true">▾</span>
-      </button>
-      <div class="faq-answer">
-        <p class="px-4 pt-3 pb-4 text-gray-400 text-sm">Environ 3 minutes après ton brief. L'application Android demande quelques minutes de plus pour être construite.</p>
-      </div>
-    </div>
-
+    <p id="voiceStatus" class="text-cyan-300 text-xs mt-1 hidden">🎙️ Écoute… parle maintenant</p>
   </div>
-</section>
+
+  <!-- ÉTAPE 3 : GÉNÉRER -->
+  <button type="button" id="generateBtn" onclick="generateSite()" class="btn-cta w-full font-cyber font-black text-lg bg-gradient-to-r from-purple-600 to-cyan-500 py-4 rounded-2xl">🚀 GÉNÉRER MON SITE</button>
+  <p id="genError" class="text-red-400 text-sm text-center hidden"></p>
+
+  <!-- FAQ -->
+  <div class="section-card rounded-2xl p-7 fade-in reveal">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">❓ QUESTIONS FRÉQUENTES</h2>
+    <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
+      <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Combien ça coûte ? <span class="faq-chevron">▾</span></button>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Le tarif est affiché dans l'accueil du site. Paiement par Mobile Money (DjabPlus / Waafi) avec activation par WhatsApp.</p></div>
+    </div>
+    <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
+      <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je reçois quoi exactement ? <span class="faq-chevron">▾</span></button>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Un site web complet ( responsive mobile + ordinateur ) ET une application Android (APK) téléchargeable avec le nom de ton business.</p></div>
+    </div>
+    <div class="faq-item border border-purple-500/20 rounded-xl">
+      <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je peux modifier après génération ? <span class="faq-chevron">▾</span></button>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Oui — tu peux relancer la génération avec un texte modifié, ou demander des ajustements via WhatsApp.</p></div>
+    </div>
+  </div>
 </main>
 
 <!-- ===== VUE RÉSULTAT ===== -->
-<main id="resultView" class="hidden max-w-5xl mx-auto px-4 pb-16">
-  <div class="flex flex-wrap gap-3 mb-4">
-    <button onclick="downloadSite()" class="flex-1 min-w-[150px] bg-purple-500 text-gray-950 font-cyber font-bold py-3 rounded-xl glow">📥 TÉLÉCHARGER</button>
-    <button onclick="copyCode()" class="flex-1 min-w-[150px] bg-cyan-500 text-gray-950 font-cyber font-bold py-3 rounded-xl">📋 COPIER LE CODE</button>
-    <button onclick="backToForm()" class="flex-1 min-w-[150px] bg-gray-700 font-cyber font-bold py-3 rounded-xl">🔄 MODIFIER MON BRIEF</button>
-  </div>
-  <p id="copyMsg" class="text-cyan-400 text-center font-bold mb-3 hidden">✅ Code copié !</p>
-  <div class="flex flex-wrap gap-3 mb-4">
-  <button onclick="dlApk()" class="flex-1 min-w-[150px] bg-emerald-600 text-white font-cyber font-bold py-3 rounded-lg">🤖 APP ANDROID (APK)</button>
-  <button onclick="dlPlay()" class="flex-1 min-w-[150px] bg-gray-800 border border-purple-500/40 text-purple-300 font-cyber font-bold py-3 rounded-lg">🚀 GOOGLE PLAY (PREMIUM)</button>
-</div>
-<div id="apkStatus" class="apk-status hidden"></div>
-  <button onclick="showQrCode()" class="flex-1 min-w-[150px] bg-yellow-500 text-gray-950 font-cyber font-bold py-3 rounded-lg mb-3">📱 QR CODE POUR MES CLIENTS</button>
-<div id="qrBox" class="hidden apk-status text-center"></div>
-<div class="section-card rounded-2xl p-4 mb-4">
-    <h3 class="font-cyber text-purple-400 font-bold mb-1">💬 MODIFIER MON SITE</h3>
-    <p class="text-gray-400 text-sm mb-3">Dis à l'IA ce que tu veux changer : couleurs, sections, textes... Elle modifie le site en direct.</p>
-    <div id="chatHistory" class="space-y-2 mb-3 max-h-40 overflow-y-auto"></div>
-    <div class="flex gap-2">
-      <input id="chatInput" type="text" placeholder="Ex : rends le header bleu, ajoute une section tarifs..." class="flex-1 bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-sm focus:border-purple-500 outline-none" onkeydown="if(event.key==='Enter')sendModification()">
-      <button onclick="sendModification()" class="bg-purple-500 text-gray-950 font-bold px-4 rounded-lg">ENVOYER</button>
+<main id="resultView" class="max-w-2xl mx-auto px-4 pb-20 space-y-6 hidden">
+  <div class="section-card rounded-2xl p-7 text-center">
+    <h2 class="font-cyber text-green-400 font-bold text-xl mb-2">✅ TON SITE EST PRÊT !</h2>
+    <p class="text-gray-400 text-sm mb-4">Voici un aperçu. Tu peux maintenant générer ton application Android.</p>
+    <iframe id="sitePreview" class="w-full h-96 rounded-xl border border-purple-500/30 bg-white" title="Aperçu du site"></iframe>
+    <button type="button" id="apkBtn" onclick="buildApk()" class="btn-cta mt-5 w-full font-cyber font-bold bg-cyan-500 text-black py-4 rounded-2xl">📱 GÉNÉRER MON APP ANDROID (APK)</button>
+    <div id="apkStatus" class="hidden mt-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-sm text-left"></div>
+    <div id="apkResult" class="hidden mt-4">
+      <a id="apkLink" href="#" class="btn-cta block w-full font-cyber font-bold bg-green-500 text-black py-4 rounded-2xl text-center">⬇️ TÉLÉCHARGER L'APK</a>
+      <div class="mt-4 flex flex-col items-center gap-2">
+        <div id="qrcode" class="bg-white p-3 rounded-xl"></div>
+        <p class="text-gray-400 text-xs">Scanne pour télécharger sur ton téléphone</p>
+      </div>
     </div>
-  </div>
-  <div class="relative rounded-2xl overflow-hidden border border-purple-500/40" style="height:60vh;">
-    <div id="previewWatermark" class="hidden absolute top-2 left-0 right-0 z-10 flex justify-center pointer-events-none">
-      <span class="bg-black/75 text-yellow-300 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">👁 APERÇU — version complète après activation</span>
-    </div>
-    <iframe id="preview" class="w-full h-full bg-white" title="Aperçu du site généré"></iframe>
+    <button type="button" onclick="backToForm()" class="mt-5 text-purple-400 underline text-sm">← Modifier ma demande</button>
   </div>
 </main>
 
-<!-- ===== PAYWALL (abonnement) ===== -->
-<div id="paywallView" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center px-6 text-center">
-  <div class="text-6xl mb-4">💎</div>
-  <p class="font-cyber text-2xl font-bold text-purple-400">PASSES À LA VERSION COMPLÈTE !</p>
-  <p class="text-gray-300 mt-3 max-w-md">Ton essai gratuit est terminé. Avec l'abonnement : <strong class="text-white">générations illimitées + modifications par chat IA + assistant de brief</strong>.</p>
-  <div class="bg-purple-500/20 border border-purple-500 rounded-2xl p-4 mt-4">
-    <p class="font-cyber text-3xl font-black text-white">30$ / mois</p>
-    <p class="text-cyan-300 font-bold">= 5 330 FDJ / mois</p>
-    <p class="text-gray-400 text-sm mt-1">Paiement : DjibCash · D-Money · Waafi</p>
-  </div>
-  <div class="mt-5 bg-gray-900/70 border border-green-500/40 rounded-2xl p-4 max-w-md text-left">
-    <p class="text-gray-300 text-sm leading-relaxed">1️⃣ Appuie sur le bouton vert : le message est déjà prêt, envoie-le.<br>2️⃣ On te répond sur WhatsApp avec ton code et les infos de paiement.<br>3️⃣ Colle ton code dans le champ ci-dessous : ton site est activé, illimité.</p>
-  </div>
-  <a href="https://wa.me/25377098637?text=Salut%20!%20Je%20veux%20m%27abonner%20%C3%A0%20Prompt2Site%20(30%24%2Fmois%20%3D%205%20330%20FDJ)" class="btn-cta mt-4 bg-green-500 text-gray-950 font-cyber font-bold px-8 py-5 rounded-xl text-lg">💬 S'ABONNER VIA WHATSAPP</a>
-  <div class="mt-6 w-full max-w-sm">
-    <p class="text-gray-400 text-sm mb-2">Déjà payé ? Entre ton code d'activation :</p>
-    <div class="flex gap-2">
-      <input id="activationInput" type="text" placeholder="Ex : P2S-2026-DJ01" class="flex-1 bg-gray-900 border border-cyan-400/50 rounded-lg p-3 text-center uppercase tracking-widest focus:border-cyan-400 outline-none">
-      <button onclick="activateCode()" class="bg-cyan-500 text-gray-950 font-bold px-5 rounded-lg">OK</button>
+<!-- ===== GUIDE COMPLET (MODAL) ===== -->
+<div id="guideModal" class="hidden fixed inset-0 z-50 modal-bg overflow-y-auto">
+  <div class="max-w-xl mx-auto my-8 px-4">
+    <div class="section-card rounded-2xl p-7">
+      <div class="flex justify-between items-center mb-5">
+        <h2 class="font-cyber text-cyan-400 font-bold text-xl">📖 GUIDE COMPLET</h2>
+        <button onclick="closeGuide()" class="text-gray-400 text-2xl leading-none">✕</button>
+      </div>
+      <ol class="space-y-4 text-gray-300 text-sm">
+        <li><b class="text-purple-300">1.</b> <b>Choisis un style</b> avec les boutons 🍽️ 💇 🎓 en haut, ou laisse sur « Auto ».</li>
+        <li><b class="text-purple-300">2.</b> <b>Mode Express (facultatif)</b> : colle ton menu ou ta description, l'IA remplit le formulaire.</li>
+        <li><b class="text-purple-300">3.</b> <b>Remplis le formulaire</b> : type de site, nom du business, clientèle, détails (prix, horaires, WhatsApp…).</li>
+        <li><b class="text-purple-300">4.</b> Ou utilise le <b>micro 🎙️</b> pour dicter ta description en français.</li>
+        <li><b class="text-purple-300">5.</b> Clique <b>« Générer mon site »</b> et patiente 1 à 3 minutes.</li>
+        <li><b class="text-purple-300">6.</b> Vérifie l'aperçu → clique <b>« App Android (APK) »</b> → télécharge et partage.</li>
+      </ol>
+      <div class="mt-6 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-sm text-gray-300">
+        💳 <b>Paiement :</b> après validation de ton site, paie par Mobile Money (DjabPlus / Waafi) et envoie la confirmation sur WhatsApp pour activation.
+      </div>
+      <button onclick="closeGuide();document.getElementById('formView').scrollIntoView({behavior:'smooth'})" class="btn-cta mt-6 w-full font-cyber font-bold bg-purple-600 py-3 rounded-xl">🚀 Commencer maintenant</button>
     </div>
-    <p id="activationError" class="text-red-400 text-sm mt-2 hidden">❌ Code invalide. Vérifie ou contacte-nous sur WhatsApp.</p>
   </div>
-  <button onclick="document.getElementById('paywallView').classList.add('hidden')" class="mt-6 text-gray-500 underline text-sm">← Retour</button>
 </div>
 
-<!-- ===== CHARGEMENT ===== -->
-<div id="loadingView" class="hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center px-6 text-center">
-  <div class="bg-gray-900 border border-purple-500/40 rounded-2xl p-6 max-w-sm w-full">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">⚡ CRÉATION DE TON SITE</h2>
-    <div id="genStep1" class="gen-step text-left py-2 text-sm text-yellow-300 font-bold">⏳ Analyse de ton brief</div>
-    <div id="genStep2" class="gen-step text-left py-2 text-sm text-gray-500">Rédaction des sections</div>
-    <div id="genStep3" class="gen-step text-left py-2 text-sm text-gray-500">Mise en forme finale</div>
-    <p class="text-gray-500 text-xs mt-3">Ton brouillon est sauvegardé automatiquement.</p>
-    <p id="genError" class="hidden text-red-400 text-sm mt-3"></p>
-    <button id="genRetry" type="button" onclick="retryGenerate()" class="hidden mt-4 w-full font-cyber font-bold bg-purple-500 text-gray-950 py-3 rounded-xl">🔄 RÉESSAYER</button>
-  </div>
-</div>
+<footer class="text-center pb-10 text-gray-500 text-sm">
+  <p>Prompt2Site © 2026 — Djibouti 🇩🇯</p>
+  <a href="https://wa.link/7gp8wm" class="text-green-400 underline">💬 Nous contacter sur WhatsApp</a>
+</footer>
 
 <script>
-// Pré-chauffe le serveur dès l'arrivée du visiteur
-  fetch('/api/warm').catch(() => {});
-  setInterval(() => fetch('/api/warm').catch(() => {}), 4 * 60 * 1000);
-const SECTIONS = ['Accueil / Hero','À propos','Services','Produits','Tarifs','Témoignages','Galerie','Équipe','FAQ','Blog','Horaires','Contact','Footer complet'];
-const FEATURES = ['Formulaire de contact','Bouton WhatsApp','Prise de rendez-vous','Panier d\'achat','Galerie photos','Mode sombre','Menu burger mobile','Carte Google Maps','Newsletter','Boutons animés','Compte à rebours','Barre de navigation fixe','Réseaux sociaux','Planning / Horaires'];
+/* ==========================================
+   CONFIG — VÉRIFIER CES 4 NOMS DANS server.js
+   Si un nom diffère, corrige-le ICI uniquement
+   ========================================== */
+const API = {
+  parseMenu:  '/api/parse-menu',
+  generate:   '/api/generate',
+  transcribe: '/api/transcribe',
+  apk:        '/api/build-apk'
+};
 
-let generatedHtml = '';
+let selectedTemplate = 'auto';
+let expressImageB64 = null;
+let lastGeneratedHtml = '';
 
-// ===== SYSTÈME D'ABONNEMENT =====
-function getAccessCode(){ return localStorage.getItem('p2s_code') || ''; }
-function setAccessCode(code){ localStorage.setItem('p2s_code', code); }
-function isFreeUsed(){ return localStorage.getItem('p2s_free_used') === '1'; }
-function setFreeUsed(){ localStorage.setItem('p2s_free_used', '1'); }
-
-async function checkAccess(){
-  const code = getAccessCode();
-  if(code){
-    const res = await fetch('/api/activate', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ code })
-    });
-    const data = await res.json();
-    if(data.success) return true;
-    localStorage.removeItem('p2s_code');
-  }
-  return !isFreeUsed();
+/* --- Galerie de templates (chips) --- */
+function pickTemplate(btn){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTemplate = btn.dataset.template;
+  const typeSel = document.getElementById('type');
+  if(typeSel) typeSel.value = selectedTemplate;
+  document.getElementById('formView').scrollIntoView({behavior:'smooth'});
 }
 
-async function activateCode(){
-  const input = document.getElementById('activationInput');
-  const code = input.value.trim().toUpperCase();
-  if(!code) return;
-  const res = await fetch('/api/activate', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ code })
-  });
-  const data = await res.json();
-  if(data.success){
-    setAccessCode(code);
-    document.getElementById('paywallView').classList.add('hidden');
-    document.getElementById('activationError').classList.add('hidden');
-    alert('🎉 Abonnement activé ! Générations illimitées pour toi.');
-  } else {
-    document.getElementById('activationError').classList.remove('hidden');
-  }
-}
+/* --- Guide --- */
+function openGuide(){document.getElementById('guideModal').classList.remove('hidden');}
+function closeGuide(){document.getElementById('guideModal').classList.add('hidden');}
 
-function buildChips(containerId, items){
-  const box = document.getElementById(containerId);
-  box.innerHTML = items.map(s =>
-    `<span class="chip bg-gray-900 border border-purple-500/40 rounded-full px-4 py-2 text-sm select-none" onclick="this.classList.toggle('selected')">${s}</span>`
-  ).join('');
-}
-buildChips('sectionsChips', SECTIONS);
-buildChips('featuresChips', FEATURES);
-
-function getSelected(containerId){
-  return [...document.getElementById(containerId).querySelectorAll('.chip.selected')].map(c => c.textContent);
-}
-
-let productRowCount = 0;
-function addProductRow(){
-  productRowCount++;
-  const row = document.createElement('div');
-  row.className = 'bg-gray-900 border border-purple-500/30 rounded-xl p-3 space-y-2';
-  row.id = 'productRow' + productRowCount;
-  row.innerHTML = `
-    <div class="flex justify-between items-center">
-      <span class="font-cyber text-purple-400 text-sm font-bold">PRODUIT #${productRowCount}</span>
-      <button type="button" onclick="document.getElementById('productRow${productRowCount}').remove()" class="text-red-400 font-bold px-2">🗑️</button>
-    </div>
-    <input type="text" class="prod-nom w-full bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Nom du produit *">
-    <div class="flex gap-2">
-      <input type="text" class="prod-prix w-1/3 bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Prix * (ex : 25 $)">
-      <input type="text" class="prod-desc flex-1 bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="Description courte (optionnel)">
-    </div>
-    <input type="text" class="prod-image w-full bg-gray-800 border border-purple-500/30 rounded-lg p-2 text-sm" placeholder="URL de la photo (optionnel — ex : https://.../photo.jpg)">`;
-  document.getElementById('productsList').appendChild(row);
-}
-addProductRow();
-
-function collectProducts(){
-  return [...document.querySelectorAll('#productsList > div')].map(row => ({
-    nom: row.querySelector('.prod-nom').value.trim(),
-    prix: row.querySelector('.prod-prix').value.trim(),
-    desc: row.querySelector('.prod-desc').value.trim(),
-    image: row.querySelector('.prod-image').value.trim()
-  })).filter(p => p.nom && p.prix);
-}
-
-function buildBrief(){
-  return {
-    type: document.getElementById('type').value,
-    nom: document.getElementById('nom').value.trim() + (document.getElementById('slogan').value ? ' — ' + document.getElementById('slogan').value : ''),
-    style: document.getElementById('style').value,
-    couleurs: document.getElementById('couleurs').value,
-    cible: document.getElementById('cible').value.trim(),
-    sections: getSelected('sectionsChips').join(', '),
-    fonctionnalites: getSelected('featuresChips').join(', '),
-    details: document.getElementById('details').value,
-    produits: collectProducts()
+/* --- Mode Express --- */
+function handleExpressImage(input){
+  const f = input.files && input.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    expressImageB64 = e.target.result;
+    document.getElementById('previewImg').src = expressImageB64;
+    document.getElementById('expressPreview').classList.remove('hidden');
   };
+  r.readAsDataURL(f);
 }
 
-function validateBrief(brief){
-  if(!brief.type || !brief.cible || !document.getElementById('nom').value.trim()){
-    document.getElementById('formError').classList.remove('hidden');
-    return false;
-  }
-  document.getElementById('formError').classList.add('hidden');
-  return true;
-}
-
-async function improveBrief(){
-  const brief = buildBrief();
-  if(!validateBrief(brief)) return;
-  const btn = document.getElementById('improveBtn');
-  btn.textContent = '⏳ L\'IA analyse ton brief...';
-  try {
-    const res = await fetch('/api/improve', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(brief)
-    });
+async function fillExpress(){
+  const text = document.getElementById('expressText').value.trim();
+  const err = document.getElementById('expressError');
+  err.classList.add('hidden');
+  if(!text && !expressImageB64){err.textContent='⚠️ Colle un texte ou ajoute une image.';err.classList.remove('hidden');return;}
+  const btn = document.getElementById('expressBtn');
+  btn.disabled = true; btn.textContent = '⏳ Analyse en cours…';
+  try{
+    const res = await fetch(API.parseMenu,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,image:expressImageB64})});
     const data = await res.json();
     if(data.success){
-      document.getElementById('suggestionsText').textContent = data.suggestions;
-      document.getElementById('suggestionsBox').classList.remove('hidden');
-      document.getElementById('suggestionsBox').scrollIntoView({behavior:'smooth'});
-    } else {
-      alert('❌ ' + (data.error || 'erreur'));
-    }
-  } catch(e){
-    alert('❌ Erreur de connexion.');
-  }
-  btn.textContent = '✨ AMÉLIORER MON BRIEF AVEC L\'IA (avant de générer)';
+      if(data.type) document.getElementById('type').value = data.type;
+      if(data.businessName) document.getElementById('businessName').value = data.businessName;
+      if(data.target) document.getElementById('target').value = data.target;
+      if(data.details) document.getElementById('details').value = data.details;
+      document.getElementById('formView').scrollIntoView({behavior:'smooth'});
+    } else { err.textContent='⚠️ '+(data.error||"L'IA n'a pas compris, remplis à la main."); err.classList.remove('hidden'); }
+  }catch(e){ err.textContent='⚠️ Erreur réseau, réessaie.'; err.classList.remove('hidden'); }
+  btn.disabled = false; btn.textContent = '🧠 Remplir avec l\'IA';
 }
 
-// ========== ÉTAPE 2 : SAUVEGARDE DU BROUILLON + PROGRESSION ==========
-function saveBrief(){
+/* --- Dictée vocale --- */
+let mediaRecorder = null, audioChunks = [];
+async function toggleVoice(){
+  const status = document.getElementById('voiceStatus');
+  const btn = document.getElementById('voiceBtn');
+  if(mediaRecorder && mediaRecorder.state === 'recording'){ mediaRecorder.stop(); return; }
   try{
-    const b = {
-      type: document.getElementById('type').value,
-      nom: document.getElementById('nom').value,
-      slogan: document.getElementById('slogan').value,
-      style: document.getElementById('style').value,
-      couleurs: document.getElementById('couleurs').value,
-      cible: document.getElementById('cible').value,
-      details: document.getElementById('details').value,
-      expressText: document.getElementById('expressText') ? document.getElementById('expressText').value : '',
-      sections: getSelected('sectionsChips'),
-      fonctionnalites: getSelected('featuresChips'),
-      produits: collectProducts()
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = async () => {
+      stream.getTracks().forEach(t=>t.stop());
+      status.classList.add('hidden');
+      btn.textContent = '🎙️';
+      const blob = new Blob(audioChunks,{type:'audio/webm'});
+      const fd = new FormData();
+      fd.append('audio', blob);
+      btn.textContent = '⏳';
+      try{
+        const res = await fetch(API.transcribe,{method:'POST',body:fd});
+        const data = await res.json();
+        if(data.success && data.text){
+          const d = document.getElementById('details');
+          d.value = (d.value ? d.value + ' ' : '') + data.text;
+        }
+      }catch(e){}
+      btn.textContent = '🎙️';
     };
-    localStorage.setItem('p2s_brief', JSON.stringify(b));
-  }catch(e){}
+    mediaRecorder.start();
+    status.classList.remove('hidden');
+    btn.textContent = '⏹️';
+  }catch(e){ alert('🎙️ Autorise le micro dans ton navigateur.'); }
 }
 
-function restoreBrief(){
+/* --- Génération --- */
+async function generateSite(){
+  const err = document.getElementById('genError');
+  err.classList.add('hidden');
+  const payload = {
+    type: document.getElementById('type').value || selectedTemplate,
+    businessName: document.getElementById('businessName').value.trim(),
+    target: document.getElementById('target').value.trim(),
+    details: document.getElementById('details').value.trim(),
+    template: selectedTemplate
+  };
+  if(!payload.businessName){err.textContent='⚠️ Mets au moins le nom de ton business.';err.classList.remove('hidden');return;}
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true; btn.textContent = '⏳ Génération en cours (1-3 min)…';
   try{
-    const raw = localStorage.getItem('p2s_brief');
-    if(!raw) return;
-    const b = JSON.parse(raw);
-    const set = (id, v) => { const el = document.getElementById(id); if(el && typeof v === 'string') el.value = v; };
-    set('type', b.type); set('nom', b.nom); set('slogan', b.slogan); set('style', b.style);
-    set('couleurs', b.couleurs); set('cible', b.cible); set('details', b.details);
-    if(document.getElementById('expressText')) set('expressText', b.expressText);
-    (b.sections || []).forEach(t => {
-      [...document.getElementById('sectionsChips').children].forEach(c => { if(c.textContent === t) c.classList.add('selected'); });
-    });
-    (b.fonctionnalites || []).forEach(t => {
-      [...document.getElementById('featuresChips').children].forEach(c => { if(c.textContent === t) c.classList.add('selected'); });
-    });
-    document.getElementById('productsList').innerHTML = '';
-    productRowCount = 0;
-    if(b.produits && b.produits.length){
-      b.produits.forEach(p => {
-        addProductRow();
-        const row = document.getElementById('productRow' + productRowCount);
-        row.querySelector('.prod-nom').value = p.nom || '';
-        row.querySelector('.prod-prix').value = p.prix || '';
-        row.querySelector('.prod-desc').value = p.desc || '';
-        row.querySelector('.prod-image').value = p.image || '';
-      });
-    } else {
-      addProductRow();
-    }
-  }catch(e){}
-}
-restoreBrief();
-document.getElementById('formView').addEventListener('input', saveBrief);
-document.getElementById('formView').addEventListener('change', saveBrief);
-
-const GEN_STEPS = ['Analyse de ton brief', 'Rédaction des sections', 'Mise en forme finale'];
-let genTimers = [];
-let genAbort = null;
-
-function setGenStep(n){
-  for(let i = 1; i <= 3; i++){
-    const el = document.getElementById('genStep' + i);
-    if(i < n){
-      el.textContent = '✅ ' + GEN_STEPS[i - 1];
-      el.className = 'gen-step text-left py-2 text-sm text-green-400';
-    } else if(i === n){
-      el.textContent = '⏳ ' + GEN_STEPS[i - 1];
-      el.className = 'gen-step text-left py-2 text-sm text-yellow-300 font-bold';
-    } else {
-      el.textContent = GEN_STEPS[i - 1];
-      el.className = 'gen-step text-left py-2 text-sm text-gray-500';
-    }
-  }
-}
-function startGenProgress(){
-  setGenStep(1);
-  document.getElementById('genError').classList.add('hidden');
-  document.getElementById('genRetry').classList.add('hidden');
-  genTimers.forEach(clearTimeout);
-  genTimers = [];
-  genTimers.push(setTimeout(() => setGenStep(2), 8000));
-  genTimers.push(setTimeout(() => setGenStep(3), 25000));
-}
-function stopGenProgress(){
-  genTimers.forEach(clearTimeout);
-  genTimers = [];
-  for(let i = 1; i <= 3; i++){
-    const el = document.getElementById('genStep' + i);
-    el.textContent = '✅ ' + GEN_STEPS[i - 1];
-    el.className = 'gen-step text-left py-2 text-sm text-green-400';
-  }
-}
-function showGenError(msg){
-  genTimers.forEach(clearTimeout);
-  genTimers = [];
-  const err = document.getElementById('genError');
-  err.textContent = '❌ ' + msg;
-  err.classList.remove('hidden');
-  document.getElementById('genRetry').classList.remove('hidden');
-}
-function retryGenerate(){
-  document.getElementById('loadingView').classList.add('hidden');
-  generate();
-}
-
-async function generate(){
-  const brief = buildBrief();
-  if(!validateBrief(brief)) return;
-
-  const code = getAccessCode();
-  if(!code && isFreeUsed()){
-    document.getElementById('paywallView').classList.remove('hidden');
-    return;
-  }
-  brief.code = code;
-  brief.preview = !code;
-  saveBrief();
-
-  document.getElementById('loadingView').classList.remove('hidden');
-  startGenProgress();
-
-  genAbort = new AbortController();
-  const genTimeout = setTimeout(() => { if(genAbort) genAbort.abort(); }, 100000);
-  try {
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(brief),
-      signal: genAbort.signal
-    });
-    clearTimeout(genTimeout);
+    const res = await fetch(API.generate,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data = await res.json();
-
-    if(data.paywall){
-      document.getElementById('loadingView').classList.add('hidden');
-      document.getElementById('paywallView').classList.remove('hidden');
-      return;
-    }
-    if(!data.success){
-      showGenError(data.error || 'Le service est temporairement indisponible, réessaie dans quelques minutes.');
-      return;
-    }
-
-    stopGenProgress();
-    setTimeout(() => { document.getElementById('loadingView').classList.add('hidden'); }, 800);
-    generatedHtml = data.html;
-    if(!getAccessCode()) setFreeUsed();
-    document.getElementById('preview').srcdoc = generatedHtml;
-    document.getElementById('chatHistory').innerHTML = '';
-    const wm = document.getElementById('previewWatermark');
-    if(data.preview && wm) wm.classList.remove('hidden');
-    document.getElementById('formView').classList.add('hidden');
-    document.getElementById('resultView').classList.remove('hidden');
-    window.scrollTo(0,0);
-    if(data.preview){
-      setTimeout(() => {
-        const pw = document.getElementById('paywallView');
-        if(pw && !getAccessCode()) pw.classList.remove('hidden');
-      }, 8000);
-    }
-  } catch(e){
-    clearTimeout(genTimeout);
-    showGenError('Connexion lente ou coupée. Ton brouillon est sauvegardé, appuie sur RÉESSAYER.');
-  }
-}
-
-function showGenError(msg){
-  genTimers.forEach(clearTimeout);
-  genTimers = [];
-  const err = document.getElementById('genError');
-  err.textContent = '❌ ' + msg;
-  err.classList.remove('hidden');
-  document.getElementById('genRetry').classList.remove('hidden');
-}
-function retryGenerate(){
-  document.getElementById('loadingView').classList.add('hidden');
-  generate();
-}
-
-async function generate(){
-  const brief = buildBrief();
-  if(!validateBrief(brief)) return;
-
-  if(!(await checkAccess())){
-    document.getElementById('paywallView').classList.remove('hidden');
-    return;
-  }
-  brief.code = getAccessCode();
-  saveBrief();
-
-  document.getElementById('loadingView').classList.remove('hidden');
-  startGenProgress();
-
-  genAbort = new AbortController();
-  const genTimeout = setTimeout(() => { if(genAbort) genAbort.abort(); }, 100000);
-  try {
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(brief),
-      signal: genAbort.signal
-    });
-    clearTimeout(genTimeout);
-    const data = await res.json();
-
-    if(data.paywall){
-      document.getElementById('loadingView').classList.add('hidden');
-      document.getElementById('paywallView').classList.remove('hidden');
-      return;
-    }
-    if(!data.success){
-      showGenError(data.error || 'Le service est temporairement indisponible, réessaie dans quelques minutes.');
-      return;
-    }
-
-    stopGenProgress();
-    setTimeout(() => { document.getElementById('loadingView').classList.add('hidden'); }, 800);
-    generatedHtml = data.html;
-    if(!getAccessCode()) setFreeUsed();
-    document.getElementById('preview').srcdoc = generatedHtml;
-    document.getElementById('chatHistory').innerHTML = '';
-    document.getElementById('formView').classList.add('hidden');
-    document.getElementById('resultView').classList.remove('hidden');
-    window.scrollTo(0,0);
-  } catch(e){
-    clearTimeout(genTimeout);
-    showGenError('Connexion lente ou coupée. Ton brouillon est sauvegardé, appuie sur RÉESSAYER.');
-  }
-}
-
-function addChatMsg(who, text){
-  const box = document.getElementById('chatHistory');
-  const div = document.createElement('div');
-  div.className = who === 'user'
-    ? 'bg-purple-500/20 border border-purple-500/40 rounded-lg p-2 text-sm text-right'
-    : 'bg-gray-800 border border-gray-600 rounded-lg p-2 text-sm';
-  div.textContent = text;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
-function removeLastAiMsg(){
-  const box = document.getElementById('chatHistory');
-  if(box.lastChild) box.lastChild.remove();
-}
-
-async function sendModification(){
-  const input = document.getElementById('chatInput');
-  const request = input.value.trim();
-  if(!request || !generatedHtml) return;
-  addChatMsg('user', request);
-  input.value = '';
-  addChatMsg('ai', '⏳ Modification en cours...');
-  try {
-    const res = await fetch('/api/modify', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ html: generatedHtml, request, code: getAccessCode() })
-    });
-    const data = await res.json();
-    removeLastAiMsg();
-    if(data.paywall){ addChatMsg('ai', '💎 Abonnement requis pour modifier.'); return; }
-    if(!data.success){ addChatMsg('ai', '❌ ' + (data.error || 'erreur')); return; }
-    generatedHtml = data.html;
-    document.getElementById('preview').srcdoc = generatedHtml;
-    addChatMsg('ai', '✅ Modifié ! Regarde l\'aperçu.');
-  } catch(e){
-    removeLastAiMsg();
-    addChatMsg('ai', '❌ Erreur de connexion.');
-  }
-}
-
-function downloadSite(){
-  const blob = new Blob([generatedHtml], {type: 'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'index.html';
-  a.click();
-}
-
-async function copyCode(){
-  await navigator.clipboard.writeText(generatedHtml);
-  const msg = document.getElementById('copyMsg');
-  msg.classList.remove('hidden');
-  setTimeout(() => msg.classList.add('hidden'), 3000);
+    if(data.success && data.html){
+      lastGeneratedHtml = data.html;
+      document.getElementById('sitePreview').srcdoc = data.html;
+      document.getElementById('formView').classList.add('hidden');
+      document.getElementById('resultView').classList.remove('hidden');
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else { err.textContent='⚠️ '+(data.error||'Génération échouée, réessaie.'); err.classList.remove('hidden'); }
+  }catch(e){ err.textContent='⚠️ Erreur réseau, réessaie.'; err.classList.remove('hidden'); }
+  btn.disabled = false; btn.textContent = '🚀 GÉNÉRER MON SITE';
 }
 
 function backToForm(){
   document.getElementById('resultView').classList.add('hidden');
   document.getElementById('formView').classList.remove('hidden');
-  window.scrollTo(0,0);
-}
-// ===== SEMAINE 1 : APP ANDROID + GOOGLE PLAY =====
-function apkMsg(t){
-  var el = document.getElementById('apkStatus');
-  if(!el) return;
-  if(t.indexOf('/api/apk-download/') !== -1){
-    el.innerHTML = '✅ TON APP EST PRÊTE ! <a href="' + t + '" style="color:#22d3ee;font-weight:700;text-decoration:underline;">📥 TÉLÉCHARGE L\'APK ICI</a>';
-  } else {
-    el.textContent = t;
-  }
-  el.classList.remove('hidden');
 }
 
-
-async function dlApk(){
-  if(!generatedHtml){ alert('Génère d\'abord ton site.'); return; }
-  apkMsg('🤖 Envoi du projet vers le cloud Expo…');
-  try {
-    var res = await fetch('/api/generate-apk', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ html: generatedHtml, code: getAccessCode(), nom: document.getElementById('nom').value.trim() })
-      });
-      var data = await res.json();
-    if(!data.success){ apkMsg('⚠️ ' + (data.error || 'Erreur serveur')); return; }
-    pollApk(data.buildId);
-  } catch(e){ apkMsg('⚠️ ' + e.message); }
-}
-
-async function pollApk(id){
-  apkMsg('⚙️ Compilation de l\'APK en cours dans le cloud Expo… (~10-15 min). Laisse cette page ouverte.');
-  try {
-    var res = await fetch('/api/apk-status/' + id);
-    var data = await res.json();
-    if(!data.success){ apkMsg('⚠️ ' + data.error); return; }
-    if(data.status === 'finished' && data.downloadUrl){
-      apkMsg('✅ TON APP EST PRÊTE ! Télécharge ici : ' + data.downloadUrl);
-      window.open(data.downloadUrl, '_blank');
-      return;
-    }
-    if(data.status === 'errored' || data.status === 'canceled'){
-      apkMsg('❌ Compilation échouée. Réessaie ou contacte le support.');
-      return;
-    }
-    setTimeout(function(){ pollApk(id); }, 15000);
-  } catch(e){
-    setTimeout(function(){ pollApk(id); }, 15000);
-  }
-}
-
-function dlPlay(){
-  alert('🚀 Option Premium. Contacte-nous sur WhatsApp pour publier ton app sur le Google Play Store !');
-  window.open('https://wa.me/25377098637?text=Bonjour%2C%20je%20veux%20publier%20mon%20app%20sur%20Google%20Play%20%28Premium%29', '_blank');
-}
-
-// ===== S3 JOUR 2 : MODE EXPRESS =====
-const TYPE_MAP = {
-  'Boutique e-commerce': 'Boutique e-commerce (vendre des produits)',
-  'Salle de sport': 'Salle de sport / Coach sportif',
-  'Salon de coiffure': 'Salon de coiffure / Barbier',
-  'Salon de beauté': 'Salon de beauté / Institut / Spa',
-  'Restaurant / Fast-food / Café': 'Restaurant / Fast-food / Café',
-  'Site vitrine entreprise': 'Site vitrine pour une entreprise',
-  'Clinique / Cabinet médical': 'Clinique / Cabinet médical / Pharmacie',
-  'Agence immobilière': 'Agence immobilière / Location',
-  'Transport / Livraison': 'Transport / Livraison / Logistique',
-  'École / Formation': 'École / Formation / Centre de cours',
-  'Portfolio': 'Portfolio (photographe, designer, artiste)',
-  'Landing page': 'Landing page (page de vente)',
-  'Blog': 'Blog / Magazine',
-  'Événement': 'Événement / Mariage / Conférence',
-  'Autre': 'Autre (précise dans les détails)'
-};
-
-async function fillExpress(){
-  const txt = document.getElementById('expressText').value.trim();
-  const err = document.getElementById('expressError');
-  const btn = document.getElementById('expressBtn');
-  err.classList.add('hidden');
-  if(!txt){ err.textContent = '⚠️ Colle d\'abord ton texte.'; err.classList.remove('hidden'); return; }
+/* --- APK --- */
+async function buildApk(){
+  const box = document.getElementById('apkStatus');
+  const btn = document.getElementById('apkBtn');
+  box.classList.remove('hidden'); box.className = 'mt-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-sm';
+  box.textContent = '⏳ Construction de l\'APK en cours… (5-10 min)';
   btn.disabled = true;
-  btn.textContent = '⏳ L\'IA structure ton brief...';
-  try {
-    const res = await fetch('/api/parse-menu', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ menu: txt })
-    });
+  try{
+    const res = await fetch(API.apk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({html:lastGeneratedHtml,businessName:document.getElementById('businessName').value.trim()})});
     const data = await res.json();
-    if(!data.success){ err.textContent = '❌ ' + (data.error || 'Erreur serveur'); err.classList.remove('hidden'); return; }
-    applyExpress(data.data);
-    alert('✅ Formulaire rempli ! Vérifie les champs puis clique sur GÉNÉRER MON SITE WEB 🚀');
-  } catch(e){
-    err.textContent = '❌ Erreur de connexion. Réessaie.';
-    err.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '⚡ REMPLIR AUTOMATIQUEMENT';
-  }
-}
-
-function applyExpress(d){
-  const infos = d.infos || {};
-  const typeValue = TYPE_MAP[infos.type] || '';
-  if(typeValue) document.getElementById('type').value = typeValue;
-  if(infos.nom) document.getElementById('nom').value = infos.nom;
-  if(infos.slogan) document.getElementById('slogan').value = infos.slogan;
-  if(infos.couleurs) document.getElementById('couleurs').value = infos.couleurs;
-  if(infos.cible) document.getElementById('cible').value = infos.cible;
-  if(infos.details) document.getElementById('details').value = infos.details;
-  const produits = d.produits || [];
-  document.getElementById('productsList').innerHTML = '';
-  productRowCount = 0;
-  if(produits.length === 0){ addProductRow(); }
-  produits.forEach(function(p){
-    addProductRow();
-    const row = document.getElementById('productsList').lastElementChild;
-    row.querySelector('.prod-nom').value = p.nom || '';
-    row.querySelector('.prod-prix').value = p.prix || '';
-    row.querySelector('.prod-desc').value = p.desc || '';
-    row.querySelector('.prod-image').value = p.photo || '';
-  });
-}
-async function handleExpressImage(input){
-  const file = input.files && input.files[0];
-  if(!file) return;
-  const err = document.getElementById('expressError');
-  const btn = document.getElementById('expressImgBtn');
-  err.classList.add('hidden');
-
-  btn.disabled = true;
-  btn.textContent = '⌛ L\'IA lit ton menu...';
-  try {
-    const resized = await resizeImage(file, 1280, 0.7);
-    const res = await fetch('/api/parse-menu-image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: resized })
-    });
-    const data = await res.json();
-    if(!data.success){ err.textContent = '❌ ' + (data.error || 'Erreur serveur'); err.classList.remove('hidden'); return; }
-    applyExpress(data.data);
-    alert('✅ Menu lu depuis la photo ! Vérifie les champs puis clique sur GÉNÉRER MON SITE WEB 🚀');
-  } catch(e){
-    err.textContent = '❌ Erreur de connexion. Réessaie.';
-    err.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '📷 ENVOYER MON MENU (PHOTO)';
-    input.value = '';
-  }
-}
-
-function resizeImage(file, maxWidth, quality){
-  return new Promise(function(resolve, reject){
-    const reader = new FileReader();
-    reader.onload = function(e){
-      const img = new Image();
-      img.onload = function(){
-        let w = img.width, h = img.height;
-        if(w > maxWidth){ h = Math.round(h * maxWidth / w); w = maxWidth; }
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      };
-      img.onerror = reject;
-      img.src = e.target.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}// ========== PHASE 2 : DICTEE VOCALE (bouton micro) ==========
-let mediaRecorder = null, audioChunks = [];
-const micBtn = document.getElementById('micBtn');
-if (micBtn) {
-  micBtn.addEventListener('click', async () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') { mediaRecorder.stop(); return; }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-      mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach(t => t.stop());
-        if (audioChunks.length === 0) { micBtn.textContent = '🎤 DICTER MON BRIEF À VOIX HAUTE'; return; }
-        const blob = new Blob(audioChunks, { type: 'audio/webm' });
-        const bytes = new Uint8Array(await blob.arrayBuffer());
-        let binary = '';
-        for (let i = 0; i < bytes.length; i += 8192) {
-          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
-        }
-        const b64 = btoa(binary);
-        micBtn.textContent = '⏳ TRANSCRIPTION EN COURS...';
-        micBtn.disabled = true;
-        try {
-          const r = await fetch('/api/transcribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ audio: b64 }) });
-          const d = await r.json();
-          if (d.success) {
-            const ta = document.getElementById('details');
-            ta.value = (ta.value ? ta.value + '\n' : '') + d.text;
-            micBtn.textContent = '✅ TEXTE AJOUTÉ !';
-          } else {
-            alert('Erreur : ' + (d.error || 'inconnue'));
-            micBtn.textContent = '🎤 DICTER MON BRIEF À VOIX HAUTE';
-          }
-        } catch (e) {
-          alert('Erreur réseau, réessaie');
-          micBtn.textContent = '🎤 DICTER MON BRIEF À VOIX HAUTE';
-        }
-        micBtn.disabled = false;
-      };
-      mediaRecorder.start();
-      micBtn.textContent = '⏹️ APPUIE POUR ARRÊTER';
-    } catch (e) {
-      alert('Micro inaccessible : ' + e.message);
+    if(data.success && data.url){
+      box.textContent = '✅ APK prête ! Télécharge ci-dessous.';
+      const link = document.getElementById('apkLink');
+      link.href = data.url;
+      document.getElementById('apkResult').classList.remove('hidden');
+      new QRCode(document.getElementById('qrcode'),{text:data.url,width:140,height:140});
+    } else {
+      box.textContent = '⚠️ '+(data.error||'Build échoué, réessaie.');
     }
-  });
-}
-  function showQrCode(){
-  const box = document.getElementById('qrBox');
-  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); return; }
-  const nom = document.getElementById('nom') ? document.getElementById('nom').value.trim() : '';
-  const slug = slugifyClient(nom);
-  const url = 'https://prompt2site-nvms.onrender.com/sites/' + slug;
-  box.innerHTML = '<p class="font-cyber text-yellow-400 font-bold mb-2">📱 Tes clients scannent ce QR et arrivent directement sur ton site :</p><div id="qrTarget" class="bg-white p-3 rounded-xl inline-block"></div><p class="text-cyan-300 text-xs mt-2 break-all">' + url + '</p><p class="text-gray-500 text-xs mt-1">Fais une capture d\'écran de ce QR et partage-le partout !</p>';
-  new QRCode(document.getElementById('qrTarget'), { text: url, width: 200, height: 200 });
-  box.classList.remove('hidden');
-  box.scrollIntoView({behavior:'smooth'});
-}
-function slugifyClient(text){
-  const s = (text || 'site').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
-  return s || 'site';
+  }catch(e){ box.textContent = '⚠️ Erreur réseau, réessaie.'; }
+  btn.disabled = false;
 }
 
-// ========== REFONTE UX/UI : apparition au defilement + accordéon FAQ ==========
-const revealObs = new IntersectionObserver(function(entries){
-  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
-
-document.querySelectorAll('.faq-question').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.toggle('open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-});
+/* --- Animations au scroll --- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
 
-
+  
