@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commander ton site web + App Android — Prompt2Site</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Rajdhani',sans-serif;background:#0a0a12;}
+.font-cyber{font-family:'Orbitron',sans-serif;}
+.card{background:#12121f;border:1px solid rgba(168,85,247,.25);border-radius:1rem;}
+.btn-cta{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease;}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(168,85,247,.45);filter:brightness(1.06);}
+.btn-cta:active{transform:translateY(-1px) scale(.98);}
+.check{color:#22c55e;font-weight:700;}
+input{color-scheme:dark;}
+.step{display:none;}
+.step.active{display:block;animation:fadeIn .4s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.pay-card{border:2px solid rgba(168,85,247,.35);}
+</style>
+</head>
+<body class="text-white">
+
+<!-- ⚙️ CONFIGURATION -->
+<script>
+const CONFIG = {
+  WHATSAPP: "25377098637",
+  PRIX: "10 000 DJF",
+  PRIX_NOTE: "Offre de lancement — paiement unique, aucun abonnement"
+};
+</script>
+
+<!-- ================= ÉTAPE 1 : PAGE DE VENTE ================= -->
+<section id="step1" class="step active max-w-2xl mx-auto px-4 py-10">
+
+  <div class="text-center mb-10">
+    <div class="inline-block text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-4 py-1 rounded-full mb-5">🚀 Offre de lancement — Djibouti</div>
+    <h1 class="font-cyber text-3xl md:text-4xl font-black leading-tight">Ton <span class="text-purple-500">site web</span> + ton <span class="text-cyan-400">App Android</span><br>en 3 minutes.</h1>
+    <p class="text-gray-400 mt-4 text-lg">Pas de code. Pas de designer. Pas d'attente.<br>Décris ton business → l'IA fait le reste.</p>
+  </div>
+
+  <div class="card p-7 mb-6">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">📦 CE QUE TU REÇOIS</h2>
+    <ul class="space-y-3 text-gray-300">
+      <li><span class="check">✔</span> Site web professionnel (mobile + ordinateur)</li>
+      <li><span class="check">✔</span> Application Android (APK) avec le nom de ton business</li>
+      <li><span class="check">✔</span> Bouton WhatsApp intégré pour tes clients</li>
+      <li><span class="check">✔</span> 1 modification gratuite après livraison</li>
+      <li><span class="check">✔</span> Livraison en 24h après confirmation du paiement</li>
+    </ul>
+  </div>
+
+  <div class="card p-7 mb-6 text-center" style="border-color:rgba(34,211,238,.45);">
+    <p class="text-gray-400 text-sm">Offre unique</p>
+    <p class="font-cyber text-5xl font-black text-cyan-400 my-2" id="prix1">10 000 DJF</p>
+    <p class="text-gray-500 text-sm" id="prixNote1">Offre de lancement</p>
+    <button onclick="goStep(2)" class="btn-cta mt-6 w-full font-cyber font-black text-lg bg-gradient-to-r from-purple-600 to-cyan-500 py-4 rounded-2xl">🚀 COMMANDER MAINTENANT</button>
+    <p class="text-gray-500 text-xs mt-3">💳 Paiement par Waafi ou DahabPlus (East African Bank)</p>
+  </div>
+
+  <div class="card p-7 mb-6">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">❓ QUESTIONS FRÉQUENTES</h2>
+    <details class="mb-3 border border-purple-500/20 rounded-xl p-4"><summary class="font-semibold cursor-pointer">Comment se passe le paiement ?</summary><p class="text-gray-400 text-sm mt-2">Tu paies 10 000 DJF par <b>Waafi</b> ou <b>DahabPlus</b> au numéro affiché à l'étape 2, puis tu confirmes sur WhatsApp. Activation manuelle — simple et sécurisé.</p></details>
+    <details class="mb-3 border border-purple-500/20 rounded-xl p-4"><summary class="font-semibold cursor-pointer">En combien de temps je reçois mon site ?</summary><p class="text-gray-400 text-sm mt-2">24 heures maximum après confirmation de ton paiement.</p></details>
+    <details class="border border-purple-500/20 rounded-xl p-4"><summary class="font-semibold cursor-pointer">Je peux demander des modifications ?</summary><p class="text-gray-400 text-sm mt-2">Oui, 1 modification gratuite est incluse après livraison.</p></details>
+  </div>
+
+  <div class="card p-6 text-center text-sm text-gray-400">
+    🔒 Paiement vérifié manuellement — <a href="https://wa.link/7gp8wm" class="text-green-400 underline">Questions ? WhatsApp</a>
+  </div>
+</section>
+
+<!-- ================= ÉTAPE 2 : PAIEMENT ================= -->
+<section id="step2" class="step max-w-2xl mx-auto px-4 py-10">
+
+  <div class="text-center mb-8">
+    <h1 class="font-cyber text-2xl md:text-3xl font-black">💳 ÉTAPE 2 — <span class="text-cyan-400">PAIEMENT</span></h1>
+    <p class="text-gray-400 mt-2">3 actions simples et c'est réglé</p>
+  </div>
+
+  <div class="card pay-card p-7 mb-6">
+    <h2 class="font-cyber text-cyan-400 font-bold mb-4">1️⃣ ENVOIE <span id="prix2">10 000 DJF</span> PAR :</h2>
+
+    <div class="pay-card rounded-xl p-5 mb-4 bg-green-500/5" style="border-color:rgba(34,197,94,.4);">
+      <p class="font-cyber font-bold text-green-400 mb-2">📱 WAAFI</p>
+      <ol class="text-gray-300 text-sm space-y-1 list-decimal list-inside">
+        <li>Ouvre l'appli <b>Waafi</b> sur ton téléphone</li>
+        <li>Envoie <b>10 000 DJF</b> au numéro :</li>
+      </ol>
+      <p class="font-cyber text-3xl font-black text-center my-3 text-white">77 09 86 37</p>
+    </div>
+
+    <div class="pay-card rounded-xl p-5 bg-cyan-500/5" style="border-color:rgba(34,211,238,.4);">
+      <p class="font-cyber font-bold text-cyan-400 mb-2">🏦 DAHABPLUS (East African Bank)</p>
+      <ol class="text-gray-300 text-sm space-y-1 list-decimal list-inside">
+        <li>Ouvre l'appli <b>DahabPlus</b></li>
+        <li>Envoie <b>10 000 DJF</b> au même numéro :</li>
+      </ol>
+      <p class="font-cyber text-3xl font-black text-center my-3 text-white">77 09 86 37</p>
+    </div>
+    <p class="text-gray-500 text-xs text-center mt-4">⚠️ Vérifie bien le numéro avant d'envoyer — capture la confirmation de ton paiement</p>
+  </div>
+
+  <div class="card p-7 mb-6">
+    <h2 class="font-cyber text-purple-400 font-bold mb-4">2️⃣ TES INFORMATIONS</h2>
+    <label class="block text-sm text-gray-400 mb-1">Ton nom *</label>
+    <input id="clientName" type="text" placeholder="Ex : Mohamed Ali" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+    <label class="block text-sm text-gray-400 mb-1">Ton numéro WhatsApp *</label>
+    <input id="clientPhone" type="tel" placeholder="Ex : 77 12 34 56" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+    <label class="block text-sm text-gray-400 mb-1">Nom de ton business *</label>
+    <input id="clientBiz" type="text" placeholder="Ex : Tiramisu Spot" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none">
+  </div>
+
+  <div class="card p-7 mb-6 text-center" style="border-color:rgba(34,197,94,.4);">
+    <h2 class="font-cyber text-green-400 font-bold mb-3">3️⃣ CONFIRME SUR WHATSAPP</h2>
+    <p class="text-gray-400 text-sm mb-5">Clique le bouton : un message pré-rempli s'ouvre avec tes infos + le mode de paiement que tu as utilisé. Envoie-le, et on active ta commande.</p>
+    <div class="flex gap-3 justify-center mb-5">
+      <label class="flex items-center gap-2 border border-green-500/40 rounded-xl px-4 py-2 cursor-pointer text-sm"><input type="radio" name="paymode" value="Waafi" checked> 📱 Waafi</label>
+      <label class="flex items-center gap-2 border border-cyan-500/40 rounded-xl px-4 py-2 cursor-pointer text-sm"><input type="radio" name="paymode" value="DahabPlus"> 🏦 DahabPlus</label>
+    </div>
+    <button onclick="confirmPayment()" class="btn-cta w-full font-cyber font-black text-lg bg-green-500 text-black py-4 rounded-2xl">✅ J'AI PAYÉ — CONFIRMER SUR WHATSAPP</button>
+    <p id="payError" class="text-red-400 text-sm mt-3 hidden">⚠️ Remplis les 3 champs avant de confirmer.</p>
+  </div>
+
+  <button onclick="goStep(1)" class="block mx-auto text-purple-400 underline text-sm">← Retour à l'offre</button>
+</section>
+
+<!-- ================= ÉTAPE 3 : REMERCIEMENT ================= -->
+<section id="step3" class="step max-w-2xl mx-auto px-4 py-10">
+
+  <div class="text-center mb-8">
+    <div class="text-6xl mb-4">🎉</div>
+    <h1 class="font-cyber text-3xl font-black text-green-400">MERCI !</h1>
+    <p class="text-gray-400 mt-2">Ta demande est bien envoyée. Voici ce qui se passe maintenant :</p>
+  </div>
+
+  <div class="card p-7 mb-6">
+    <ol class="space-y-4 text-gray-300">
+      <li><b class="text-purple-300">1.</b> 📩 Notre équipe <b>vérifie ton paiement</b> (quelques minutes à quelques heures).</li>
+      <li><b class="text-purple-300">2.</b> 🤖 On <b>génère ton site + ton App Android</b> avec l'IA.</li>
+      <li><b class="text-purple-300">3.</b> 📱 Tu reçois tout <b>sur ton WhatsApp</b> en moins de 24h.</li>
+    </ol>
+  </div>
+
+  <div class="card p-7 mb-6 text-center" style="border-color:rgba(34,211,238,.45);">
+    <p class="text-gray-300 mb-4">💡 Conseil : prépare déjà ta description (menu, prix, horaires, photos) pour accélérer la livraison.</p>
+    <a href="https://wa.link/7gp8wm" class="btn-cta block w-full font-cyber font-bold bg-green-500 text-black py-4 rounded-2xl text-center">💬 NOUS ÉCRIRE SUR WHATSAPP</a>
+  </div>
+
+  <a href="/" class="block text-center text-purple-400 underline text-sm">← Retour à l'accueil Prompt2Site</a>
+</section>
+
+<script>
+document.getElementById('prix1').textContent = CONFIG.PRIX;
+document.getElementById('prixNote1').textContent = CONFIG.PRIX_NOTE;
+document.getElementById('prix2').textContent = CONFIG.PRIX;
+
+function goStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function confirmPayment(){
+  const name = document.getElementById('clientName').value.trim();
+  const phone = document.getElementById('clientPhone').value.trim();
+  const biz = document.getElementById('clientBiz').value.trim();
+  const mode = document.querySelector('input[name="paymode"]:checked').value;
+  const err = document.getElementById('payError');
+  if(!name || !phone || !biz){ err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+  const msg = "🚀 NOUVELLE COMMANDE Prompt2Site%0A%0A👤 Nom : " + encodeURIComponent(name) + "%0A📱 WhatsApp : " + encodeURIComponent(phone) + "%0A🏪 Business : " + encodeURIComponent(biz) + "%0A💰 Montant : " + encodeURIComponent(CONFIG.PRIX) + "%0A💳 Payé via : " + encodeURIComponent(mode) + "%0A%0A✅ Paiement envoyé. J'attends l'activation de ma commande !";
+  window.open('https://wa.me/' + CONFIG.WHATSAPP + '?text=' + msg, '_blank');
+  goStep(3);
+}
+</script>
+</body>
+</html>
