@@ -29,16 +29,17 @@ body{font-family:'Rajdhani',sans-serif;background:#0a0a12;}
 .faq-item.open .faq-chevron{transform:rotate(180deg);}
 .modal-bg{background:rgba(5,5,12,.88);backdrop-filter:blur(4px);}
 input,select,textarea{color-scheme:dark;}
+.checkline{display:flex;align-items:center;gap:.5rem;}
 </style>
 </head>
 <body class="text-white">
 
-<!-- ===== HEADER + HERO PREMIUM ===== -->
+<!-- ===== HEADER + HERO ===== -->
 <header class="text-center pt-8 pb-10 px-4">
   <div class="inline-block text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-4 py-1 rounded-full mb-5">🚀 Site web + App Android générés par IA</div>
   <h1 class="font-cyber text-4xl md:text-5xl font-black leading-tight">PROMPT<span class="text-purple-500">2</span><span class="text-cyan-400">SITE</span></h1>
-  <p class="text-xl md:text-2xl font-bold mt-3">Ton business en ligne commence ici.</p>
-  <p class="text-gray-400 text-base mt-3 max-w-xl mx-auto">Décris ton activité à l'IA → reçois un site web professionnel + une application Android à ton nom. Simple, rapide, paiement Mobile Money.</p>
+  <p class="text-xl md:text-2xl font-bold mt-3">Crée ton site selon tes besoins.</p>
+  <p class="text-gray-400 text-base mt-3 max-w-xl mx-auto">Décris ton activité à l'IA → reçois un aperçu gratuit → commande quand tu es satisfait. Simple, rapide, paiement Mobile Money.</p>
   <div class="flex flex-wrap justify-center gap-2 mt-6">
     <span class="text-xs bg-purple-500/15 border border-purple-500/40 text-purple-300 px-3 py-1 rounded-full">✅ Sans coder</span>
     <span class="text-xs bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 px-3 py-1 rounded-full">📱 App Android incluse</span>
@@ -47,12 +48,12 @@ input,select,textarea{color-scheme:dark;}
   </div>
   <div class="flex flex-wrap justify-center gap-2 mt-6">
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="restaurant" onclick="pickTemplate(this)">🍽️ Restaurant</button>
-    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="beauty" onclick="pickTemplate(this)">💇 Salon de beauté</button>
-    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="ecole" onclick="pickTemplate(this)">🎓 École</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="beauté" onclick="pickTemplate(this)">💇 Salon de beauté</button>
+    <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="école" onclick="pickTemplate(this)">🎓 École</button>
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="autre" onclick="pickTemplate(this)">✨ Autre business</button>
     <button class="chip border border-purple-500/40 rounded-full px-4 py-2 text-sm" data-template="boutique" onclick="pickTemplate(this)">🛍️ Boutique</button>
   </div>
-  <button onclick="location.href='/tunnel.html'" class="btn-cta mt-7 bg-purple-600 hover:bg-purple-500 font-cyber font-bold px-8 py-4 rounded-2xl text-lg">✨ Créer mon site maintenant</button>
+  <button onclick="location.href='/tunnel.html'" class="btn-cta mt-7 bg-purple-600 hover:bg-purple-500 font-cyber font-bold px-8 py-4 rounded-2xl text-lg">✨ Voir l'offre et commander</button>
   <br>
   <button onclick="openGuide()" class="mt-4 text-cyan-400 underline text-sm">📖 Voir le guide complet (6 étapes)</button>
 </header>
@@ -69,57 +70,122 @@ input,select,textarea{color-scheme:dark;}
     <button type="button" onclick="document.getElementById('expressImage').click()" id="expressImgBtn" class="mt-3 w-full font-cyber bg-gray-800 border border-cyan-500/40 py-3 rounded-xl">🖼️ Ajouter une image / capture de menu</button>
     <input type="file" id="expressImage" accept="image/*" class="hidden" onchange="handleExpressImage(this)">
     <div id="expressPreview" class="mt-3 hidden"><img id="previewImg" class="max-h-40 rounded-lg mx-auto" alt="aperçu"></div>
+    <p id="expressInfo" class="text-cyan-300 text-sm mt-2 hidden"></p>
     <p id="expressError" class="text-red-400 text-sm mt-2 hidden"></p>
   </div>
 
-  <!-- ÉTAPE 1 : TYPE DE SITE -->
+  <!-- ===== FORMULAIRE DE PERSONNALISATION ===== -->
   <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">🎯 1. QUEL TYPE DE SITE ?</h2>
-    <select id="type" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none">
-      <option value="">— Choisis le type de site —</option>
+    <h2 class="font-cyber text-purple-400 font-bold mb-1">🛠️ CRÉER MON SITE SELON MES BESOINS</h2>
+    <p class="text-gray-400 text-sm mb-5">Seul le <b class="text-white">nom</b> est obligatoire. Remplis ce que tu connais — l'IA s'occupe du reste.</p>
+
+    <label class="block text-sm text-gray-400 mb-1">Nom de l'entreprise ou du projet *</label>
+    <input id="bizName" type="text" placeholder="Ex : Tiramisu Spot" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+
+    <label class="block text-sm text-gray-400 mb-1">Secteur d'activité</label>
+    <select id="secteur" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+      <option value="">— Choisis ton secteur —</option>
+      <option value="tourisme">🌍 Tourisme / Agence de voyage</option>
+      <option value="hôtel">🏨 Hôtel / Résidence</option>
       <option value="restaurant">🍽️ Restaurant / Café / Fast-food</option>
-      <option value="beauty">💇 Salon de beauté / Coiffure / Barbier</option>
-      <option value="ecole">🎓 École / Formation / Centre de cours</option>
       <option value="boutique">🛍️ Boutique / Vêtements</option>
-      <option value="portfolio">📷 Photographe / Artiste / Portfolio</option>
-      <option value="services">🛠️ Services / Entreprise</option>
+      <option value="école">🎓 École / Formation</option>
+      <option value="beauté">💇 Beauté / Coiffure / Barbier</option>
+      <option value="santé">🏥 Santé / Clinique / Cabinet</option>
       <option value="autre">✨ Autre</option>
     </select>
-  </div>
 
-  <!-- ÉTAPE 2 : INFOS -->
-  <div class="section-card rounded-2xl p-7 fade-in reveal">
-    <h2 class="font-cyber text-purple-400 font-bold mb-4">📝 2. TON BUSINESS</h2>
-    <label class="block text-sm text-gray-400 mb-1">Nom du business *</label>
-    <input id="businessName" type="text" placeholder="Ex : Tiramisu Spot" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
-    <label class="block text-sm text-gray-400 mb-1">Clientèle cible</label>
-    <input id="target" type="text" placeholder="Ex : jeunes, familles, étudiants…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
-    <label class="block text-sm text-gray-400 mb-1">Décris ton activité en détail</label>
+    <label class="block text-sm text-gray-400 mb-1">Description de l'activité</label>
     <div class="relative">
-      <textarea id="details" rows="5" placeholder="Services, prix, horaires, adresse, WhatsApp, couleurs préférées…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 pr-12 text-white focus:border-purple-400 outline-none"></textarea>
-      <button type="button" id="voiceBtn" onclick="toggleVoice()" title="Dictée vocale" class="absolute right-2 bottom-2 bg-purple-600 rounded-full w-10 h-10 text-lg">🎙️</button>
+      <textarea id="description" rows="4" placeholder="Services, produits, ce qui te rend unique…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 pr-12 text-white focus:border-purple-400 outline-none mb-4"></textarea>
+      <button type="button" id="voiceBtn" onclick="toggleVoice()" title="Dictée vocale" class="absolute right-2 bottom-6 bg-purple-600 rounded-full w-10 h-10 text-lg">🎙️</button>
     </div>
     <p id="voiceStatus" class="text-cyan-300 text-xs mt-1 hidden">🎙️ Écoute… parle maintenant</p>
+
+    <label class="block text-sm text-gray-400 mb-1">Objectif du site</label>
+    <select id="objectif" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+      <option value="">— Choisis l'objectif principal —</option>
+      <option value="présenter">🏢 Présenter l'entreprise</option>
+      <option value="demandes">📩 Recevoir des demandes / devis</option>
+      <option value="réservation">📅 Obtenir des réservations</option>
+      <option value="vendre">🛒 Vendre des produits</option>
+      <option value="autre">✨ Autre</option>
+    </select>
+
+    <label class="block text-sm text-gray-400 mb-1">Type de site souhaité</label>
+    <div class="flex gap-3 mb-4">
+      <label class="flex-1 flex items-center gap-2 border border-purple-500/40 rounded-xl px-4 py-3 cursor-pointer text-sm"><input type="radio" name="typeSite" value="onepage" checked> 📄 Page unique</label>
+      <label class="flex-1 flex items-center gap-2 border border-purple-500/40 rounded-xl px-4 py-3 cursor-pointer text-sm"><input type="radio" name="typeSite" value="multi"> 🗂️ Plusieurs pages</label>
+    </div>
+
+    <label class="block text-sm text-gray-400 mb-2">Pages souhaitées</label>
+    <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="Accueil" checked> Accueil</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="À propos"> À propos</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="Services"> Services / Excursions</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="Tarifs"> Tarifs</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="Galerie"> Galerie</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="FAQ"> FAQ</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="pages" value="Contact"> Contact</label>
+    </div>
+
+    <label class="block text-sm text-gray-400 mb-1">Coordonnées à afficher sur le site</label>
+    <input id="tel" type="tel" placeholder="Téléphone (ex : 77 12 34 56)" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-2">
+    <input id="whatsapp" type="tel" placeholder="WhatsApp — les boutons du site pointeront vers ce numéro *" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-2">
+    <input id="adresse" type="text" placeholder="Adresse" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-2">
+    <input id="email" type="email" placeholder="E-mail" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+
+    <label class="block text-sm text-gray-400 mb-1">Langue du site</label>
+    <select id="langue" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+      <option value="français">🇫🇷 Français</option>
+      <option value="arabe">🇸🇴 Arabe</option>
+      <option value="anglais">🇬🇧 Anglais</option>
+      <option value="bilingue français-arabe">🇫🇷🇸🇴 Bilingue français-arabe</option>
+      <option value="autre">✨ Autre</option>
+    </select>
+
+    <label class="block text-sm text-gray-400 mb-1">Couleurs ou style visuel souhaité</label>
+    <input id="style" type="text" placeholder="Ex : bleu et or, moderne et épuré, luxe…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+
+    <label class="block text-sm text-gray-400 mb-2">Fonctionnalités souhaitées</label>
+    <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Bouton WhatsApp" checked> Bouton WhatsApp</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Formulaire de contact"> Formulaire de contact</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Demande de réservation"> Demande de réservation</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Galerie photo"> Galerie photo</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Carte / localisation"> Carte / localisation</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Menu"> Menu</label>
+      <label class="checkline border border-purple-500/30 rounded-lg p-2"><input type="checkbox" name="fonct" value="Catalogue de produits"> Catalogue de produits</label>
+    </div>
+
+    <label class="block text-sm text-gray-400 mb-1">Logo et photos (liens URL)</label>
+    <input id="logoUrl" type="text" placeholder="Lien de ton logo (https://…)" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-2">
+    <input id="photosUrls" type="text" placeholder="Liens de tes photos, séparés par des virgules (https://…, https://…)" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-4">
+    <p class="text-gray-500 text-xs mb-4">💡 Tu n'as pas de liens ? Envoie tes images sur WhatsApp après ta commande, on les intègre pour toi.</p>
+
+    <label class="block text-sm text-gray-400 mb-1">Autre besoin ou précision</label>
+    <textarea id="precisions" rows="3" placeholder="Tout ce qui n'est pas couvert au-dessus…" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none"></textarea>
   </div>
 
-  <!-- ÉTAPE 3 : GÉNÉRER -->
-  <button type="button" id="generateBtn" onclick="generateSite()" class="btn-cta w-full font-cyber font-black text-lg bg-gradient-to-r from-purple-600 to-cyan-500 py-4 rounded-2xl">🚀 GÉNÉRER MON SITE</button>
+  <!-- BOUTON GÉNÉRER -->
+  <button type="button" id="generateBtn" onclick="generateSite()" class="btn-cta w-full font-cyber font-black text-lg bg-gradient-to-r from-purple-600 to-cyan-500 py-4 rounded-2xl">🚀 GÉNÉRER MON APERÇU GRATUIT</button>
   <p id="genError" class="text-red-400 text-sm text-center hidden"></p>
+  <p class="text-gray-500 text-xs text-center">L'aperçu est gratuit et sans engagement. Tu ne paies que si tu commandes.</p>
 
   <!-- FAQ -->
   <div class="section-card rounded-2xl p-7 fade-in reveal">
     <h2 class="font-cyber text-purple-400 font-bold mb-4">❓ QUESTIONS FRÉQUENTES</h2>
     <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
       <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Combien ça coûte ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">10 000 DJF — paiement unique par Waafi ou DahabPlus. Voir la page Commander pour toute l'offre.</p></div>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">10 000 DJF — paiement unique par Waafi ou DahabPlus. L'aperçu du site est gratuit et sans engagement. Voir la page Commander pour toute l'offre.</p></div>
     </div>
     <div class="faq-item border border-purple-500/20 rounded-xl mb-2">
-      <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je reçois quoi exactement ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Un site web complet (mobile + ordinateur) ET une application Android (APK) téléchargeable avec le nom de ton business.</p></div>
+      <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je reçois quoi exactement après paiement ? <span class="faq-chevron">▾</span></button>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Un site web complet (mobile + ordinateur) ET une application Android (APK) téléchargeable avec le nom de ton business, livrés sur ton WhatsApp en moins de 24h après confirmation du paiement.</p></div>
     </div>
     <div class="faq-item border border-purple-500/20 rounded-xl">
       <button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center" onclick="this.parentElement.classList.toggle('open')">Je peux modifier après génération ? <span class="faq-chevron">▾</span></button>
-      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Oui — une modification gratuite est incluse après livraison.</p></div>
+      <div class="faq-answer px-4 text-gray-400 text-sm"><p class="pb-4">Oui — modifie tes réponses et régénère l'aperçu autant de fois que tu veux avant de commander. 1 modification gratuite est incluse après livraison.</p></div>
     </div>
   </div>
 </main>
@@ -127,19 +193,28 @@ input,select,textarea{color-scheme:dark;}
 <!-- ===== VUE RÉSULTAT ===== -->
 <main id="resultView" class="max-w-2xl mx-auto px-4 pb-20 space-y-6 hidden">
   <div class="section-card rounded-2xl p-7 text-center">
-    <h2 class="font-cyber text-green-400 font-bold text-xl mb-2">✅ TON SITE EST PRÊT !</h2>
-    <p class="text-gray-400 text-sm mb-4">Voici un aperçu. Tu peux maintenant générer ton application Android.</p>
+    <h2 class="font-cyber text-green-400 font-bold text-xl mb-2">✅ TON APERÇU EST PRÊT !</h2>
+    <p class="text-gray-400 text-sm mb-4">Ceci est un aperçu non publié. Tu peux modifier tes réponses, régénérer, ou commander pour recevoir ton site final + ton App Android.</p>
     <iframe id="sitePreview" class="w-full h-96 rounded-xl border border-purple-500/30 bg-white" title="Aperçu du site"></iframe>
-    <button type="button" id="apkBtn" onclick="buildApk()" class="btn-cta mt-5 w-full font-cyber font-bold bg-cyan-500 text-black py-4 rounded-2xl">📱 GÉNÉRER MON APP ANDROID (APK)</button>
-    <div id="apkStatus" class="hidden mt-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-sm text-left"></div>
-    <div id="apkResult" class="hidden mt-4">
-      <a id="apkLink" href="#" class="btn-cta block w-full font-cyber font-bold bg-green-500 text-black py-4 rounded-2xl text-center">⬇️ TÉLÉCHARGER L'APK</a>
-      <div class="mt-4 flex flex-col items-center gap-2">
-        <div id="qrcode" class="bg-white p-3 rounded-xl"></div>
-        <p class="text-gray-400 text-xs">Scanne pour télécharger sur ton téléphone</p>
+    <div class="grid gap-3 mt-5">
+      <button type="button" onclick="backToForm()" class="btn-cta w-full font-cyber font-bold bg-gray-800 border border-purple-500/40 py-3 rounded-2xl">✏️ MODIFIER MES RÉPONSES</button>
+      <button type="button" id="regenBtn" onclick="generateSite(true)" class="btn-cta w-full font-cyber font-bold bg-purple-600 py-3 rounded-2xl">🔄 RÉGÉNÉRER L'APERÇU</button>
+      <button type="button" onclick="goTunnel()" class="btn-cta w-full font-cyber font-black text-lg bg-gradient-to-r from-purple-600 to-cyan-500 py-4 rounded-2xl">✨ PASSER À LA COMMANDE</button>
+    </div>
+
+    <div class="mt-6 border-t border-purple-500/20 pt-5">
+      <p class="text-gray-400 text-xs mb-3">📱 Déjà client avec un code d'activation ? Génère ton App Android (APK) :</p>
+      <input id="actCode" type="text" placeholder="Code d'activation (reçu après paiement)" class="w-full bg-gray-900 border border-purple-500/40 rounded-lg p-3 text-white focus:border-purple-400 outline-none mb-3">
+      <button type="button" id="apkBtn" onclick="buildApk()" class="btn-cta w-full font-cyber font-bold bg-cyan-500 text-black py-3 rounded-2xl">📱 GÉNÉRER MON APP ANDROID (APK)</button>
+      <div id="apkStatus" class="hidden mt-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-sm text-left"></div>
+      <div id="apkResult" class="hidden mt-4">
+        <a id="apkLink" href="#" class="btn-cta block w-full font-cyber font-bold bg-green-500 text-black py-4 rounded-2xl text-center">⬇️ TÉLÉCHARGER L'APK</a>
+        <div class="mt-4 flex flex-col items-center gap-2">
+          <div id="qrcode" class="bg-white p-3 rounded-xl"></div>
+          <p class="text-gray-400 text-xs">Scanne pour télécharger sur ton téléphone</p>
+        </div>
       </div>
     </div>
-    <button type="button" onclick="backToForm()" class="mt-5 text-purple-400 underline text-sm">← Modifier ma demande</button>
   </div>
 </main>
 
@@ -152,15 +227,15 @@ input,select,textarea{color-scheme:dark;}
         <button onclick="closeGuide()" class="text-gray-400 text-2xl leading-none">✕</button>
       </div>
       <ol class="space-y-4 text-gray-300 text-sm">
-        <li><b class="text-purple-300">1.</b> <b>Choisis un style</b> avec les boutons 🍽️ 💇 🎓 en haut, ou laisse sur « Auto ».</li>
+        <li><b class="text-purple-300">1.</b> <b>Choisis un style</b> avec les boutons 🍽️ 💇 🎓 en haut (facultatif).</li>
         <li><b class="text-purple-300">2.</b> <b>Mode Express (facultatif)</b> : colle ton menu ou ta description, l'IA remplit le formulaire.</li>
-        <li><b class="text-purple-300">3.</b> <b>Remplis le formulaire</b> : type de site, nom du business, clientèle, détails (prix, horaires, WhatsApp…).</li>
+        <li><b class="text-purple-300">3.</b> <b>Remplis le formulaire</b> : seul le nom est obligatoire. Plus tu donnes de détails (WhatsApp, pages, couleurs…), plus le site est précis.</li>
         <li><b class="text-purple-300">4.</b> Ou utilise le <b>micro 🎙️</b> pour dicter ta description en français.</li>
-        <li><b class="text-purple-300">5.</b> Clique <b>« Générer mon site »</b> et patiente 1 à 3 minutes.</li>
-        <li><b class="text-purple-300">6.</b> Vérifie l'aperçu → clique <b>« App Android (APK) »</b> → télécharge et partage.</li>
+        <li><b class="text-purple-300">5.</b> Clique <b>« Générer mon aperçu »</b> et patiente 1 à 3 minutes.</li>
+        <li><b class="text-purple-300">6.</b> Vérifie l'aperçu → modifie ou régénère si besoin → <b>« Passer à la commande »</b>. Tu recevras ton site final + ton App Android sur WhatsApp.</li>
       </ol>
       <div class="mt-6 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-sm text-gray-300">
-        💳 <b>Paiement :</b> 10 000 DJF par Waafi ou DahabPlus. Clique « Créer mon site maintenant » en haut pour voir l'offre complète.
+        💳 <b>Paiement :</b> 10 000 DJF par Waafi ou DahabPlus. L'aperçu est 100 % gratuit.
       </div>
       <button onclick="closeGuide();document.getElementById('formView').scrollIntoView({behavior:'smooth'})" class="btn-cta mt-6 w-full font-cyber font-bold bg-purple-600 py-3 rounded-xl">🚀 Commencer maintenant</button>
     </div>
@@ -174,27 +249,84 @@ input,select,textarea{color-scheme:dark;}
 
 <script>
 /* ==========================================
-   CONFIG — VÉRIFIER CES 4 NOMS DANS server.js
-   Si un nom diffère, corrige-le ICI uniquement
+   CONFIG — Noms des routes API (server.js)
    ========================================== */
 const API = {
   parseMenu:  '/api/parse-menu',
+  parseImage: '/api/parse-menu-image',
   generate:   '/api/generate',
   transcribe: '/api/transcribe',
-  apk:        '/api/build-apk'
+  apk:        '/api/generate-apk',
+  apkStatus:  '/api/apk-status/',
+  apkDownload:'/api/apk-download/'
 };
 
 let selectedTemplate = 'auto';
 let expressImageB64 = null;
+let expressProduits = [];
 let lastGeneratedHtml = '';
+let apkPollTimer = null;
+
+/* --- Sauvegarde locale (persistance entre les étapes) --- */
+const STORE_KEY = 'p2s_project';
+
+function val(id){ return (document.getElementById(id) || {}).value || ''; }
+function checked(name){ return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(i=>i.value); }
+
+function saveProject(){
+  const p = collectProject();
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch(e){}
+}
+function loadProject(){
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch(e){}
+  if(!p) return;
+  const set = (id,v)=>{ const el=document.getElementById(id); if(el && v!=null) el.value=v; };
+  set('bizName',p.nom); set('secteur',p.secteur); set('description',p.description);
+  set('objectif',p.objectif); set('tel',p.telephone); set('whatsapp',p.whatsapp);
+  set('adresse',p.adresse); set('email',p.email); set('langue',p.langue);
+  set('style',p.couleurs); set('logoUrl',p.logo); set('photosUrls',p.photos);
+  set('precisions',p.precisions);
+  if(p.typeSite){ const r=document.querySelector('input[name="typeSite"][value="'+p.typeSite+'"]'); if(r) r.checked=true; }
+  if(Array.isArray(p.pages)){ document.querySelectorAll('input[name="pages"]').forEach(i=>{ i.checked = p.pages.includes(i.value) || (i.value==='Accueil' && !p.pages.length); }); }
+  if(Array.isArray(p.fonctionnalites)){ document.querySelectorAll('input[name="fonct"]').forEach(i=>{ i.checked = p.fonctionnalites.includes(i.value); }); }
+  if(Array.isArray(p.produits) && p.produits.length){ expressProduits = p.produits; showExpressInfo(p.produits.length + ' produit(s) détecté(s) — ils seront affichés sur ton site.'); }
+}
+function collectProject(){
+  return {
+    nom: val('bizName').trim(),
+    secteur: val('secteur'),
+    description: val('description').trim(),
+    objectif: val('objectif'),
+    typeSite: (document.querySelector('input[name="typeSite"]:checked')||{}).value || 'onepage',
+    pages: checked('pages'),
+    telephone: val('tel').trim(),
+    whatsapp: val('whatsapp').trim(),
+    adresse: val('adresse').trim(),
+    email: val('email').trim(),
+    langue: val('langue'),
+    couleurs: val('style').trim(),
+    fonctionnalites: checked('fonct'),
+    logo: val('logoUrl').trim(),
+    photos: val('photosUrls').trim(),
+    precisions: val('precisions').trim(),
+    produits: expressProduits,
+    template: selectedTemplate,
+    preview: true
+  };
+}
+document.querySelectorAll('#formView input, #formView select, #formView textarea').forEach(el=>{
+  el.addEventListener('change', saveProject);
+});
 
 /* --- Galerie de templates (chips) --- */
 function pickTemplate(btn){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
   btn.classList.add('selected');
   selectedTemplate = btn.dataset.template;
-  const typeSel = document.getElementById('type');
-  if(typeSel) typeSel.value = selectedTemplate;
+  const s = document.getElementById('secteur');
+  if(s) s.value = selectedTemplate;
+  saveProject();
   document.getElementById('formView').scrollIntoView({behavior:'smooth'});
 }
 
@@ -215,21 +347,59 @@ function handleExpressImage(input){
   r.readAsDataURL(f);
 }
 
+function showExpressInfo(msg){
+  const el = document.getElementById('expressInfo');
+  el.textContent = '✅ ' + msg;
+  el.classList.remove('hidden');
+}
+
+function mapTypeToSecteur(t){
+  t = (t||'').toLowerCase();
+  if(t.indexOf('restaurant')>-1 || t.indexOf('fast')>-1 || t.indexOf('café')>-1) return 'restaurant';
+  if(t.indexOf('hôtel')>-1) return 'hôtel';
+  if(t.indexOf('tourisme')>-1 || t.indexOf('voyage')>-1) return 'tourisme';
+  if(t.indexOf('boutique')>-1 || t.indexOf('e-commerce')>-1) return 'boutique';
+  if(t.indexOf('école')>-1 || t.indexOf('formation')>-1) return 'école';
+  if(t.indexOf('beauté')>-1 || t.indexOf('coiffure')>-1) return 'beauté';
+  if(t.indexOf('santé')>-1 || t.indexOf('clinique')>-1) return 'santé';
+  return '';
+}
+
+function applyExpressData(data){
+  if(!data || !data.infos) return;
+  const infos = data.infos;
+  if(infos.nom) document.getElementById('bizName').value = infos.nom;
+  const mapped = mapTypeToSecteur(infos.type);
+  if(mapped) document.getElementById('secteur').value = mapped;
+  if(infos.cible) document.getElementById('target'); // compat
+  if(infos.details){
+    const d = document.getElementById('description');
+    if(d.value) d.value = d.value + '\n' + infos.details; else d.value = infos.details;
+  }
+  if(infos.couleurs) document.getElementById('style').value = infos.couleurs;
+  const produits = (data.produits || []).filter(p => p && p.nom).map(p => ({ nom: p.nom, prix: p.prix || 'Sur demande', desc: p.desc || '', image: p.photo || '' }));
+  expressProduits = produits;
+  if(produits.length) showExpressInfo(produits.length + ' produit(s) détecté(s) — ils seront affichés sur ton site.');
+  saveProject();
+}
+
 async function fillExpress(){
-  const text = document.getElementById('expressText').value.trim();
+  const text = val('expressText').trim();
   const err = document.getElementById('expressError');
   err.classList.add('hidden');
   if(!text && !expressImageB64){err.textContent='⚠️ Colle un texte ou ajoute une image.';err.classList.remove('hidden');return;}
   const btn = document.getElementById('expressBtn');
   btn.disabled = true; btn.textContent = '⏳ Analyse en cours…';
   try{
-    const res = await fetch(API.parseMenu,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,image:expressImageB64})});
+    let res;
+    if(expressImageB64 && !text){
+      res = await fetch(API.parseImage,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:expressImageB64})});
+    } else {
+      res = await fetch(API.parseMenu,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({menu:text})});
+    }
     const data = await res.json();
-    if(data.success){
-      if(data.type) document.getElementById('type').value = data.type;
-      if(data.businessName) document.getElementById('businessName').value = data.businessName;
-      if(data.target) document.getElementById('target').value = data.target;
-      if(data.details) document.getElementById('details').value = data.details;
+    if(data.success && data.data){
+      applyExpressData(data.data);
       document.getElementById('formView').scrollIntoView({behavior:'smooth'});
     } else { err.textContent='⚠️ '+(data.error||"L'IA n'a pas compris, remplis à la main."); err.classList.remove('hidden'); }
   }catch(e){ err.textContent='⚠️ Erreur réseau, réessaie.'; err.classList.remove('hidden'); }
@@ -252,18 +422,22 @@ async function toggleVoice(){
       status.classList.add('hidden');
       btn.textContent = '🎙️';
       const blob = new Blob(audioChunks,{type:'audio/webm'});
-      const fd = new FormData();
-      fd.append('audio', blob);
       btn.textContent = '⏳';
-      try{
-        const res = await fetch(API.transcribe,{method:'POST',body:fd});
-        const data = await res.json();
-        if(data.success && data.text){
-          const d = document.getElementById('details');
-          d.value = (d.value ? d.value + ' ' : '') + data.text;
-        }
-      }catch(e){}
-      btn.textContent = '🎙️';
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const b64 = String(reader.result).split(',')[1] || '';
+        try{
+          const res = await fetch(API.transcribe,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({audio:b64})});
+          const data = await res.json();
+          if(data.success && data.text){
+            const d = document.getElementById('description');
+            d.value = (d.value ? d.value + ' ' : '') + data.text;
+            saveProject();
+          }
+        }catch(e){}
+        btn.textContent = '🎙️';
+      };
+      reader.readAsDataURL(blob);
     };
     mediaRecorder.start();
     status.classList.remove('hidden');
@@ -272,31 +446,34 @@ async function toggleVoice(){
 }
 
 /* --- Génération --- */
-async function generateSite(){
+async function generateSite(isRegen){
   const err = document.getElementById('genError');
   err.classList.add('hidden');
-  const payload = {
-    type: document.getElementById('type').value || selectedTemplate,
-    businessName: document.getElementById('businessName').value.trim(),
-    target: document.getElementById('target').value.trim(),
-    details: document.getElementById('details').value.trim(),
-    template: selectedTemplate
-  };
-  if(!payload.businessName){err.textContent='⚠️ Mets au moins le nom de ton business.';err.classList.remove('hidden');return;}
-  const btn = document.getElementById('generateBtn');
+  const payload = collectProject();
+  if(!payload.nom){err.textContent='⚠️ Mets au moins le nom de ton entreprise ou projet.';err.classList.remove('hidden');return;}
+  if(payload.whatsapp && !/^[0-9+\s]{6,}$/.test(payload.whatsapp)){err.textContent='⚠️ Numéro WhatsApp invalide (chiffres uniquement).';err.classList.remove('hidden');return;}
+  const btn = isRegen ? document.getElementById('regenBtn') : document.getElementById('generateBtn');
+  const oldText = btn.textContent;
   btn.disabled = true; btn.textContent = '⏳ Génération en cours (1-3 min)…';
   try{
     const res = await fetch(API.generate,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data = await res.json();
     if(data.success && data.html){
       lastGeneratedHtml = data.html;
+      saveProject();
       document.getElementById('sitePreview').srcdoc = data.html;
       document.getElementById('formView').classList.add('hidden');
       document.getElementById('resultView').classList.remove('hidden');
       window.scrollTo({top:0,behavior:'smooth'});
-    } else { err.textContent='⚠️ '+(data.error||'Génération échouée, réessaie.'); err.classList.remove('hidden'); }
+    } else if(data.paywall){
+      err.textContent = '⚠️ La génération complète nécessite un abonnement. Passe commande sur la page Commander.';
+      err.classList.remove('hidden');
+    } else {
+      err.textContent='⚠️ '+(data.error||'Génération échouée, réessaie.');
+      err.classList.remove('hidden');
+    }
   }catch(e){ err.textContent='⚠️ Erreur réseau, réessaie.'; err.classList.remove('hidden'); }
-  btn.disabled = false; btn.textContent = '🚀 GÉNÉRER MON SITE';
+  btn.disabled = false; btn.textContent = oldText;
 }
 
 function backToForm(){
@@ -304,32 +481,68 @@ function backToForm(){
   document.getElementById('formView').classList.remove('hidden');
 }
 
-/* --- APK --- */
-async function buildApk(){
+function goTunnel(){
+  saveProject();
+  location.href = '/tunnel.html';
+}
+
+/* --- APK (flux réel : buildId → polling → téléchargement) --- */
+function setApkStatus(msg, isErr){
   const box = document.getElementById('apkStatus');
-  const btn = document.getElementById('apkBtn');
-  box.classList.remove('hidden'); box.className = 'mt-4 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-sm';
-  box.textContent = '⏳ Construction de l\'APK en cours… (5-10 min)';
-  btn.disabled = true;
-  try{
-    const res = await fetch(API.apk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({html:lastGeneratedHtml,businessName:document.getElementById('businessName').value.trim()})});
-    const data = await res.json();
-    if(data.success && data.url){
-      box.textContent = '✅ APK prête ! Télécharge ci-dessous.';
+  box.classList.remove('hidden');
+  box.className = 'mt-4 p-4 rounded-xl text-sm text-left ' + (isErr ? 'bg-red-500/10 border border-red-500/30 text-red-300' : 'bg-purple-500/10 border border-purple-500/30');
+  box.textContent = msg;
+}
+
+function pollApk(buildId, tries){
+  if(tries > 45){ setApkStatus('⏱️ Le build prend plus de temps que prévu. Réessaie dans quelques minutes.', true); return; }
+  fetch(API.apkStatus + buildId).then(r=>r.json()).then(data=>{
+    if(!data.success){ setApkStatus('⚠️ '+(data.error||'Erreur de suivi.'), true); return; }
+    if(data.status === 'finished' && data.downloadUrl){
+      setApkStatus('✅ APK prête ! Télécharge ci-dessous.');
+      const full = location.origin + data.downloadUrl;
       const link = document.getElementById('apkLink');
-      link.href = data.url;
+      link.href = full;
       document.getElementById('apkResult').classList.remove('hidden');
-      new QRCode(document.getElementById('qrcode'),{text:data.url,width:140,height:140});
-    } else {
-      box.textContent = '⚠️ '+(data.error||'Build échoué, réessaie.');
+      const qr = document.getElementById('qrcode');
+      qr.innerHTML = '';
+      new QRCode(qr,{text:full,width:140,height:140});
+      return;
     }
-  }catch(e){ box.textContent = '⚠️ Erreur réseau, réessaie.'; }
+    if(data.status === 'errored'){ setApkStatus('⚠️ Compilation échouée. Contacte-nous sur WhatsApp.', true); return; }
+    setApkStatus('⏳ Compilation en cours… (~5 min) — essai ' + tries + '/45');
+    apkPollTimer = setTimeout(()=>pollApk(buildId, tries+1), 8000);
+  }).catch(()=>{ setApkStatus('⚠️ Erreur réseau, réessaie.', true); });
+}
+
+async function buildApk(){
+  const btn = document.getElementById('apkBtn');
+  const code = val('actCode').trim();
+  if(!lastGeneratedHtml){ setApkStatus('⚠️ Génère d\'abord un aperçu.', true); return; }
+  btn.disabled = true;
+  setApkStatus('⏳ Lancement de la compilation…');
+  try{
+    const res = await fetch(API.apk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({html:lastGeneratedHtml, nom:val('bizName').trim(), code:code})});
+    const data = await res.json();
+    if(data.paywall){
+      setApkStatus('🔒 Code d\'activation requis. Entre ton code (reçu après paiement) et réessaie.', true);
+    } else if(data.success && data.buildId){
+      if(apkPollTimer) clearTimeout(apkPollTimer);
+      pollApk(data.buildId, 1);
+    } else {
+      setApkStatus('⚠️ '+(data.error||'Build échoué, réessaie.'), true);
+    }
+  }catch(e){ setApkStatus('⚠️ Erreur réseau, réessaie.', true); }
   btn.disabled = false;
 }
 
 /* --- Animations au scroll --- */
 const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* --- Restauration des réponses sauvegardées --- */
+loadProject();
 </script>
 </body>
 </html>
+
