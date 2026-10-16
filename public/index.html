@@ -195,7 +195,8 @@ input,select,textarea{color-scheme:dark;}
   <div class="section-card rounded-2xl p-7 text-center">
     <h2 class="font-cyber text-green-400 font-bold text-xl mb-2">✅ TON APERÇU EST PRÊT !</h2>
     <p class="text-gray-400 text-sm mb-4">Ceci est un aperçu non publié. Tu peux modifier tes réponses, régénérer, ou commander pour recevoir ton site final + ton App Android.</p>
-    <iframe id="sitePreview" class="w-full h-96 rounded-xl border border-purple-500/30 bg-white" title="Aperçu du site"></iframe>
+    <iframe id="sitePreview" class="w-full h-[70vh] rounded-xl border border-purple-500/30 bg-white" title="Aperçu du site"></iframe>
+    <button type="button" onclick="openPreviewFull()" class="btn-cta mt-3 w-full font-cyber font-bold bg-gray-800 border border-cyan-500/40 py-3 rounded-2xl">🔍 VOIR EN PLEIN ÉCRAN (nouvel onglet)</button>
     <div class="grid gap-3 mt-5">
       <button type="button" onclick="backToForm()" class="btn-cta w-full font-cyber font-bold bg-gray-800 border border-purple-500/40 py-3 rounded-2xl">✏️ MODIFIER MES RÉPONSES</button>
       <button type="button" id="regenBtn" onclick="generateSite(true)" class="btn-cta w-full font-cyber font-bold bg-purple-600 py-3 rounded-2xl">🔄 RÉGÉNÉRER L'APERÇU</button>
@@ -288,7 +289,7 @@ function loadProject(){
   set('style',p.couleurs); set('logoUrl',p.logo); set('photosUrls',p.photos);
   set('precisions',p.precisions);
   if(p.typeSite){ const r=document.querySelector('input[name="typeSite"][value="'+p.typeSite+'"]'); if(r) r.checked=true; }
-  if(Array.isArray(p.pages)){ document.querySelectorAll('input[name="pages"]').forEach(i=>{ i.checked = p.pages.includes(i.value) || (i.value==='Accueil' && !p.pages.length); }); }
+  if(Array.isArray(p.pages)){ document.querySelectorAll('input[name="pages"]').forEach(i=>{ i.checked = p.pages.includes(i.value); }); }
   if(Array.isArray(p.fonctionnalites)){ document.querySelectorAll('input[name="fonct"]').forEach(i=>{ i.checked = p.fonctionnalites.includes(i.value); }); }
   if(Array.isArray(p.produits) && p.produits.length){ expressProduits = p.produits; showExpressInfo(p.produits.length + ' produit(s) détecté(s) — ils seront affichés sur ton site.'); }
 }
@@ -371,7 +372,6 @@ function applyExpressData(data){
   if(infos.nom) document.getElementById('bizName').value = infos.nom;
   const mapped = mapTypeToSecteur(infos.type);
   if(mapped) document.getElementById('secteur').value = mapped;
-  if(infos.cible) document.getElementById('target'); // compat
   if(infos.details){
     const d = document.getElementById('description');
     if(d.value) d.value = d.value + '\n' + infos.details; else d.value = infos.details;
@@ -484,6 +484,14 @@ function backToForm(){
 function goTunnel(){
   saveProject();
   location.href = '/tunnel.html';
+}
+
+/* --- Aperçu plein écran --- */
+function openPreviewFull(){
+  if(!lastGeneratedHtml){ alert('Génère d\'abord un aperçu.'); return; }
+  const blob = new Blob([lastGeneratedHtml], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank');
 }
 
 /* --- APK (flux réel : buildId → polling → téléchargement) --- */
