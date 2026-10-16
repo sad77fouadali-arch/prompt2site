@@ -58,7 +58,8 @@ RÈGLES ABSOLUES (aucune exception) :
 9. Réponds UNIQUEMENT avec le code HTML complet, sans texte avant ou après, sans \`\`\`.
 10. N'INVENTE JAMAIS de prix, d'adresse, d'horaires, de services ou de promesses commerciales. Si une information n'est pas fournie dans le brief, omet la section ou utilise un texte générique sans chiffre.
 11. Rédige TOUT le site dans la langue demandée par le client (français par défaut).
-12. Les APPELS À L'ACTION dépendent de l'objectif du client indiqué dans le brief (réservation → "Demander une disponibilité" / "Réserver" ; demandes → "Demander un devis" / "Nous contacter" ; vente → "Commander" ; présentation → "Découvrir nos services" / "Nous contacter"). Un bouton WhatsApp clair doit toujours être visible.`;
+12. Les APPELS À L'ACTION dépendent de l'objectif du client indiqué dans le brief (réservation → "Demander une disponibilité" / "Réserver" ; demandes → "Demander un devis" / "Nous contacter" ; vente → "Commander" ; présentation → "Découvrir nos services" / "Nous contacter"). Un bouton WhatsApp clair doit toujours être visible.
+13. Si une adresse est fournie dans le brief, la section Contact DOIT inclure une carte Google Maps interactive de cette adresse exacte : <iframe src="https://maps.google.com/maps?q=L_ADRESSE&z=15&output=embed" class="w-full h-72 rounded-2xl border-0" loading="lazy"></iframe> (remplace L_ADRESSE par l'adresse fournie, espaces acceptés). Ajoute aussi un lien "Ouvrir dans Google Maps".`;
 
 // -------- PROMPT UTILISATEUR --------
 function buildUserPrompt(body) {
@@ -349,7 +350,7 @@ app.post('/api/parse-menu-image', async (req, res) => {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-                model: 'qwen/qwen3.8-27b',
+        model: 'qwen/qwen3.8-27b',
         messages: [
           { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commerçant à partir d\'une photo de menu, carte ou flyer. Tu réponds UNIQUEMENT avec un JSON valide, sans texte avant ni après, de cette forme exacte : {"infos":{"type":"...","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, téléphone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]}. Règles obligatoires : 1. LISTE EXHAUSTIVE : extrais TOUS les produits et services visibles sur la photo, un par un, sans en oublier aucun. 2. "desc" reprend la catégorie exacte du produit. 3. Dans "type", choisis UNE valeur parmi : Tourisme, Hôtel, Restaurant / Fast-food / Café, Boutique, École / Formation, Beauté / Coiffure, Santé / Clinique, Autre. 4. Extrais les vrais noms et prix exactement comme ils sont écrits, n\'invente rien.' },
           { role: 'user', content: [
@@ -422,3 +423,4 @@ app.get('/api/warm', (req, res) => {
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
+
