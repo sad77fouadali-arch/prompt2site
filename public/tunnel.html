@@ -72,12 +72,22 @@ const CONFIG = {
   </div>
 </section>
 
-<!-- ================= ÉTAPE 2 : PAIEMENT ================= -->
+<!-- ================= ÉTAPE 2 : RÉCAPITULATIF + PAIEMENT ================= -->
 <section id="step2" class="step max-w-2xl mx-auto px-4 py-10">
 
   <div class="text-center mb-8">
     <h1 class="font-cyber text-2xl md:text-3xl font-black">💳 ÉTAPE 2 — <span class="text-cyan-400">PAIEMENT</span></h1>
-    <p class="text-gray-400 mt-2">3 actions simples et c'est réglé</p>
+    <p class="text-gray-400 mt-2">Vérifie ton projet, paie, et confirme</p>
+  </div>
+
+  <!-- RÉCAPITULATIF DU PROJET -->
+  <div class="card p-7 mb-6" id="recapCard" style="display:none;">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-cyber text-purple-400 font-bold">📋 TON PROJET</h2>
+      <a href="/" class="text-cyan-400 underline text-sm">✏️ Modifier mon projet</a>
+    </div>
+    <div id="recapBody" class="space-y-2 text-sm text-gray-300"></div>
+    <div id="recapMissing" class="mt-4 p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-sm text-yellow-200" style="display:none;"></div>
   </div>
 
   <div class="card pay-card p-7 mb-6">
@@ -115,7 +125,7 @@ const CONFIG = {
 
   <div class="card p-7 mb-6 text-center" style="border-color:rgba(34,197,94,.4);">
     <h2 class="font-cyber text-green-400 font-bold mb-3">3️⃣ CONFIRME SUR WHATSAPP</h2>
-    <p class="text-gray-400 text-sm mb-5">Clique le bouton : un message pré-rempli s'ouvre avec tes infos + le mode de paiement que tu as utilisé. Envoie-le, et on active ta commande.</p>
+    <p class="text-gray-400 text-sm mb-5">Clique le bouton : un message pré-rempli s'ouvre avec tes infos + le récapitulatif de ton projet + le mode de paiement que tu as utilisé. Envoie-le, et on active ta commande.</p>
     <div class="flex gap-3 justify-center mb-5">
       <label class="flex items-center gap-2 border border-green-500/40 rounded-xl px-4 py-2 cursor-pointer text-sm"><input type="radio" name="paymode" value="Waafi" checked> 📱 Waafi</label>
       <label class="flex items-center gap-2 border border-cyan-500/40 rounded-xl px-4 py-2 cursor-pointer text-sm"><input type="radio" name="paymode" value="DahabPlus"> 🏦 DahabPlus</label>
@@ -139,13 +149,13 @@ const CONFIG = {
   <div class="card p-7 mb-6">
     <ol class="space-y-4 text-gray-300">
       <li><b class="text-purple-300">1.</b> 📩 Notre équipe <b>vérifie ton paiement</b> (quelques minutes à quelques heures).</li>
-      <li><b class="text-purple-300">2.</b> 🤖 On <b>génère ton site + ton App Android</b> avec l'IA.</li>
+      <li><b class="text-purple-300">2.</b> 🤖 On <b>génère ton site + ton App Android</b> avec l'IA, selon le projet que tu as décrit.</li>
       <li><b class="text-purple-300">3.</b> 📱 Tu reçois tout <b>sur ton WhatsApp</b> en moins de 24h.</li>
     </ol>
   </div>
 
   <div class="card p-7 mb-6 text-center" style="border-color:rgba(34,211,238,.45);">
-    <p class="text-gray-300 mb-4">💡 Conseil : prépare déjà ta description (menu, prix, horaires, photos) pour accélérer la livraison.</p>
+    <p class="text-gray-300 mb-4">💡 Si tu as un logo ou des photos à envoyer, c'est le moment — envoie-les sur WhatsApp pour qu'on les intègre.</p>
     <a href="https://wa.link/7gp8wm" class="btn-cta block w-full font-cyber font-bold bg-green-500 text-black py-4 rounded-2xl text-center">💬 NOUS ÉCRIRE SUR WHATSAPP</a>
   </div>
 
@@ -163,6 +173,72 @@ function goStep(n){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* --- Récapitulatif du projet (localStorage, rempli par index.html) --- */
+function getProject(){
+  try { return JSON.parse(localStorage.getItem('p2s_project') || 'null'); } catch(e){ return null; }
+}
+
+function buildRecap(){
+  const p = getProject();
+  const card = document.getElementById('recapCard');
+  const body = document.getElementById('recapBody');
+  const missing = document.getElementById('recapMissing');
+  if(!p || !p.nom){ card.style.display = 'none'; return; }
+  card.style.display = 'block';
+
+  const secteurTxt = { 'tourisme':'Tourisme / Agence', 'hôtel':'Hôtel', 'restaurant':'Restaurant', 'boutique':'Boutique', 'école':'École / Formation', 'beauté':'Beauté / Coiffure', 'santé':'Santé', 'autre':'Autre' };
+  const objectifTxt = { 'présenter':'Présenter l\'entreprise', 'demandes':'Recevoir des demandes', 'réservation':'Obtenir des réservations', 'vendre':'Vendre des produits', 'autre':'Autre' };
+
+  const lines = [];
+  lines.push(['🏷️ Nom', p.nom]);
+  if(p.secteur) lines.push(['🎯 Secteur', secteurTxt[p.secteur] || p.secteur]);
+  if(p.objectif) lines.push(['⭐ Objectif', objectifTxt[p.objectif] || p.objectif]);
+  lines.push(['📐 Type de site', p.typeSite === 'multi' ? 'Plusieurs pages' : 'Page unique']);
+  if(p.pages && p.pages.length) lines.push(['📄 Pages', p.pages.join(', ')]);
+  if(p.fonctionnalites && p.fonctionnalites.length) lines.push(['✨ Fonctionnalités', p.fonctionnalites.join(', ')]);
+  if(p.whatsapp) lines.push(['📱 WhatsApp affiché', p.whatsapp]);
+  if(p.langue) lines.push(['🌐 Langue', p.langue]);
+  if(p.couleurs) lines.push(['🎨 Style', p.couleurs]);
+  if(p.produits && p.produits.length) lines.push(['🛍️ Produits détectés', p.produits.length + ' produit(s)']);
+
+  body.innerHTML = lines.map(l => '<p><span class="text-gray-500">' + l[0] + ' :</span> <b>' + escapeHtml(String(l[1])) + '</b></p>').join('');
+
+  // Informations encore manquantes
+  const miss = [];
+  if(!p.whatsapp) miss.push('le numéro WhatsApp à afficher sur le site');
+  if(!p.description) miss.push('la description de ton activité');
+  if(!p.pages || !p.pages.length) miss.push('les pages souhaitées');
+  if(miss.length){
+    missing.style.display = 'block';
+    missing.innerHTML = '⚠️ <b>À préparer :</b> ' + miss.join(', ') + ' — tu peux les envoyer sur WhatsApp après ta commande.';
+  } else {
+    missing.style.display = 'none';
+  }
+
+  // Pré-remplit le nom du business si vide
+  if(!document.getElementById('clientBiz').value) document.getElementById('clientBiz').value = p.nom;
+}
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function recapForWhatsApp(){
+  const p = getProject();
+  if(!p || !p.nom) return '';
+  const parts = [];
+  parts.push('📋 PROJET : ' + p.nom);
+  if(p.secteur) parts.push('Secteur : ' + p.secteur);
+  if(p.objectif) parts.push('Objectif : ' + p.objectif);
+  parts.push('Type : ' + (p.typeSite === 'multi' ? 'Plusieurs pages' : 'Page unique'));
+  if(p.pages && p.pages.length) parts.push('Pages : ' + p.pages.join(', '));
+  if(p.fonctionnalites && p.fonctionnalites.length) parts.push('Fonctionnalités : ' + p.fonctionnalites.join(', '));
+  if(p.whatsapp) parts.push('WhatsApp à afficher : ' + p.whatsapp);
+  if(p.langue) parts.push('Langue : ' + p.langue);
+  if(p.couleurs) parts.push('Style : ' + p.couleurs);
+  if(p.description) parts.push('Description : ' + p.description.slice(0, 300));
+  if(p.produits && p.produits.length) parts.push('Produits : ' + p.produits.length + ' détecté(s)');
+  return parts.join('\n');
+}
+
 function confirmPayment(){
   const name = document.getElementById('clientName').value.trim();
   const phone = document.getElementById('clientPhone').value.trim();
@@ -171,10 +247,20 @@ function confirmPayment(){
   const err = document.getElementById('payError');
   if(!name || !phone || !biz){ err.classList.remove('hidden'); return; }
   err.classList.add('hidden');
-  const msg = "🚀 NOUVELLE COMMANDE Prompt2Site%0A%0A👤 Nom : " + encodeURIComponent(name) + "%0A📱 WhatsApp : " + encodeURIComponent(phone) + "%0A🏪 Business : " + encodeURIComponent(biz) + "%0A💰 Montant : " + encodeURIComponent(CONFIG.PRIX) + "%0A💳 Payé via : " + encodeURIComponent(mode) + "%0A%0A✅ Paiement envoyé. J'attends l'activation de ma commande !";
+  let msg = "🚀 NOUVELLE COMMANDE Prompt2Site%0A%0A👤 Nom : " + encodeURIComponent(name) + "%0A📱 WhatsApp : " + encodeURIComponent(phone) + "%0A🏪 Business : " + encodeURIComponent(biz) + "%0A💰 Montant : " + encodeURIComponent(CONFIG.PRIX) + "%0A💳 Payé via : " + encodeURIComponent(mode);
+  const recap = recapForWhatsApp();
+  if(recap) msg += "%0A%0A" + recap.split('\n').map(l=>encodeURIComponent(l)).join('%0A');
+  msg += "%0A%0A✅ Paiement envoyé. J'attends l'activation de ma commande !";
   window.open('https://wa.me/' + CONFIG.WHATSAPP + '?text=' + msg, '_blank');
   goStep(3);
 }
+
+/* Initialise le récap quand on arrive sur l'étape 2 */
+const _goStep = goStep;
+goStep = function(n){
+  _goStep(n);
+  if(n === 2) buildRecap();
+};
 </script>
 </body>
 </html>
