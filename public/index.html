@@ -633,8 +633,9 @@ function renderShortcuts(){
 function useShortcut(i){
   const s = SHORTCUTS[i];
   const p = document.getElementById('prompt');
-  if(s.key){ p.value = s.key; } else { p.value=''; }
-  updateSend(); focusBox();
+  draft.images = []; renderThumbs();
+  p.value = s.key || '';
+  updateSend(); saveDraft(); focusBox();
 }
 function renderGet(){
   document.getElementById('getGrid').innerHTML = GET_ITEMS[lang].map(g=>'<div class="get-item"><span>'+g[0]+'</span>'+g[1]+'</div>').join('');
@@ -953,7 +954,7 @@ async function toggleVoice(){
 }
 
 /* ================= INIT ================= */
-document.getElementById('prompt').value = draft.text || '';
+document.getElementById('prompt').value = '';
 renderThumbs(); updateSend(); applyLang();
 if(draft.html && draft.brief && draft.brief.nom){
   // Reprendre la session : afficher l'aperçu sauvegardé
