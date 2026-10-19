@@ -81,8 +81,8 @@ Tu DOIS générer UN SEUL fichier HTML complet avec Tailwind CSS (CDN).
 27. Structure narrative : promesse claire en haut -> preuves (produits, prix, photos) -> confiance (adresse, horaires) -> contact WhatsApp présent dans CHAQUE grande section.
 
 === STYLE SIGNATURE "ÉCLATANT" ===
-28. Si le brief concerne un restaurant, fast-food, café, pâtisserie, snack ou boutique alimentaire : applique le style ÉCLATANT : grands titres qui prennent la largeur (text-5xl md:text-7xl, un mot-clé en couleur accent), au moins 2 sections avec fond chaud (crème #fef3c7, caramel #d97706 clair, rose poudré, ou couleur de la marque), badges sticker ronds avec bordure épaisse blanche pour "Fait maison", "Best-seller" ou le prix star, photo vedette en grande taille avec ombre douce et légère rotation (entre -2deg et 2deg).
-29. Le site doit donner FAIM ou ENVIE : mots gourmands, gros plans visuels, ambiance vivante.`;
+29. Le site doit donner FAIM ou ENVIE : mots gourmands, gros plans visuels, ambiance vivante.
+30. PALETTES PAR UNIVERS : si le client n'a pas imposé de couleurs, choisis selon le secteur : café = crème/beige/marron chaud · fast-food/burger = noir profond + orange ou or · pâtisserie/donut = rose pastel + jaune · coffee artisanal = terracotta/caramel · pizza = vert + blanc · restaurant général = rouge brique ou orange appétissant · mode/accessoires = neutre + accent audacieux · beauté/coiffure = rose poudré ou lavande. Règle 60/30/10 toujours.`;
 
 // -------- PROMPT UTILISATEUR --------
 function buildUserPrompt(body) {
