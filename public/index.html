@@ -191,6 +191,44 @@ textarea.f-in{resize:vertical;min-height:80px}
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(20px);background:#0A0A0A;color:#fff;padding:13px 20px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s;z-index:80;max-width:88vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (prefers-color-scheme: dark){.toast{background:#F5F5F7;color:#0A0A0A}}
+
+/* ===== DÉMO 3D (chargée uniquement à l'ouverture) ===== */
+.demo-link{display:flex;align-items:center;justify-content:center;gap:8px;margin:16px auto 0;padding:10px 16px;border:1px solid var(--border);border-radius:999px;background:var(--card);font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+.demo-modal{display:none;position:fixed;inset:0;z-index:100;background:#070B16;color:#F8FAFC;overflow:hidden}
+.demo-modal.on{display:block}
+.demo-stage{position:absolute;inset:0}
+.demo-stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.demo-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px;background:linear-gradient(#070B16E6,transparent);pointer-events:none}
+.demo-top>div{max-width:520px}
+.demo-top h2{font-size:clamp(20px,4vw,32px);letter-spacing:-.03em}
+.demo-top p{margin-top:5px;color:#A8B3C7;font-size:12px;line-height:1.5}
+.demo-actions{display:flex;gap:8px;pointer-events:auto;flex:none}
+.demo-actions button{min-width:42px;height:42px;padding:0 12px;border:1px solid #FFFFFF26;border-radius:999px;background:#111827CC;color:#F8FAFC;font-weight:700;backdrop-filter:blur(10px)}
+.demo-actions button:hover{background:#1F2937}
+.demo-fallback{display:none;position:absolute;inset:0;place-items:center;padding:32px;text-align:center;color:#CBD5E1;line-height:1.6}
+.demo-fallback.on{display:grid}
+.demo-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:2;width:max-content;max-width:calc(100% - 32px);padding:9px 14px;border:1px solid #FFFFFF1F;border-radius:999px;background:#070B16B8;color:#A8B3C7;font-size:11px;text-align:center;pointer-events:none}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #38BDF8;outline-offset:3px}
+
+/* ===== MOBILE : deux lignes, aucun contrôle tronqué ===== */
+@media (max-width:640px){
+  .header-inner{padding:8px 12px;gap:8px;flex-wrap:wrap}
+  .logo{font-size:15px;min-width:0}
+  .logo-icon{width:28px;height:28px;flex:none}
+  .header-actions{margin-inline-start:auto;gap:6px!important}
+  .btn-start{padding:9px 12px;font-size:12px;white-space:nowrap}
+  .burger{width:38px;height:38px;flex:none}
+  .langs{order:3;width:100%;justify-content:stretch;padding:2px}
+  .langs button{flex:1;padding:6px 8px}
+  .menu{top:106px;left:12px;right:12px;min-width:0}
+  .hero{padding-top:148px}
+  .demo-top{padding:14px 12px}
+  .demo-top p{max-width:230px;font-size:11px}
+  .demo-actions{gap:5px}
+  .demo-actions button{height:38px;min-width:38px;padding:0 10px;font-size:12px}
+  .demo-actions .demo-reset{display:none}
+}
+@media (max-width:350px){.logo{font-size:13px}.btn-start{padding:9px 10px}.demo-top p{display:none}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -205,13 +243,14 @@ textarea.f-in{resize:vertical;min-height:80px}
       <button data-lang="en">EN</button>
       <button data-lang="ar">عربي</button>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div class="header-actions" style="display:flex;gap:8px;align-items:center">
       <button class="btn-start" onclick="focusBox()" data-i18n="start">Commencer</button>
       <button class="burger" onclick="toggleMenu()" aria-label="Menu">☰</button>
     </div>
   </div>
 </header>
-<nav class="menu" id="menu">
+<nav class="menu" id="menu" aria-label="Navigation principale">
+  <a href="#" onclick="closeMenu();openDemo3D();return false">🧊 <span data-i18n="m_demo">Démo 3D</span></a>
   <a href="#exemples" onclick="closeMenu()">✨ <span data-i18n="m_examples">Exemples</span></a>
   <a href="#tarifs" onclick="closeMenu()">💰 <span data-i18n="m_pricing">Tarifs</span></a>
   <a href="#" onclick="closeMenu();openGuide();return false">📖 <span data-i18n="m_guide">Guide</span></a>
@@ -255,6 +294,7 @@ textarea.f-in{resize:vertical;min-height:80px}
     </div>
   </div>
   <p class="box-help" data-i18n="box_help">Aperçu gratuit · Sans engagement · Tu ne paies que si tu commandes</p>
+  <button class="demo-link" onclick="openDemo3D()">🧊 <span data-i18n="demo_open">Découvrir la démo 3D</span></button>
 
   <!-- SHORTCUTS -->
   <div class="shortcuts" id="shortcuts"></div>
@@ -490,6 +530,24 @@ textarea.f-in{resize:vertical;min-height:80px}
   </div>
 </div>
 
+<!-- ===== DÉMO 3D : aperçu local, sans appel IA ni compilation APK ===== -->
+<div id="demoModal" class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+  <div id="demoStage" class="demo-stage" aria-label="Maquette de site web interactive en trois dimensions"></div>
+  <div class="demo-top">
+    <div>
+      <h2 id="demoTitle" data-i18n="demo_title">Ton idée prend volume.</h2>
+      <p data-i18n="demo_note">Démo visuelle locale : elle illustre le rendu 3D et ne remplace pas la génération IA.</p>
+    </div>
+    <div class="demo-actions">
+      <button id="demoPause" onclick="toggleDemo3D()" aria-label="Pause">Ⅱ</button>
+      <button class="demo-reset" onclick="resetDemo3D()" data-i18n="demo_reset">Recentrer</button>
+      <button onclick="closeDemo3D()" aria-label="Fermer">✕</button>
+    </div>
+  </div>
+  <div id="demoFallback" class="demo-fallback" data-i18n="demo_fallback">La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.</div>
+  <div class="demo-hint" data-i18n="demo_hint">Glisse pour tourner · Pince ou utilise la molette pour zoomer</div>
+</div>
+
 <script>
 /* ================= CONFIG — TES ENDPOINTS (inchangés) ================= */
 const API = {
@@ -507,7 +565,8 @@ const WHATSAPP_LINK = 'https://wa.link/7gp8wm';
 
 /* ================= i18n FR / EN / AR ================= */
 const I18N = {
-fr:{start:'Commencer',m_examples:'Exemples',m_pricing:'Tarifs',m_guide:'Guide',m_order:'Commander',
+fr:{start:'Commencer',m_examples:'Exemples',m_pricing:'Tarifs',m_guide:'Guide',m_order:'Commander',m_demo:'Démo 3D',
+	demo_open:'Découvrir la démo 3D',demo_title:'Ton idée prend volume.',demo_note:'Démo visuelle locale : elle illustre le rendu 3D et ne remplace pas la génération IA.',demo_reset:'Recentrer',demo_hint:'Glisse pour tourner · Pince ou utilise la molette pour zoomer',demo_fallback:'La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.',
 badge:'Des sites, mot par mot',h1:'Ton business en ligne commence ici.',
 sub:"Décris ton activité à l'IA, reçois ton site web et ton app Android en moins de 24h. Paiement Mobile Money.",
 box_label:'Décris ton business',ph1:'Décris le site que tu veux créer…',st_any:'Style : Auto',
@@ -518,7 +577,7 @@ f_pages:'Pages souhaitées',f_contact:'Coordonnées à afficher',f_colors:'Coule
 panel_gen:"Générer l'aperçu depuis le formulaire",
 gen_title:'Je crée ton site…',gen_eta:'1 à 3 minutes — reste sur cette page',gen_cancel:'Annuler',
 clarify_q:'Une dernière chose : c\u2019est quoi le nom de ton business ?',
-pv_title:'✅ Ton aperçu est prêt',pv_sub:'Aperçu gratuit et non publié — tu ne paies que si tu commandes. Une question ? Réponse sur WhatsApp en quelques minutes.',pv_full:...
+pv_title:'✅ Ton aperçu est prêt',pv_sub:'Aperçu gratuit et non publié — tu ne paies que si tu commandes. Une question ? Réponse sur WhatsApp en quelques minutes.',
 pv_full:'🔍 Plein écran',pv_modify:'✏️ Modifier avec l\u2019IA',pv_regen:'🔄 Régénérer',
 pv_order:'Commander mon site + app Android — 10 000 DJF',
 how_title:'Comment ça marche',how_lead:'3 étapes, zéro code.',
@@ -534,7 +593,8 @@ phr:['Décris le site que tu veux créer…','Ex : Restaurant Le Palmier à Djib
 err_net:'⚠️ Réseau lent ou serveur endormi — réessaie.',err_gen:'⚠️ La génération a échoué. Réessaie.',
 steps:['Je comprends ton business…','Je rédige tes textes…','Je dessine ton design…','J\u2019assemble ton site…'],
 mic_denied:'🎙️ Autorise le micro dans ton navigateur.'},
-en:{start:'Start',m_examples:'Examples',m_pricing:'Pricing',m_guide:'Guide',m_order:'Order',
+en:{start:'Start',m_examples:'Examples',m_pricing:'Pricing',m_guide:'Guide',m_order:'Order',m_demo:'3D demo',
+	demo_open:'Discover the 3D demo',demo_title:'Your idea takes shape.',demo_note:'Local visual demo: it shows the 3D rendering and does not replace AI generation.',demo_reset:'Reset view',demo_hint:'Drag to rotate · Pinch or scroll to zoom',demo_fallback:'3D is unavailable in this browser. You can still create your website normally.',
 badge:'Websites, word by word',h1:'Your business starts online here.',
 sub:'Describe your business to AI, get your website and Android app in under 24h. Mobile Money payment.',
 box_label:'Describe your business',ph1:'Describe the website you want…',st_any:'Style: Auto',
@@ -545,7 +605,7 @@ f_pages:'Wanted pages',f_contact:'Contact info to display',f_colors:'Colors / st
 panel_gen:'Generate preview from the form',
 gen_title:'Building your site…',gen_eta:'1 to 3 minutes — stay on this page',gen_cancel:'Cancel',
 clarify_q:'One last thing: what is your business name?',
-pv_title:'✅ Your preview is ready',pv_sub:'Free, unpublished preview — pay only if you order. Questions? We reply on WhatsApp within minutes.',pv_full:'🔍 Full screen',...
+pv_title:'✅ Your preview is ready',pv_sub:'Free, unpublished preview — pay only if you order. Questions? We reply on WhatsApp within minutes.',
 pv_full:'🔍 Full screen',pv_modify:'✏️ Edit with AI',pv_regen:'🔄 Regenerate',
 pv_order:'Order my site + Android app — 10,000 DJF',
 how_title:'How it works',how_lead:'3 steps, zero code.',
@@ -561,7 +621,8 @@ phr:['Describe the website you want…','E.g.: Restaurant Le Palmier in Djibouti
 err_net:'⚠️ Slow network or waking server — try again.',err_gen:'⚠️ Generation failed. Try again.',
 steps:['Understanding your business…','Writing your texts…','Designing your layout…','Assembling your site…'],
 mic_denied:'🎙️ Allow the microphone in your browser.'},
-ar:{start:'ابدأ',m_examples:'أمثلة',m_pricing:'الأسعار',m_guide:'الدليل',m_order:'اطلب الآن',
+ar:{start:'ابدأ',m_examples:'أمثلة',m_pricing:'الأسعار',m_guide:'الدليل',m_order:'اطلب الآن',m_demo:'عرض ثلاثي الأبعاد',
+	demo_open:'اكتشف العرض ثلاثي الأبعاد',demo_title:'فكرتك تأخذ شكلاً.',demo_note:'عرض بصري محلي: يوضح التصميم ثلاثي الأبعاد ولا يحل محل الإنشاء بالذكاء الاصطناعي.',demo_reset:'إعادة التوسيط',demo_hint:'اسحب للتدوير · قرّب بإصبعين أو بعجلة الفأرة',demo_fallback:'العرض ثلاثي الأبعاد غير متاح في هذا المتصفح. يمكنك مواصلة إنشاء موقعك بشكل طبيعي.',
 badge:'مواقع، كلمة كلمة',h1:'نشاطك التجاري يبدأ على الإنترنت من هنا.',
 sub:'صف نشاطك للذكاء الاصطناعي، واستلم موقعك وتطبيق أندرويد في أقل من 24 ساعة. الدفع عبر Mobile Money.',
 box_label:'صف نشاطك',ph1:'صف الموقع الذي تريد إنشاءه…',st_any:'النمط: تلقائي',
@@ -964,6 +1025,215 @@ if(draft.html && draft.brief && draft.brief.nom){
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+<script type="module">
+/* Démo locale autonome : Three.js est chargé seulement à la demande. */
+let demo3d = null;
+let demoOpener = null;
+const demoModal = document.getElementById('demoModal');
+const demoStage = document.getElementById('demoStage');
+const demoFallback = document.getElementById('demoFallback');
+
+window.openDemo3D = async function(){
+  demoOpener = document.activeElement;
+  demoModal.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  demoFallback.classList.remove('on');
+  demoModal.querySelector('.demo-actions button:last-child').focus();
+  if(demo3d){ demo3d.resume(); demo3d.resize(); return; }
+  try{
+    const [THREE, controlsModule, roundedModule, roomModule] = await Promise.all([
+      import('three'),
+      import('three/addons/controls/OrbitControls.js'),
+      import('three/addons/geometries/RoundedBoxGeometry.js'),
+      import('three/addons/environments/RoomEnvironment.js')
+    ]);
+    demo3d = createDemo3D(THREE, controlsModule.OrbitControls, roundedModule.RoundedBoxGeometry, roomModule.RoomEnvironment);
+    window.__DEMO3D_READY__ = true;
+  }catch(error){
+    console.error('Démo 3D indisponible :', error);
+    demoFallback.classList.add('on');
+  }
+};
+window.closeDemo3D = function(){
+  demoModal.classList.remove('on');
+  document.body.style.overflow = '';
+  if(demo3d) demo3d.stop();
+  if(demoOpener && demoOpener.focus) demoOpener.focus();
+};
+window.toggleDemo3D = function(){ if(demo3d) demo3d.togglePause(); };
+window.resetDemo3D = function(){ if(demo3d) demo3d.reset(); };
+document.addEventListener('keydown', event=>{
+  if(event.key === 'Escape' && demoModal.classList.contains('on')) window.closeDemo3D();
+});
+
+function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment){
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const renderer = new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.domElement.tabIndex = 0;
+  renderer.domElement.setAttribute('aria-label', 'Scène 3D. Flèches gauche et droite pour tourner, espace pour mettre en pause.');
+  demoStage.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('#070B16');
+  scene.fog = new THREE.Fog('#070B16', 13, 30);
+  const camera = new THREE.PerspectiveCamera(38, 1, .1, 100);
+  const home = new THREE.Vector3(7.4, 5.1, 10.6);
+  camera.position.copy(home);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 2.15, 0);
+  controls.enableDamping = true;
+  controls.dampingFactor = .065;
+  controls.enablePan = false;
+  controls.minDistance = 7;
+  controls.maxDistance = 26;
+  controls.minPolarAngle = .55;
+  controls.maxPolarAngle = 1.48;
+  controls.update();
+
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const room = new RoomEnvironment();
+  const environment = pmrem.fromScene(room, .04);
+  scene.environment = environment.texture;
+  room.dispose(); pmrem.dispose();
+  scene.add(new THREE.HemisphereLight('#BFE8FF', '#111827', 1.35));
+  const key = new THREE.DirectionalLight('#FFF1D6', 3.1);
+  key.position.set(4, 9, 7); key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.left = -7; key.shadow.camera.right = 7;
+  key.shadow.camera.top = 8; key.shadow.camera.bottom = -5;
+  key.shadow.normalBias = .035;
+  scene.add(key);
+  const fill = new THREE.DirectionalLight('#38BDF8', 1.25);
+  fill.position.set(-6, 4, -4); scene.add(fill);
+
+  const model = new THREE.Group(); scene.add(model);
+  const dark = new THREE.MeshStandardMaterial({color:'#101827', metalness:.55, roughness:.28});
+  const cyan = new THREE.MeshStandardMaterial({color:'#164E63', emissive:'#0891B2', emissiveIntensity:.18, metalness:.45, roughness:.25});
+  const glass = new THREE.MeshPhysicalMaterial({color:'#164E63', transparent:true, opacity:.42, metalness:.25, roughness:.22, depthWrite:false});
+  const pale = new THREE.MeshStandardMaterial({color:'#BAE6FD', emissive:'#0EA5E9', emissiveIntensity:.1, metalness:.2, roughness:.3});
+
+  const base = new THREE.Mesh(new RoundedBoxGeometry(8.1, .28, 5.1, 4, .14), dark);
+  base.position.y = .15; base.receiveShadow = true; base.castShadow = true; model.add(base);
+  const inset = new THREE.Mesh(new RoundedBoxGeometry(7.65, .05, 4.65, 3, .03), cyan);
+  inset.position.y = .32; model.add(inset);
+
+  const rearPanels = [];
+  for(let i=2;i>=1;i--){
+    const panel = new THREE.Mesh(new RoundedBoxGeometry(6.35, 3.85, .12, 4, .12), glass.clone());
+    panel.position.set(-i*.16, 2.62+i*.06, -i*.62);
+    panel.rotation.y = -i*.035;
+    model.add(panel); rearPanels.push(panel);
+  }
+  const browser = new THREE.Mesh(new RoundedBoxGeometry(6.45, 3.95, .24, 5, .14), dark);
+  browser.position.y = 2.62; browser.castShadow = true; model.add(browser);
+
+  function websiteTexture(){
+    const canvas = document.createElement('canvas'); canvas.width = 1200; canvas.height = 700;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,1200,700);
+    gradient.addColorStop(0,'#F8FAFC'); gradient.addColorStop(1,'#E0F2FE');
+    ctx.fillStyle = gradient; ctx.fillRect(0,0,1200,700);
+    ctx.fillStyle = '#0F172A'; ctx.fillRect(0,0,1200,68);
+    ['#FB7185','#FBBF24','#34D399'].forEach((color,i)=>{ctx.fillStyle=color;ctx.beginPath();ctx.arc(30+i*30,34,8,0,Math.PI*2);ctx.fill();});
+    ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.roundRect(820,23,320,22,11); ctx.fill();
+    ctx.fillStyle = '#0EA5E9'; ctx.beginPath(); ctx.arc(770,430,260,0,Math.PI*2); ctx.fill();
+    const glow = ctx.createRadialGradient(770,390,10,770,390,230);
+    glow.addColorStop(0,'#BAE6FD'); glow.addColorStop(1,'#0891B2');
+    ctx.fillStyle=glow;ctx.beginPath();ctx.arc(770,390,220,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#0F172A';ctx.font='700 28px system-ui';ctx.fillText('PROMPT2SITE',70,135);
+    const idea = (document.getElementById('prompt').value.trim() || 'Ton business en ligne commence ici.').slice(0,62);
+    ctx.font='800 48px system-ui';
+    const words=idea.split(/\s+/);let line='',y=225;
+    for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>570&&line){ctx.fillText(line,70,y);y+=58;line=word;}else line=test;}
+    ctx.fillText(line,70,y);
+    ctx.fillStyle='#475569';ctx.font='500 23px system-ui';ctx.fillText('Une présence en ligne claire et moderne.',72,y+62);
+    ctx.fillStyle='#0F172A';ctx.beginPath();ctx.roundRect(70,y+105,240,58,29);ctx.fill();
+    ctx.fillStyle='#FFFFFF';ctx.font='700 21px system-ui';ctx.fillText('DÉCOUVRIR',112,y+142);
+    const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    return texture;
+  }
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(6.02,3.51), new THREE.MeshBasicMaterial({map:websiteTexture()}));
+  screen.position.set(0,2.62,.127); model.add(screen);
+
+  const cards = [];
+  const cardData = [{x:-3.65,y:2.4,z:.6,c:cyan},{x:3.55,y:3.4,z:.35,c:pale},{x:3.45,y:1.25,z:.8,c:cyan}];
+  cardData.forEach((item,i)=>{
+    const card = new THREE.Mesh(new RoundedBoxGeometry(1.25,.82,.16,4,.1),item.c);
+    card.position.set(item.x,item.y,item.z);card.rotation.y = i===0?.22:-.18;card.castShadow=true;
+    model.add(card);cards.push(card);
+    const bar = new THREE.Mesh(new RoundedBoxGeometry(.72,.08,.03,2,.02),pale);
+    bar.position.set(item.x,item.y,item.z+.1);bar.rotation.y=card.rotation.y;model.add(bar);
+  });
+  for(let i=0;i<3;i++){
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(.12+i*.035,20,14),i===1?pale:cyan);
+    orb.position.set(-3.1+i*3.05,.65,-1.65);model.add(orb);
+  }
+
+  const grid = new THREE.GridHelper(24,24,'#155E75','#172033');
+  grid.position.y=-.02;grid.material.transparent=true;grid.material.opacity=.28;scene.add(grid);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(24,24),new THREE.ShadowMaterial({opacity:.25}));
+  shadow.rotation.x=-Math.PI/2;shadow.position.y=-.01;shadow.receiveShadow=true;scene.add(shadow);
+
+  let seed=24681357;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  const count=180,positions=new Float32Array(count*3),sizes=new Float32Array(count);
+  for(let i=0;i<count;i++){positions[i*3]=(random()-.5)*17;positions[i*3+1]=random()*8;positions[i*3+2]=(random()-.5)*13;sizes[i]=.5+random();}
+  const particleGeometry=new THREE.BufferGeometry();
+  particleGeometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  particleGeometry.setAttribute('aSize',new THREE.BufferAttribute(sizes,1));
+  const particleMaterial=new THREE.ShaderMaterial({
+    uniforms:{uTime:{value:0},uColor:{value:new THREE.Color('#38BDF8')}},
+    vertexShader:'uniform float uTime; attribute float aSize; varying float vAlpha; void main(){vec3 p=position;p.y+=sin(uTime*.7+position.x)*.12;vec4 mv=modelViewMatrix*vec4(p,1.0);gl_Position=projectionMatrix*mv;gl_PointSize=aSize*22.0/-mv.z;vAlpha=.35+.35*sin(uTime+position.y);}',
+    fragmentShader:'uniform vec3 uColor; varying float vAlpha; void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.08,d)*vAlpha;gl_FragColor=vec4(uColor,a);}',
+    transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
+  });
+  const particles=new THREE.Points(particleGeometry,particleMaterial);scene.add(particles);
+
+  let paused=reducedMotion,elapsed=0,last=performance.now(),raf=0,running=true;
+  const pauseButton=document.getElementById('demoPause');
+  function updatePauseLabel(){pauseButton.textContent=paused?'▶':'Ⅱ';pauseButton.setAttribute('aria-label',paused?'Lecture':'Pause');}
+  updatePauseLabel();
+  function render(now){
+    if(!running)return;
+    const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)elapsed+=dt;
+    model.position.y=Math.sin(elapsed*.75)*.055;
+    rearPanels.forEach((panel,i)=>{panel.position.z=-(i+1)*(.72+.12*Math.sin(elapsed*.8));});
+    cards.forEach((card,i)=>{card.position.y=cardData[i].y+Math.sin(elapsed*1.1+i*1.7)*.12;});
+    particles.rotation.y=elapsed*.018;particleMaterial.uniforms.uTime.value=elapsed;
+    controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(render);
+  }
+  const currentHome=home.clone();let lastMobile=null;
+  function resize(){
+    const width=demoStage.clientWidth,height=demoStage.clientHeight;if(!width||!height)return;
+    const mobile=width<640;
+    currentHome.copy(home).multiplyScalar(mobile?1.52:1);
+    if(lastMobile===null||mobile!==lastMobile){camera.position.copy(currentHome);controls.update();lastMobile=mobile;}
+    camera.aspect=width/height;camera.fov=mobile?50:38;camera.updateProjectionMatrix();renderer.setSize(width,height,false);
+  }
+  const observer=new ResizeObserver(resize);observer.observe(demoStage);resize();raf=requestAnimationFrame(render);
+  renderer.domElement.addEventListener('keydown',event=>{
+    if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();model.rotation.y+=event.key==='ArrowLeft'?-.12:.12;renderer.render(scene,camera);}
+    if(event.code==='Space'){event.preventDefault();api.togglePause();}
+  });
+  const api={
+    resize,
+    stop(){running=false;cancelAnimationFrame(raf);},
+    resume(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(render);},
+    togglePause(){paused=!paused;updatePauseLabel();},
+    reset(){camera.position.copy(currentHome);controls.target.set(0,2.15,0);model.rotation.y=0;controls.update();renderer.render(scene,camera);}
+  };
+  return api;
+}
+</script>
 </body>
 </html>
 
