@@ -8,11 +8,22 @@
 <meta property="og:title" content="Prompt2Site — Ton business en ligne commence ici">
 <meta property="og:description" content="Site web + App Android générés par IA en moins de 24h. Aperçu gratuit.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://prompt2site-production.up.railway.app/">
+<meta property="og:site_name" content="Prompt2Site">
+<meta property="og:locale" content="fr_DJ">
 <meta property="og:image" content="https://prompt2site-production.up.railway.app/og-image.png.jpg">
+<meta property="og:image:alt" content="Prompt2Site — création de sites web et applications Android à Djibouti">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://prompt2site-production.up.railway.app/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 <link rel="manifest" href='data:application/manifest+json,{"name":"Prompt2Site","short_name":"P2S","display":"standalone","background_color":"%23FAFAFA","theme_color":"%230A0A0A","start_url":"%2F"}'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Prompt2Site","url":"https://prompt2site-production.up.railway.app/","image":"https://prompt2site-production.up.railway.app/og-image.png.jpg","description":"Création de sites web par IA et applications Android APK pour les commerces à Djibouti.","telephone":"+25377098637","areaServed":{"@type":"Country","name":"Djibouti"},"currenciesAccepted":"DJF","paymentAccepted":"Waafi, DahabPlus","priceRange":"10 000 DJF","makesOffer":{"@type":"Offer","price":"10000","priceCurrency":"DJF","itemOffered":{"@type":"Service","name":"Site web et application Android APK"}}}
+</script>
 <style>
 :root{
   --bg:#FAFAFA; --card:#FFFFFF; --text:#0A0A0A; --muted:#6B7280;
@@ -26,8 +37,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation;min-width:44px;min-height:44px}
 input,textarea,select{font-family:inherit;color:var(--text)}
+input,select{min-height:44px}
 a{color:inherit}
 .container{max-width:880px;margin:0 auto;padding:0 20px}
 [dir="rtl"] .flip-rtl{transform:scaleX(-1)}
@@ -35,7 +47,7 @@ a{color:inherit}
 /* ===== HEADER ===== */
 .header{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .header-inner{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;text-decoration:none}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;text-decoration:none;min-height:44px}
 .logo-icon{width:30px;height:30px;border-radius:9px;background:#0A0A0A;color:#fff;display:grid;place-items:center;font-size:15px}
 @media (prefers-color-scheme: dark){.logo-icon{background:#F5F5F7;color:#0A0A0A}}
 .langs{display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:3px}
@@ -44,10 +56,10 @@ a{color:inherit}
 .btn-start{background:#0A0A0A;color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px}
 @media (prefers-color-scheme: dark){.btn-start{background:#F5F5F7;color:#0A0A0A}}
 .burger{width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;font-size:17px}
-.menu{position:fixed;top:64px;right:16px;z-index:60;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);padding:8px;display:none;min-width:210px}
+.menu{position:fixed;top:64px;inset-inline-end:16px;z-index:60;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);padding:8px;display:none;min-width:210px}
 .menu.open{display:block;animation:pop .18s ease}
-.menu a{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600}
-.menu a:hover{background:var(--bg)}
+.menu a,.menu .menu-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;width:100%;text-align:start;min-height:44px}
+.menu a:hover,.menu .menu-link:hover{background:var(--bg)}
 @keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
 
 /* ===== HERO ===== */
@@ -65,9 +77,9 @@ a{color:inherit}
 .box textarea{width:100%;border:none;outline:none;resize:none;background:transparent;padding:22px 22px 8px;font-size:16px;line-height:1.55;min-height:120px}
 .box textarea::placeholder{color:var(--muted)}
 .thumbs{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 6px}
-.thumb{position:relative;width:56px;height:56px;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.thumb{position:relative;width:64px;height:64px;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
 .thumb img{width:100%;height:100%;object-fit:cover}
-.thumb button{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:11px;line-height:1}
+.thumb button{position:absolute;top:0;inset-inline-end:0;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:14px;line-height:1}
 .toolbar{display:flex;align-items:center;gap:8px;padding:10px 14px 14px;flex-wrap:wrap}
 .tool-round{width:40px;height:40px;border-radius:999px;border:1px solid var(--border);background:var(--bg);display:grid;place-items:center;font-size:17px;flex:none;transition:transform .15s}
 .tool-round:active{transform:scale(.92)}
@@ -147,11 +159,11 @@ textarea.f-in{resize:vertical;min-height:80px}
 .modify-box{display:none;max-width:560px;margin:14px auto 0;padding:0 20px}
 .modify-box.on{display:block}
 .modify-row{display:flex;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:22px;padding:8px;box-shadow:var(--shadow)}
-.modify-row input{flex:1;border:none;background:transparent;outline:none;padding:8px 12px;font-size:14px}
+.modify-row input{flex:1;min-width:0;border:none;background:transparent;outline:none;padding:8px 12px;font-size:14px}
 .modify-row button{width:40px;height:40px;border-radius:999px;background:#0A0A0A;color:#fff;flex:none}
 @media (prefers-color-scheme: dark){.modify-row button{background:#F5F5F7;color:#0A0A0A}}
 .apk-zone{max-width:560px;margin:16px auto 0;padding:16px 20px;border-top:1px dashed var(--border)}
-.apk-zone summary{font-size:13px;color:var(--muted);cursor:pointer;font-weight:600}
+.apk-zone summary{font-size:13px;color:var(--muted);cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
 #apkStatus{display:none;margin-top:10px;padding:12px 14px;border-radius:14px;font-size:13px}
 #apkResult{display:none;text-align:center;margin-top:12px}
 #apkResult a{display:block;background:#16A34A;color:#fff;padding:14px;border-radius:999px;font-weight:800;text-decoration:none}
@@ -166,16 +178,22 @@ textarea.f-in{resize:vertical;min-height:80px}
 .step-card .n{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:16px;margin-bottom:14px}
 .step-card h3{font-size:16px;font-weight:800;margin-bottom:6px}
 .step-card p{color:var(--muted);font-size:13.5px;line-height:1.55}
+.step-card blockquote{margin:14px 0;color:var(--text);font-size:14px;line-height:1.6}
+.step-card a{display:inline-flex;align-items:center;min-height:44px;margin-top:12px;font-size:13px;font-weight:700;text-underline-offset:3px}
 .get-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.get-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;font-size:14px;font-weight:600}
-.get-item span{font-size:20px}
+.get-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px}
+.get-item>span{font-size:20px;flex:none}
+.get-item h3{font-size:14px;font-weight:700;margin-bottom:4px}
+.get-item p{color:var(--muted);font-size:12.5px;line-height:1.45;font-weight:400}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.g-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .18s;box-shadow:var(--shadow)}
+.g-card{display:block;width:100%;background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .18s;box-shadow:var(--shadow);text-align:start}
 .g-card:hover{transform:translateY(-3px)}
-.g-thumb{height:86px;display:grid;place-items:center;font-size:34px}
-.g-card p{padding:10px 12px;font-size:12.5px;font-weight:700}
+.g-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--bg)}
+.g-card .g-copy{padding:12px 14px}
+.g-title{display:block;font-size:13.5px;font-weight:700;margin-bottom:5px}
+.g-text{display:block;color:var(--muted);font-size:12px;line-height:1.45;font-weight:400}
 .price-card{max-width:480px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;text-align:center}
-.price{font-size:46px;font-weight:800;letter-spacing:-.03em}
+.price{font-size:46px;font-weight:800;letter-spacing:-.03em;direction:ltr;unicode-bidi:isolate}
 .price-card ul{list-style:none;margin:20px 0;text-align:start;display:grid;gap:9px;font-size:14px;color:var(--muted)}
 .price-card li b{color:var(--text)}
 .faq{max-width:640px;margin:0 auto}
@@ -184,8 +202,9 @@ textarea.f-in{resize:vertical;min-height:80px}
 .faq summary::after{content:'▾';color:var(--muted);transition:transform .25s}
 .faq details[open] summary::after{transform:rotate(180deg)}
 .faq details p{padding:0 18px 16px;color:var(--muted);font-size:14px;line-height:1.6}
+.faq details p a{display:inline-flex;align-items:center;min-height:44px}
 .footer{text-align:center;padding:56px 20px 40px;color:var(--muted);font-size:13px}
-.footer a{color:var(--text);font-weight:700}
+.footer a{color:var(--text);font-weight:700;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
 .wa-float{position:fixed;bottom:18px;right:18px;z-index:45;width:54px;height:54px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;font-size:26px;box-shadow:0 8px 24px rgba(37,211,102,.4);text-decoration:none}
 [dir="rtl"] .wa-float{right:auto;left:18px}
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%) translateY(20px);background:#0A0A0A;color:#fff;padding:13px 20px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s;z-index:80;max-width:88vw;text-align:center}
@@ -193,7 +212,7 @@ textarea.f-in{resize:vertical;min-height:80px}
 @media (prefers-color-scheme: dark){.toast{background:#F5F5F7;color:#0A0A0A}}
 
 /* ===== DÉMO 3D (chargée uniquement à l'ouverture) ===== */
-.demo-link{display:flex;align-items:center;justify-content:center;gap:8px;margin:16px auto 0;padding:10px 16px;border:1px solid var(--border);border-radius:999px;background:var(--card);font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+.demo-link{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px auto 0;min-height:44px;padding:10px 12px;color:var(--muted);font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .demo-modal{display:none;position:fixed;inset:0;z-index:100;background:#070B16;color:#F8FAFC;overflow:hidden}
 .demo-modal.on{display:block}
 .demo-stage{position:absolute;inset:0}
@@ -205,10 +224,15 @@ textarea.f-in{resize:vertical;min-height:80px}
 .demo-actions{display:flex;gap:8px;pointer-events:auto;flex:none}
 .demo-actions button{min-width:42px;height:42px;padding:0 12px;border:1px solid #FFFFFF26;border-radius:999px;background:#111827CC;color:#F8FAFC;font-weight:700;backdrop-filter:blur(10px)}
 .demo-actions button:hover{background:#1F2937}
-.demo-fallback{display:none;position:absolute;inset:0;place-items:center;padding:32px;text-align:center;color:#CBD5E1;line-height:1.6}
-.demo-fallback.on{display:grid}
+.demo-fallback,.demo-load-error{display:none;position:absolute;inset:0;place-items:center;padding:32px;text-align:center;color:#CBD5E1;line-height:1.6;background:#070B16;z-index:1}
+.demo-fallback.on,.demo-load-error.on{display:grid}
+.demo-fallback p,.demo-load-error p{max-width:420px}
+.demo-fallback .btn,.demo-load-error .btn{max-width:360px;margin:20px auto 0;background:#F8FAFC;color:#0F172A}
+.demo-loading{display:none;position:absolute;inset:0;z-index:1;place-items:center;background:#070B16;color:#CBD5E1;text-align:center;font-size:14px}
+.demo-loading.on{display:grid}
+.demo-spinner{width:34px;height:34px;margin:0 auto 14px;border:3px solid #334155;border-top-color:#38BDF8;border-radius:50%;animation:spin .8s linear infinite}
 .demo-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:2;width:max-content;max-width:calc(100% - 32px);padding:9px 14px;border:1px solid #FFFFFF1F;border-radius:999px;background:#070B16B8;color:#A8B3C7;font-size:11px;text-align:center;pointer-events:none}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #38BDF8;outline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #0284C7;outline-offset:3px}
 
 /* ===== MOBILE : deux lignes, aucun contrôle tronqué ===== */
 @media (max-width:640px){
@@ -220,7 +244,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   .burger{width:38px;height:38px;flex:none}
   .langs{order:3;width:100%;justify-content:stretch;padding:2px}
   .langs button{flex:1;padding:6px 8px}
-  .menu{top:106px;left:12px;right:12px;min-width:0}
+  .menu{top:112px;inset-inline:12px;min-width:0}
   .hero{padding-top:148px}
   .demo-top{padding:14px 12px}
   .demo-top p{max-width:230px;font-size:11px}
@@ -245,15 +269,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     </div>
     <div class="header-actions" style="display:flex;gap:8px;align-items:center">
       <button class="btn-start" onclick="focusBox()" data-i18n="start">Commencer</button>
-      <button class="burger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+      <button class="burger" onclick="toggleMenu()" aria-label="Menu" aria-controls="menu" aria-expanded="false">☰</button>
     </div>
   </div>
 </header>
 <nav class="menu" id="menu" aria-label="Navigation principale">
-  <a href="#" onclick="closeMenu();openDemo3D();return false">🧊 <span data-i18n="m_demo">Démo 3D</span></a>
   <a href="#exemples" onclick="closeMenu()">✨ <span data-i18n="m_examples">Exemples</span></a>
   <a href="#tarifs" onclick="closeMenu()">💰 <span data-i18n="m_pricing">Tarifs</span></a>
-  <a href="#" onclick="closeMenu();openGuide();return false">📖 <span data-i18n="m_guide">Guide</span></a>
+  <button type="button" class="menu-link" onclick="closeMenu();openGuide()">📖 <span data-i18n="m_guide">Guide</span></button>
   <a href="/tunnel.html" onclick="closeMenu()">🛒 <span data-i18n="m_order">Commander</span></a>
   <a href="https://wa.link/7gp8wm" onclick="closeMenu()">💬 WhatsApp</a>
 </nav>
@@ -273,7 +296,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <div class="thumbs" id="thumbs"></div>
     <div class="toolbar">
       <button class="tool-round" onclick="document.getElementById('imgInput').click()" title="Ajouter une image" aria-label="Ajouter une image">＋</button>
-      <input type="file" id="imgInput" accept="image/*" class="hidden" style="display:none" onchange="addImage(this)">
+      <input type="file" id="imgInput" accept="image/*" class="hidden" style="display:none" onchange="addImage(this)" aria-label="Choisir une image à envoyer">
       <div class="pill">🎨 <select id="styleSel" aria-label="Style visuel">
         <option value="" data-i18n="st_any">Style : Auto</option>
         <option value="Moderne">Moderne</option>
@@ -294,21 +317,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     </div>
   </div>
   <p class="box-help" data-i18n="box_help">Aperçu gratuit · Sans engagement · Tu ne paies que si tu commandes</p>
-  <button class="demo-link" onclick="openDemo3D()">🧊 <span data-i18n="demo_open">Découvrir la démo 3D</span></button>
+  <button class="demo-link" onclick="openDemo3D()" data-i18n="demo_open">Voir la démo 3D (optionnel)</button>
 
   <!-- SHORTCUTS -->
   <div class="shortcuts" id="shortcuts"></div>
 
   <!-- PANEL -->
-  <button class="panel-toggle" onclick="togglePanel()" data-i18n="panel_toggle">⚙️ Personnaliser (optionnel)</button>
+  <button class="panel-toggle" onclick="togglePanel()" aria-controls="panel" aria-expanded="false" data-i18n="panel_toggle">⚙️ Personnaliser (optionnel)</button>
   <div class="panel" id="panel">
     <h3 data-i18n="panel_title">Personnaliser mon site</h3>
     <p class="sub" data-i18n="panel_sub">Pour les utilisateurs avancés — tout est optionnel.</p>
 
-    <label class="f-label" data-i18n="f_name">Nom du business</label>
+    <label class="f-label" for="p_nom" data-i18n="f_name">Nom du business</label>
     <input class="f-in" id="p_nom" type="text" placeholder="Tiramisu Spot">
 
-    <label class="f-label" data-i18n="f_sector">Secteur</label>
+    <label class="f-label" for="p_secteur" data-i18n="f_sector">Secteur</label>
     <select class="f-in" id="p_secteur">
       <option value="">—</option>
       <option value="tourisme">Tourisme / Agence</option>
@@ -321,7 +344,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       <option value="autre">Autre</option>
     </select>
 
-    <label class="f-label" data-i18n="f_goal">Objectif</label>
+    <label class="f-label" for="p_objectif" data-i18n="f_goal">Objectif</label>
     <select class="f-in" id="p_objectif">
       <option value="">—</option>
       <option value="présenter">Présenter l'entreprise</option>
@@ -348,12 +371,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     </div>
 
     <label class="f-label" data-i18n="f_contact">Coordonnées à afficher</label>
-    <input class="f-in" id="p_tel" type="tel" placeholder="Téléphone" style="margin-bottom:8px">
-    <input class="f-in" id="p_whatsapp" type="tel" placeholder="WhatsApp (boutons du site)" style="margin-bottom:8px">
-    <input class="f-in" id="p_adresse" type="text" placeholder="Adresse" style="margin-bottom:8px">
-    <input class="f-in" id="p_email" type="email" placeholder="E-mail">
+    <input class="f-in" id="p_tel" type="tel" placeholder="Téléphone" aria-label="Téléphone à afficher" style="margin-bottom:8px">
+    <input class="f-in" id="p_whatsapp" type="tel" placeholder="WhatsApp (boutons du site)" aria-label="Numéro WhatsApp des boutons du site" style="margin-bottom:8px">
+    <input class="f-in" id="p_adresse" type="text" placeholder="Adresse" aria-label="Adresse à afficher" style="margin-bottom:8px">
+    <input class="f-in" id="p_email" type="email" placeholder="E-mail" aria-label="Adresse e-mail à afficher">
 
-    <label class="f-label" data-i18n="f_colors">Couleurs / style</label>
+    <label class="f-label" for="p_couleurs" data-i18n="f_colors">Couleurs / style</label>
     <input class="f-in" id="p_couleurs" type="text" placeholder="Ex : bleu et or, luxe…">
 
     <label class="f-label" data-i18n="f_features">Fonctionnalités</label>
@@ -368,10 +391,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     </div>
 
     <label class="f-label" data-i18n="f_logo">Logo / photos (liens URL)</label>
-    <input class="f-in" id="p_logo" type="text" placeholder="https://… (logo)" style="margin-bottom:8px">
-    <input class="f-in" id="p_photos" type="text" placeholder="https://…, https://… (photos)">
+    <input class="f-in" id="p_logo" type="url" placeholder="https://… (logo)" aria-label="Lien URL du logo" style="margin-bottom:8px">
+    <input class="f-in" id="p_photos" type="text" placeholder="https://…, https://… (photos)" aria-label="Liens URL des photos, séparés par des virgules">
 
-    <label class="f-label" data-i18n="f_notes">Autres précisions</label>
+    <label class="f-label" for="p_precisions" data-i18n="f_notes">Autres précisions</label>
     <textarea class="f-in" id="p_precisions" placeholder="…"></textarea>
 
     <div style="margin-top:20px">
@@ -396,8 +419,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   <div class="gen-card" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 24px">
     <p class="q" data-i18n="clarify_q">Une dernière chose : c'est quoi le nom de ton business ?</p>
     <div class="modify-row">
-      <input id="clarifyInput" type="text" placeholder="Ex : Tiramisu Spot">
-      <button onclick="clarifySend()">↑</button>
+      <input id="clarifyInput" type="text" placeholder="Ex : Tiramisu Spot" aria-label="Nom du business">
+      <button onclick="clarifySend()" aria-label="Confirmer le nom du business">↑</button>
     </div>
   </div>
 </section>
@@ -425,17 +448,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   </div>
   <div class="modify-box" id="modifyBox">
     <div class="modify-row">
-      <input id="modifyInput" type="text" placeholder="Ex : change la couleur en bleu, ajoute une page tarifs…">
+      <input id="modifyInput" type="text" placeholder="Ex : change la couleur en bleu, ajoute une page tarifs…" aria-label="Modification à demander à l’IA">
       <button onclick="sendModify()" aria-label="Envoyer la modification">↑</button>
     </div>
   </div>
   <details class="apk-zone">
     <summary>📱 Déjà client avec un code d'activation ? Génère ton App Android (APK)</summary>
-    <input class="f-in" id="actCode" type="text" placeholder="Code d'activation (reçu après paiement)" style="margin-top:12px">
+    <input class="f-in" id="actCode" type="text" placeholder="Code d'activation (reçu après paiement)" aria-label="Code d’activation reçu après paiement" style="margin-top:12px">
     <button class="btn btn-dark" style="margin-top:10px" id="apkBtn" onclick="buildApk()">Générer mon APK</button>
-    <div id="apkStatus"></div>
+    <div id="apkStatus" role="status" aria-live="polite"></div>
     <div id="apkResult">
-      <a id="apkLink" href="#">⬇️ Télécharger l'APK</a>
+      <a id="apkLink">⬇️ Télécharger l'APK</a>
       <div id="qrcode"></div>
       <p class="box-help">Scanne pour télécharger sur ton téléphone</p>
     </div>
@@ -459,7 +482,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   <div class="container">
     <h2 data-i18n="get_title">Ce que tu reçois</h2>
     <p class="lead" data-i18n="get_lead">Tout inclus dans le prix unique.</p>
-    <div class="get-grid" id="getGrid"></div>
+    <div class="get-grid" id="getGrid">
+      <article class="get-item"><span aria-hidden="true">💻</span><div><h3>Site web professionnel</h3><p>Adapté au mobile et à l’ordinateur.</p></div></article>
+      <article class="get-item"><span aria-hidden="true">🤖</span><div><h3>App Android à ton nom</h3><p>Un APK pour présenter ton activité.</p></div></article>
+      <article class="get-item"><span aria-hidden="true">💬</span><div><h3>Bouton WhatsApp</h3><p>Tes clients te contactent facilement.</p></div></article>
+      <article class="get-item"><span aria-hidden="true">🌐</span><div><h3>Bilingue FR–AR</h3><p>Deux langues disponibles sur demande.</p></div></article>
+      <article class="get-item"><span aria-hidden="true">✏️</span><div><h3>1 modification gratuite</h3><p>Une retouche incluse après la livraison.</p></div></article>
+      <article class="get-item"><span aria-hidden="true">⚡</span><div><h3>Livraison en 24h</h3><p>Ta commande est envoyée sur WhatsApp.</p></div></article>
+    </div>
   </div>
 </section>
 
@@ -467,7 +497,52 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   <div class="container">
     <h2 data-i18n="ex_title">Exemples de sites créés</h2>
     <p class="lead" data-i18n="ex_lead">Touche un exemple pour pré-remplir la case.</p>
-    <div class="gallery" id="gallery"></div>
+    <div class="gallery" id="gallery">
+      <button type="button" class="g-card" onclick="useExample(0)">
+        <img src="/images/exemple-restaurant.webp" width="640" height="360" loading="lazy" decoding="async" alt="Aperçu illustratif d’un site de restaurant à Djibouti">
+        <span class="g-copy"><span class="g-title">Restaurant / Café</span><span class="g-text">Restaurant à Djibouti-ville, cuisine yéménite, livraison, commandes sur WhatsApp</span></span>
+      </button>
+      <button type="button" class="g-card" onclick="useExample(1)">
+        <img src="/images/exemple-beaute.webp" width="640" height="360" loading="lazy" decoding="async" alt="Aperçu illustratif d’un site de salon de beauté">
+        <span class="g-copy"><span class="g-title">Salon de beauté</span><span class="g-text">Salon de coiffure femmes au Héron, tresses et maquillage, rendez-vous WhatsApp</span></span>
+      </button>
+      <button type="button" class="g-card" onclick="useExample(2)">
+        <img src="/images/exemple-boutique.webp" width="640" height="360" loading="lazy" decoding="async" alt="Aperçu illustratif d’une boutique de vêtements en ligne">
+        <span class="g-copy"><span class="g-title">Boutique de vêtements</span><span class="g-text">Boutique d’abayas et de robes, catalogue avec prix en DJF</span></span>
+      </button>
+      <button type="button" class="g-card" onclick="useExample(3)">
+        <img src="/images/exemple-tourisme.webp" width="640" height="360" loading="lazy" decoding="async" alt="Aperçu illustratif d’un site d’agence de tourisme à Djibouti">
+        <span class="g-copy"><span class="g-title">Agence de tourisme</span><span class="g-text">Agence de tourisme : lac Assal, île Moucha, requins-baleines, en français et anglais</span></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Remplacer les trois cartes par de vrais témoignages pour afficher cette section. -->
+<section class="section" id="temoignages" hidden>
+  <div class="container">
+    <h2>Ils nous ont fait confiance</h2>
+    <p class="lead">Des sites livrés à des commerces djiboutiens.</p>
+    <div class="steps">
+      <article class="step-card" data-testimonial>
+        <h3 data-testimonial-name>[À REMPLIR — nom du commerce]</h3>
+        <p data-testimonial-sector>[À REMPLIR — secteur]</p>
+        <blockquote data-testimonial-quote>« [À REMPLIR — témoignage réel] »</blockquote>
+        <a data-testimonial-link hidden>Voir le site livré</a>
+      </article>
+      <article class="step-card" data-testimonial>
+        <h3 data-testimonial-name>[À REMPLIR — nom du commerce]</h3>
+        <p data-testimonial-sector>[À REMPLIR — secteur]</p>
+        <blockquote data-testimonial-quote>« [À REMPLIR — témoignage réel] »</blockquote>
+        <a data-testimonial-link hidden>Voir le site livré</a>
+      </article>
+      <article class="step-card" data-testimonial>
+        <h3 data-testimonial-name>[À REMPLIR — nom du commerce]</h3>
+        <p data-testimonial-sector>[À REMPLIR — secteur]</p>
+        <blockquote data-testimonial-quote>« [À REMPLIR — témoignage réel] »</blockquote>
+        <a data-testimonial-link hidden>Voir le site livré</a>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -502,6 +577,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       <details><summary data-i18n="q3">Je reçois quoi exactement ?</summary><p>Un site web complet (mobile + ordinateur) et une application Android (APK) téléchargeable, livrés sur ton WhatsApp en moins de 24h.</p></details>
       <details><summary data-i18n="q4">Je peux modifier après livraison ?</summary><p>Oui, 1 modification gratuite est incluse. Ensuite, chaque modification supplémentaire fait l'objet d'un accord.</p></details>
       <details><summary data-i18n="q5">Le nom de domaine et l'hébergement sont inclus ?</summary><p>Non inclus dans le prix de base : ton site est livré sous le lien Prompt2Site et ton APK porte le nom de ton business. Nom de domaine personnalisé : à valider avec nous sur WhatsApp.</p></details>
+      <details><summary data-i18n="q6">Combien de temps mon site reste-t-il en ligne ?</summary><p>[DURÉE À DÉFINIR PAR LE PROPRIÉTAIRE]</p></details>
+      <details><summary data-i18n="q7">Que se passe-t-il si je veux mon propre nom de domaine ?</summary><p>Écris-nous sur <a href="https://wa.link/7gp8wm">WhatsApp</a> pour vérifier les possibilités et les conditions avant de commander.</p></details>
+      <details><summary data-i18n="q8">Mon APK est-il sur le Play Store ?</summary><p>Non, sauf offre contraire explicitement indiquée. Tu reçois un fichier APK à installer directement sur un appareil Android compatible.</p></details>
     </div>
   </div>
 </section>
@@ -512,14 +590,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  </footer>
 
 <a class="wa-float" href="https://wa.link/7gp8wm" aria-label="WhatsApp">💬</a>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== GUIDE MODAL ===== -->
-<div id="guideModal" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);overflow-y:auto">
+<div id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);overflow-y:auto">
   <div style="max-width:480px;margin:8vh auto 40px;background:var(--card);border-radius:24px;padding:28px;box-shadow:var(--shadow-lg);border:1px solid var(--border)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h2 style="font-size:18px;font-weight:800" data-i18n="g_title">📖 Guide en 3 étapes</h2>
-      <button onclick="closeGuide()" style="font-size:22px;color:var(--muted)">✕</button>
+      <h2 id="guideTitle" style="font-size:18px;font-weight:800" data-i18n="g_title">📖 Guide en 3 étapes</h2>
+      <button onclick="closeGuide()" aria-label="Fermer le guide" style="font-size:22px;color:var(--muted)">✕</button>
     </div>
     <ol style="display:grid;gap:12px;color:var(--muted);font-size:14px;line-height:1.6;padding-left:20px">
       <li><b style="color:var(--text)" data-i18n="g1">Écris une phrase</b> — ou envoie une photo de ton menu, ou dicte au micro.</li>
@@ -544,7 +622,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       <button onclick="closeDemo3D()" aria-label="Fermer">✕</button>
     </div>
   </div>
-  <div id="demoFallback" class="demo-fallback" data-i18n="demo_fallback">La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.</div>
+  <div id="demoLoading" class="demo-loading" role="status" aria-live="polite"><div><div class="demo-spinner" aria-hidden="true"></div><span data-i18n="demo_loading">Chargement de la démo 3D…</span></div></div>
+  <div id="demoFallback" class="demo-fallback">
+    <div><p data-i18n="demo_fallback">La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.</p><button class="btn" onclick="closeDemo3D();focusBox()" data-i18n="demo_create">Créer mon site maintenant</button></div>
+  </div>
+  <div id="demoLoadError" class="demo-load-error" role="alert">
+    <div><p data-i18n="demo_load_error">La démo n’a pas pu être téléchargée. Vérifie ta connexion puis réessaie.</p><button class="btn" onclick="openDemo3D()" data-i18n="demo_retry">Réessayer</button><button class="btn" onclick="closeDemo3D();focusBox()" data-i18n="demo_create">Créer mon site maintenant</button></div>
+  </div>
   <div class="demo-hint" data-i18n="demo_hint">Glisse pour tourner · Pince ou utilise la molette pour zoomer</div>
 </div>
 
@@ -566,7 +650,7 @@ const WHATSAPP_LINK = 'https://wa.link/7gp8wm';
 /* ================= i18n FR / EN / AR ================= */
 const I18N = {
 fr:{start:'Commencer',m_examples:'Exemples',m_pricing:'Tarifs',m_guide:'Guide',m_order:'Commander',m_demo:'Démo 3D',
-	demo_open:'Découvrir la démo 3D',demo_title:'Ton idée prend volume.',demo_note:'Démo visuelle locale : elle illustre le rendu 3D et ne remplace pas la génération IA.',demo_reset:'Recentrer',demo_hint:'Glisse pour tourner · Pince ou utilise la molette pour zoomer',demo_fallback:'La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.',
+	demo_open:'Voir la démo 3D (optionnel)',demo_title:'Ton idée prend volume.',demo_note:'Démo visuelle locale : elle illustre le rendu 3D et ne remplace pas la génération IA.',demo_reset:'Recentrer',demo_hint:'Glisse pour tourner · Pince ou utilise la molette pour zoomer',demo_fallback:'La 3D n’est pas disponible sur ce navigateur. Tu peux continuer à créer ton site normalement.',demo_loading:'Chargement de la démo 3D…',demo_load_error:'La démo n’a pas pu être téléchargée. Vérifie ta connexion puis réessaie.',demo_retry:'Réessayer',demo_create:'Créer mon site maintenant',
 badge:'Des sites, mot par mot',h1:'Ton business en ligne commence ici.',
 sub:"Décris ton activité à l'IA, reçois ton site web et ton app Android en moins de 24h. Paiement Mobile Money.",
 box_label:'Décris ton business',ph1:'Décris le site que tu veux créer…',st_any:'Style : Auto',
@@ -587,14 +671,14 @@ s3t:'Reçois tout sur WhatsApp',s3p:'Site + App Android en moins de 24h après c
 get_title:'Ce que tu reçois',get_lead:'Tout inclus dans le prix unique.',
 ex_title:'Exemples de sites créés',ex_lead:'Touche un exemple pour pré-remplir la case.',
 pr_title:'Un prix unique, tout inclus',pr_lead:'Paiement unique — aucun abonnement.',pr_unique:'OFFRE UNIQUE',pr_cta:'Commencer mon aperçu gratuit',pr_pay:'💳 Waafi ou DahabPlus · Paiement vérifié manuellement',
-faq_title:'Questions fréquentes',q1:"L'aperçu est vraiment gratuit ?",q2:'Comment je paie ?',q3:'Je reçois quoi exactement ?',q4:'Je peux modifier après livraison ?',q5:"Le nom de domaine et l'hébergement sont inclus ?",
+faq_title:'Questions fréquentes',q1:"L'aperçu est vraiment gratuit ?",q2:'Comment je paie ?',q3:'Je reçois quoi exactement ?',q4:'Je peux modifier après livraison ?',q5:"Le nom de domaine et l'hébergement sont inclus ?",q6:'Combien de temps mon site reste-t-il en ligne ?',q7:'Que se passe-t-il si je veux mon propre nom de domaine ?',q8:'Mon APK est-il sur le Play Store ?',
 g_title:'📖 Guide en 3 étapes',g1:'Écris une phrase',g2:"L'IA génère ton aperçu",g3:'Commande',g_cta:'C\u2019est parti',
 phr:['Décris le site que tu veux créer…','Ex : Restaurant Le Palmier à Djibouti, menu et prix ci-joints…','Ex : Agence de voyage, excursions au Lac Assal…','Ou touche ＋ pour envoyer une photo de ton menu'],
 err_net:'⚠️ Réseau lent ou serveur endormi — réessaie.',err_gen:'⚠️ La génération a échoué. Réessaie.',
 steps:['Je comprends ton business…','Je rédige tes textes…','Je dessine ton design…','J\u2019assemble ton site…'],
 mic_denied:'🎙️ Autorise le micro dans ton navigateur.'},
 en:{start:'Start',m_examples:'Examples',m_pricing:'Pricing',m_guide:'Guide',m_order:'Order',m_demo:'3D demo',
-	demo_open:'Discover the 3D demo',demo_title:'Your idea takes shape.',demo_note:'Local visual demo: it shows the 3D rendering and does not replace AI generation.',demo_reset:'Reset view',demo_hint:'Drag to rotate · Pinch or scroll to zoom',demo_fallback:'3D is unavailable in this browser. You can still create your website normally.',
+	demo_open:'View the 3D demo (optional)',demo_title:'Your idea takes shape.',demo_note:'Local visual demo: it shows the 3D rendering and does not replace AI generation.',demo_reset:'Reset view',demo_hint:'Drag to rotate · Pinch or scroll to zoom',demo_fallback:'3D is unavailable in this browser. You can still create your website normally.',demo_loading:'Loading the 3D demo…',demo_load_error:'The demo could not be downloaded. Check your connection and try again.',demo_retry:'Try again',demo_create:'Create my website now',
 badge:'Websites, word by word',h1:'Your business starts online here.',
 sub:'Describe your business to AI, get your website and Android app in under 24h. Mobile Money payment.',
 box_label:'Describe your business',ph1:'Describe the website you want…',st_any:'Style: Auto',
@@ -615,14 +699,14 @@ s3t:'Receive everything on WhatsApp',s3p:'Site + Android app within 24h after pa
 get_title:'What you get',get_lead:'Everything included in the single price.',
 ex_title:'Example websites',ex_lead:'Tap an example to pre-fill the box.',
 pr_title:'One price, everything included',pr_lead:'One-time payment — no subscription.',pr_unique:'SINGLE OFFER',pr_cta:'Start my free preview',pr_pay:'💳 Waafi or DahabPlus · Payment verified manually',
-faq_title:'Frequently asked questions',q1:'Is the preview really free?',q2:'How do I pay?',q3:'What exactly do I receive?',q4:'Can I edit after delivery?',q5:'Is a domain name and hosting included?',
+faq_title:'Frequently asked questions',q1:'Is the preview really free?',q2:'How do I pay?',q3:'What exactly do I receive?',q4:'Can I edit after delivery?',q5:'Is a domain name and hosting included?',q6:'How long will my website stay online?',q7:'What if I want my own domain name?',q8:'Is my APK on the Play Store?',
 g_title:'📖 3-step guide',g1:'Write one sentence',g2:'AI generates your preview',g3:'Order',g_cta:'Let\u2019s go',
 phr:['Describe the website you want…','E.g.: Restaurant Le Palmier in Djibouti, menu and prices attached…','E.g.: Travel agency, Lake Assal excursions…','Or tap ＋ to send a photo of your menu'],
 err_net:'⚠️ Slow network or waking server — try again.',err_gen:'⚠️ Generation failed. Try again.',
 steps:['Understanding your business…','Writing your texts…','Designing your layout…','Assembling your site…'],
 mic_denied:'🎙️ Allow the microphone in your browser.'},
 ar:{start:'ابدأ',m_examples:'أمثلة',m_pricing:'الأسعار',m_guide:'الدليل',m_order:'اطلب الآن',m_demo:'عرض ثلاثي الأبعاد',
-	demo_open:'اكتشف العرض ثلاثي الأبعاد',demo_title:'فكرتك تأخذ شكلاً.',demo_note:'عرض بصري محلي: يوضح التصميم ثلاثي الأبعاد ولا يحل محل الإنشاء بالذكاء الاصطناعي.',demo_reset:'إعادة التوسيط',demo_hint:'اسحب للتدوير · قرّب بإصبعين أو بعجلة الفأرة',demo_fallback:'العرض ثلاثي الأبعاد غير متاح في هذا المتصفح. يمكنك مواصلة إنشاء موقعك بشكل طبيعي.',
+	demo_open:'مشاهدة العرض ثلاثي الأبعاد (اختياري)',demo_title:'فكرتك تأخذ شكلاً.',demo_note:'عرض بصري محلي: يوضح التصميم ثلاثي الأبعاد ولا يحل محل الإنشاء بالذكاء الاصطناعي.',demo_reset:'إعادة التوسيط',demo_hint:'اسحب للتدوير · قرّب بإصبعين أو بعجلة الفأرة',demo_fallback:'العرض ثلاثي الأبعاد غير متاح في هذا المتصفح. يمكنك مواصلة إنشاء موقعك بشكل طبيعي.',demo_loading:'جارٍ تحميل العرض ثلاثي الأبعاد…',demo_load_error:'تعذر تنزيل العرض. تحقق من اتصالك ثم أعد المحاولة.',demo_retry:'إعادة المحاولة',demo_create:'أنشئ موقعي الآن',
 badge:'مواقع، كلمة كلمة',h1:'نشاطك التجاري يبدأ على الإنترنت من هنا.',
 sub:'صف نشاطك للذكاء الاصطناعي، واستلم موقعك وتطبيق أندرويد في أقل من 24 ساعة. الدفع عبر Mobile Money.',
 box_label:'صف نشاطك',ph1:'صف الموقع الذي تريد إنشاءه…',st_any:'النمط: تلقائي',
@@ -643,7 +727,7 @@ s3t:'استلم كل شيء على واتساب',s3p:'الموقع + تطبيق 
 get_title:'ماذا ستستلم',get_lead:'كل شيء مشمول في السعر الواحد.',
 ex_title:'أمثلة على مواقع تم إنشاؤها',ex_lead:'المس مثالاً لملء الصندوق.',
 pr_title:'سعر واحد، كل شيء مشمول',pr_lead:'دفعة واحدة — بدون اشتراك.',pr_unique:'عرض واحد',pr_cta:'ابدأ معاينتي المجانية',pr_pay:'💳 Waafi أو DahabPlus · يتم التحقق من الدفع يدوياً',
-faq_title:'أسئلة شائعة',q1:'هل المعاينة مجانية حقاً؟',q2:'كيف أدفع؟',q3:'ماذا أستلم بالضبط؟',q4:'هل يمكنني التعديل بعد التسليم؟',q5:'هل اسم النطاق والاستضافة مشمولان؟',
+faq_title:'أسئلة شائعة',q1:'هل المعاينة مجانية حقاً؟',q2:'كيف أدفع؟',q3:'ماذا أستلم بالضبط؟',q4:'هل يمكنني التعديل بعد التسليم؟',q5:'هل اسم النطاق والاستضافة مشمولان؟',q6:'كم من الوقت يبقى موقعي على الإنترنت؟',q7:'ماذا أفعل إذا أردت اسم النطاق الخاص بي؟',q8:'هل ملف APK متاح على Play Store؟',
 g_title:'📖 دليل في 3 خطوات',g1:'اكتب جملة واحدة',g2:'الذكاء الاصطناعي ينشئ معاينتك',g3:'اطلب',g_cta:'هيا بنا',
 phr:['صف الموقع الذي تريد إنشاءه…','مثال: مطعم النخيل في جيبوتي، القائمة والأسعار مرفقة…','مثال: وكالة سفر، رحلات إلى بحيرة عسل…','أو اضغط ＋ لإرسال صورة قائمتك'],
 err_net:'⚠️ الشبكة بطيئة أو الخادم يستيقظ — حاول مجدداً.',err_gen:'⚠️ فشل الإنشاء. حاول مجدداً.',
@@ -677,16 +761,16 @@ const SHORTCUTS = [
 const SHORT_LABELS = {fr:['Restaurant','Hôtel','Agence de voyage','Salon de beauté','Boutique en ligne','École / Formation','Clinique','Autre idée'],
   en:['Restaurant','Hotel','Travel agency','Beauty salon','Online shop','School / Training','Clinic','Other idea'],
   ar:['مطعم','فندق','وكالة سفر','صالون تجميل','متجر إلكتروني','مدرسة / تدريب','عيادة','فكرة أخرى']};
-const GET_ITEMS = {fr:[['📱','Site web responsive (mobile + ordinateur)'],['🤖','Application Android APK à ton nom'],['💬','Bouton WhatsApp intégré'],['📝','Formulaire de contact'],['🗺️','Carte Google Maps'],['🌐','Bilingue FR / AR'],['✏️','1 modification gratuite'],['⚡','Livraison en moins de 24h']],
-  en:[['📱','Responsive website (mobile + desktop)'],['🤖','Android APK app in your name'],['💬','Built-in WhatsApp button'],['📝','Contact form'],['🗺️','Google Maps'],['🌐','Bilingual FR / AR'],['✏️','1 free revision'],['⚡','Delivery under 24h']],
-  ar:[['📱','موقع متجاوب (جوال + حاسوب)'],['🤖','تطبيق أندرويد APK باسمك'],['💬','زر واتساب مدمج'],['📝','نموذج اتصال'],['🗺️','خريطة Google Maps'],['🌐','ثنائي اللغة FR / AR'],['✏️','تعديل واحد مجاني'],['⚡','تسليم خلال 24 ساعة']]};
+const GET_ITEMS = {
+  fr:[['💻','Site web professionnel','Adapté au mobile et à l’ordinateur.'],['🤖','App Android à ton nom','Un APK pour présenter ton activité.'],['💬','Bouton WhatsApp','Tes clients te contactent facilement.'],['🌐','Bilingue FR–AR','Deux langues disponibles sur demande.'],['✏️','1 modification gratuite','Une retouche incluse après la livraison.'],['⚡','Livraison en 24h','Ta commande est envoyée sur WhatsApp.']],
+  en:[['💻','Professional website','Designed for mobile and desktop.'],['🤖','Android app in your name','An APK to present your business.'],['💬','WhatsApp button','Your customers can contact you easily.'],['🌐','Bilingual FR–AR','Two languages available on request.'],['✏️','1 free revision','One edit included after delivery.'],['⚡','24h delivery','Your order is sent on WhatsApp.']],
+  ar:[['💻','موقع احترافي','مناسب للجوال والحاسوب.'],['🤖','تطبيق أندرويد باسمك','ملف APK لعرض نشاطك.'],['💬','زر واتساب','يتواصل معك عملاؤك بسهولة.'],['🌐','ثنائي اللغة FR–AR','لغتان متاحتان عند الطلب.'],['✏️','تعديل واحد مجاني','تعديل مشمول بعد التسليم.'],['⚡','التسليم خلال 24 ساعة','يُرسل طلبك عبر واتساب.']]
+};
 const EXAMPLES = [
-  {ic:'🍰',bg:'#FEF3C7',n:'Tiramisu Spot',p:'Pâtisserie'},
-  {ic:'🎓',bg:'#D1FAE5',n:'Espoir Formation',p:'École'},
-  {ic:'🐟',bg:'#DBEAFE',n:'Le Pêcheur',p:'Restaurant'},
-  {ic:'✈️',bg:'#E0E7FF',n:'Assal Voyages',p:'Agence'},
-  {ic:'💈',bg:'#FCE7F3',n:'Barbier Premium',p:'Coiffure'},
-  {ic:'👗',bg:'#EDE9FE',n:'Mode Hibo',p:'Boutique'}
+  'Restaurant à Djibouti-ville, cuisine yéménite, livraison, commandes sur WhatsApp',
+  'Salon de coiffure femmes au Héron, tresses et maquillage, rendez-vous WhatsApp',
+  'Boutique d’abayas et de robes, catalogue avec prix en DJF',
+  'Agence de tourisme : lac Assal, île Moucha, requins-baleines, en français et anglais'
 ];
 
 function renderShortcuts(){
@@ -701,16 +785,17 @@ function useShortcut(i){
   updateSend(); saveDraft(); focusBox();
 }
 function renderGet(){
-  document.getElementById('getGrid').innerHTML = GET_ITEMS[lang].map(g=>'<div class="get-item"><span>'+g[0]+'</span>'+g[1]+'</div>').join('');
+  document.getElementById('getGrid').innerHTML = GET_ITEMS[lang].map(g=>'<article class="get-item"><span aria-hidden="true">'+g[0]+'</span><div><h3>'+g[1]+'</h3><p>'+g[2]+'</p></div></article>').join('');
 }
 function renderSteps(){
   const wrap = document.getElementById('genSteps');
   if(!wrap.dataset.busy) wrap.innerHTML = t('steps').map((s,i)=>'<div class="gen-step" data-i="'+i+'"><span class="sp">'+(i+1)+'</span>'+s+'</div>').join('');
 }
-document.getElementById('gallery').innerHTML = EXAMPLES.map(e=>'<div class="g-card" onclick="useExample(\''+e.n.replace(/'/g,'')+'\')"><div class="g-thumb" style="background:'+e.bg+'">'+e.ic+'</div><p>'+e.n+'<br><span style="color:var(--muted);font-weight:600">'+e.p+'</span></p></div>').join('');
-function useExample(n){
-  document.getElementById('prompt').value = n + ' — décris ce business comme si tu étais le propriétaire (services, prix, horaires, quartier, WhatsApp).';
-  updateSend(); focusBox();
+function useExample(i){
+  if(!EXAMPLES[i])return;
+  draft.images=[];renderThumbs();
+  promptEl.value=EXAMPLES[i];
+  updateSend();saveDraft();focusBox();
 }
 
 /* ================= STATE / DRAFT ================= */
@@ -728,12 +813,44 @@ function toast(msg, isErr){
   el.textContent = msg; el.style.background = isErr ? '#DC2626' : '';
   el.classList.add('on'); setTimeout(()=>el.classList.remove('on'), 3800);
 }
-function toggleMenu(){ document.getElementById('menu').classList.toggle('open'); }
-function closeMenu(){ document.getElementById('menu').classList.remove('open'); }
-function openGuide(){ document.getElementById('guideModal').style.display='block'; }
-function closeGuide(){ document.getElementById('guideModal').style.display='none'; }
-function focusBox(){ window.scrollTo({top:0,behavior:'smooth'}); setTimeout(()=>document.getElementById('prompt').focus(), 350); }
-function togglePanel(){ document.getElementById('panel').classList.toggle('open'); }
+function toggleMenu(){
+  const menu=document.getElementById('menu');
+  const open=menu.classList.toggle('open');
+  document.querySelector('.burger').setAttribute('aria-expanded',String(open));
+}
+function closeMenu(){
+  document.getElementById('menu').classList.remove('open');
+  document.querySelector('.burger').setAttribute('aria-expanded','false');
+}
+let guideOpener=null;
+function openGuide(){
+  guideOpener=document.activeElement;
+  const modal=document.getElementById('guideModal');
+  modal.style.display='block';document.body.style.overflow='hidden';
+  modal.querySelector('button[aria-label]').focus();
+}
+function closeGuide(){
+  document.getElementById('guideModal').style.display='none';document.body.style.overflow='';
+  if(guideOpener&&guideOpener.focus)guideOpener.focus();
+}
+function motionBehavior(){return matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';}
+function focusBox(){ window.scrollTo({top:0,behavior:motionBehavior()}); setTimeout(()=>document.getElementById('prompt').focus(), motionBehavior()==='auto'?0:350); }
+function togglePanel(){
+  const panel=document.getElementById('panel');
+  const open=panel.classList.toggle('open');
+  document.querySelector('.panel-toggle').setAttribute('aria-expanded',String(open));
+}
+document.getElementById('guideModal').addEventListener('click',event=>{if(event.target.id==='guideModal')closeGuide();});
+document.addEventListener('keydown',event=>{
+  const guide=document.getElementById('guideModal');
+  if(event.key==='Escape'){closeMenu();if(guide.style.display==='block')closeGuide();}
+  if(event.key==='Tab'&&guide.style.display==='block'){
+    const focusable=Array.from(guide.querySelectorAll('button,a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')).filter(el=>!el.hidden);
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  }
+});
 
 const promptEl = document.getElementById('prompt');
 const sendBtn = document.getElementById('sendBtn');
@@ -757,7 +874,7 @@ function addImage(input){
 }
 function removeImage(i){ draft.images.splice(i,1); renderThumbs(); updateSend(); saveDraft(); }
 function renderThumbs(){
-  document.getElementById('thumbs').innerHTML = draft.images.map((im,i)=>'<div class="thumb"><img src="'+im.b64+'" alt=""><button onclick="removeImage('+i+')" aria-label="Supprimer">✕</button></div>').join('');
+  document.getElementById('thumbs').innerHTML = draft.images.map((im,i)=>'<div class="thumb"><img src="'+im.b64+'" alt="Image ajoutée '+(i+1)+'"><button onclick="removeImage('+i+')" aria-label="Supprimer l’image '+(i+1)+'">✕</button></div>').join('');
 }
 
 /* ================= GENERATION FLOW ================= */
@@ -766,7 +883,7 @@ function showGen(){
   hideClarify();
   document.getElementById('preview').classList.remove('on');
   const g = document.getElementById('gen'); g.classList.add('on');
-  g.scrollIntoView({behavior:'smooth', block:'center'});
+  g.scrollIntoView({behavior:motionBehavior(), block:'center'});
   renderSteps();
   const steps = document.querySelectorAll('.gen-step');
   let i = 0; document.getElementById('genBar').style.width = '5%';
@@ -888,7 +1005,7 @@ async function generate(){
 }
 
 /* clarify */
-function showClarify(){ document.getElementById('clarify').classList.add('on'); document.getElementById('clarify').scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>document.getElementById('clarifyInput').focus(),300); }
+function showClarify(){ document.getElementById('clarify').classList.add('on'); document.getElementById('clarify').scrollIntoView({behavior:motionBehavior(),block:'center'}); setTimeout(()=>document.getElementById('clarifyInput').focus(),300); }
 function hideClarify(){ document.getElementById('clarify').classList.remove('on'); }
 document.getElementById('clarifyInput').addEventListener('keydown', e=>{ if(e.key==='Enter') clarifySend(); });
 function clarifySend(){
@@ -911,7 +1028,7 @@ function syncPanelFromBrief(){
 function showPreview(html){
   document.getElementById('pvFrame').srcdoc = html;
   document.getElementById('preview').classList.add('on');
-  document.getElementById('preview').scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('preview').scrollIntoView({behavior:motionBehavior(), block:'start'});
 }
 function setDevice(d){
   document.getElementById('frame').classList.toggle('desktop', d==='desktop');
@@ -949,6 +1066,18 @@ async function sendModify(){
 
 /* ================= APK (logique existante conservée) ================= */
 let apkPoll = null;
+let qrCodeLoader = null;
+function ensureQrCode(){
+  if(window.QRCode)return Promise.resolve();
+  if(qrCodeLoader)return qrCodeLoader;
+  qrCodeLoader=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    script.onload=resolve;script.onerror=()=>{qrCodeLoader=null;reject(new Error('QRCode indisponible'));};
+    document.head.appendChild(script);
+  });
+  return qrCodeLoader;
+}
 function apkStatusMsg(msg, isErr){
   const el = document.getElementById('apkStatus');
   el.style.display='block';
@@ -966,7 +1095,7 @@ function pollApk(id, tries){
       document.getElementById('apkLink').href = full;
       document.getElementById('apkResult').style.display='block';
       const qr = document.getElementById('qrcode'); qr.innerHTML='';
-      if(window.QRCode) new QRCode(qr,{text:full,width:130,height:130});
+      ensureQrCode().then(()=>{new QRCode(qr,{text:full,width:130,height:130});}).catch(()=>{qr.textContent='';});
       return;
     }
     if(d.status === 'errored'){ apkStatusMsg('⚠️ Compilation échouée — contacte-nous sur WhatsApp.', true); return; }
@@ -1016,15 +1145,29 @@ async function toggleVoice(){
   }catch(e){ toast(t('mic_denied'), true); }
 }
 
+/* ================= TÉMOIGNAGES RÉELS UNIQUEMENT ================= */
+function initTestimonials(){
+  const section=document.getElementById('temoignages');
+  const cards=Array.from(section.querySelectorAll('[data-testimonial]'));
+  const complete=cards.length===3&&cards.every(card=>{
+    const fields=['name','sector','quote'].map(key=>card.querySelector('[data-testimonial-'+key+']').textContent.trim());
+    const textsValid=fields.every(value=>value.length>3&&!value.includes('[À REMPLIR'));
+    const href=card.querySelector('[data-testimonial-link]').getAttribute('href')||'';
+    let linkValid=false;try{const url=new URL(href,location.origin);linkValid=!!href&&(url.protocol==='https:'||url.protocol==='http:')&&href!=='#';}catch(e){}
+    return textsValid&&linkValid;
+  });
+  section.hidden=!complete;
+  cards.forEach(card=>{card.querySelector('[data-testimonial-link]').hidden=!complete;});
+}
+
 /* ================= INIT ================= */
 document.getElementById('prompt').value = '';
-renderThumbs(); updateSend(); applyLang();
+renderThumbs(); updateSend(); applyLang(); initTestimonials();
 if(draft.html && draft.brief && draft.brief.nom){
   // Reprendre la session : afficher l'aperçu sauvegardé
   showPreview(draft.html);
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
 </script>
@@ -1032,51 +1175,86 @@ if(draft.html && draft.brief && draft.brief.nom){
 /* Démo locale autonome : Three.js est chargé seulement à la demande. */
 let demo3d = null;
 let demoOpener = null;
+let demoLoadId = 0;
 const demoModal = document.getElementById('demoModal');
 const demoStage = document.getElementById('demoStage');
 const demoFallback = document.getElementById('demoFallback');
+const demoLoading = document.getElementById('demoLoading');
+const demoLoadError = document.getElementById('demoLoadError');
 
-window.openDemo3D = async function(){
-  demoOpener = document.activeElement;
-  demoModal.classList.add('on');
-  document.body.style.overflow = 'hidden';
-  demoFallback.classList.remove('on');
-  demoModal.querySelector('.demo-actions button:last-child').focus();
-  if(demo3d){ demo3d.resume(); demo3d.resize(); return; }
+function supportsWebGL(){
   try{
-    const [THREE, controlsModule, roundedModule, roomModule] = await Promise.all([
+    const canvas=document.createElement('canvas');
+    const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');
+    if(!gl)return false;
+    const lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
+    return true;
+  }catch(error){return false;}
+}
+window.openDemo3D = async function(){
+  if(demo3d)return;
+  const wasOpen=demoModal.classList.contains('on');
+  if(!wasOpen)demoOpener=document.activeElement;
+  const loadId=++demoLoadId;
+  demoModal.classList.add('on');
+  document.body.style.overflow='hidden';
+  demoFallback.classList.remove('on');demoLoadError.classList.remove('on');
+  demoModal.querySelector('.demo-actions button:last-child').focus();
+  if(!supportsWebGL()){demoFallback.classList.add('on');demoLoading.classList.remove('on');return;}
+  demoLoading.classList.add('on');
+  let modules;
+  try{
+    modules=await Promise.all([
       import('three'),
       import('three/addons/controls/OrbitControls.js'),
       import('three/addons/geometries/RoundedBoxGeometry.js'),
       import('three/addons/environments/RoomEnvironment.js')
     ]);
-    demo3d = createDemo3D(THREE, controlsModule.OrbitControls, roundedModule.RoundedBoxGeometry, roomModule.RoomEnvironment);
-    window.__DEMO3D_READY__ = true;
   }catch(error){
-    console.error('Démo 3D indisponible :', error);
+    if(loadId===demoLoadId){console.error('Échec du chargement de la démo 3D :',error);demoLoadError.classList.add('on');}
+    return;
+  }finally{if(loadId===demoLoadId)demoLoading.classList.remove('on');}
+  if(loadId!==demoLoadId||!demoModal.classList.contains('on'))return;
+  try{
+    const [THREE,controlsModule,roundedModule,roomModule]=modules;
+    demo3d=createDemo3D(THREE,controlsModule.OrbitControls,roundedModule.RoundedBoxGeometry,roomModule.RoomEnvironment);
+    window.__DEMO3D_READY__=true;
+  }catch(error){
+    console.error('Échec de création du contexte 3D :',error);
     demoFallback.classList.add('on');
   }
 };
 window.closeDemo3D = function(){
+  demoLoadId++;
   demoModal.classList.remove('on');
-  document.body.style.overflow = '';
-  if(demo3d) demo3d.stop();
-  if(demoOpener && demoOpener.focus) demoOpener.focus();
+  document.body.style.overflow='';
+  demoLoading.classList.remove('on');demoFallback.classList.remove('on');demoLoadError.classList.remove('on');
+  if(demo3d){demo3d.dispose();demo3d=null;}
+  window.__DEMO3D_READY__=false;
+  if(demoOpener&&demoOpener.focus)demoOpener.focus();
 };
 window.toggleDemo3D = function(){ if(demo3d) demo3d.togglePause(); };
 window.resetDemo3D = function(){ if(demo3d) demo3d.reset(); };
 document.addEventListener('keydown', event=>{
-  if(event.key === 'Escape' && demoModal.classList.contains('on')) window.closeDemo3D();
+  if(!demoModal.classList.contains('on'))return;
+  if(event.key==='Escape'){window.closeDemo3D();return;}
+  if(event.key==='Tab'){
+    const focusable=Array.from(demoModal.querySelectorAll('button,canvas[tabindex]')).filter(el=>el.offsetParent!==null);
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  }
 });
 
 function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment){
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const renderer = new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  const lowPower = (navigator.deviceMemory && navigator.deviceMemory<=2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency<=4);
+  const renderer = new THREE.WebGLRenderer({antialias:!lowPower, powerPreference:lowPower?'low-power':'high-performance'});
+  renderer.setPixelRatio(lowPower?1:Math.min(devicePixelRatio,1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !lowPower;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.tabIndex = 0;
   renderer.domElement.setAttribute('aria-label', 'Scène 3D. Flèches gauche et droite pour tourner, espace pour mettre en pause.');
@@ -1090,7 +1268,7 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   camera.position.copy(home);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 2.15, 0);
-  controls.enableDamping = true;
+  controls.enableDamping = !reducedMotion;
   controls.dampingFactor = .065;
   controls.enablePan = false;
   controls.minDistance = 7;
@@ -1106,7 +1284,7 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   room.dispose(); pmrem.dispose();
   scene.add(new THREE.HemisphereLight('#BFE8FF', '#111827', 1.35));
   const key = new THREE.DirectionalLight('#FFF1D6', 3.1);
-  key.position.set(4, 9, 7); key.castShadow = true;
+  key.position.set(4, 9, 7); key.castShadow = !lowPower;
   key.shadow.mapSize.set(1024, 1024);
   key.shadow.camera.left = -7; key.shadow.camera.right = 7;
   key.shadow.camera.top = 8; key.shadow.camera.bottom = -5;
@@ -1116,24 +1294,25 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   fill.position.set(-6, 4, -4); scene.add(fill);
 
   const model = new THREE.Group(); scene.add(model);
+  const roundSegments=lowPower?2:4;
   const dark = new THREE.MeshStandardMaterial({color:'#101827', metalness:.55, roughness:.28});
   const cyan = new THREE.MeshStandardMaterial({color:'#164E63', emissive:'#0891B2', emissiveIntensity:.18, metalness:.45, roughness:.25});
   const glass = new THREE.MeshPhysicalMaterial({color:'#164E63', transparent:true, opacity:.42, metalness:.25, roughness:.22, depthWrite:false});
   const pale = new THREE.MeshStandardMaterial({color:'#BAE6FD', emissive:'#0EA5E9', emissiveIntensity:.1, metalness:.2, roughness:.3});
 
-  const base = new THREE.Mesh(new RoundedBoxGeometry(8.1, .28, 5.1, 4, .14), dark);
+  const base = new THREE.Mesh(new RoundedBoxGeometry(8.1,.28,5.1,roundSegments,.14), dark);
   base.position.y = .15; base.receiveShadow = true; base.castShadow = true; model.add(base);
-  const inset = new THREE.Mesh(new RoundedBoxGeometry(7.65, .05, 4.65, 3, .03), cyan);
+  const inset = new THREE.Mesh(new RoundedBoxGeometry(7.65,.05,4.65,roundSegments,.03), cyan);
   inset.position.y = .32; model.add(inset);
 
   const rearPanels = [];
   for(let i=2;i>=1;i--){
-    const panel = new THREE.Mesh(new RoundedBoxGeometry(6.35, 3.85, .12, 4, .12), glass.clone());
+    const panel = new THREE.Mesh(new RoundedBoxGeometry(6.35,3.85,.12,roundSegments,.12), glass.clone());
     panel.position.set(-i*.16, 2.62+i*.06, -i*.62);
     panel.rotation.y = -i*.035;
     model.add(panel); rearPanels.push(panel);
   }
-  const browser = new THREE.Mesh(new RoundedBoxGeometry(6.45, 3.95, .24, 5, .14), dark);
+  const browser = new THREE.Mesh(new RoundedBoxGeometry(6.45,3.95,.24,lowPower?2:5,.14), dark);
   browser.position.y = 2.62; browser.castShadow = true; model.add(browser);
 
   function websiteTexture(){
@@ -1168,14 +1347,14 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   const cards = [];
   const cardData = [{x:-3.65,y:2.4,z:.6,c:cyan},{x:3.55,y:3.4,z:.35,c:pale},{x:3.45,y:1.25,z:.8,c:cyan}];
   cardData.forEach((item,i)=>{
-    const card = new THREE.Mesh(new RoundedBoxGeometry(1.25,.82,.16,4,.1),item.c);
+    const card = new THREE.Mesh(new RoundedBoxGeometry(1.25,.82,.16,roundSegments,.1),item.c);
     card.position.set(item.x,item.y,item.z);card.rotation.y = i===0?.22:-.18;card.castShadow=true;
     model.add(card);cards.push(card);
     const bar = new THREE.Mesh(new RoundedBoxGeometry(.72,.08,.03,2,.02),pale);
     bar.position.set(item.x,item.y,item.z+.1);bar.rotation.y=card.rotation.y;model.add(bar);
   });
   for(let i=0;i<3;i++){
-    const orb = new THREE.Mesh(new THREE.SphereGeometry(.12+i*.035,20,14),i===1?pale:cyan);
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(.12+i*.035,lowPower?12:20,lowPower?8:14),i===1?pale:cyan);
     orb.position.set(-3.1+i*3.05,.65,-1.65);model.add(orb);
   }
 
@@ -1185,7 +1364,7 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   shadow.rotation.x=-Math.PI/2;shadow.position.y=-.01;shadow.receiveShadow=true;scene.add(shadow);
 
   let seed=24681357;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  const count=180,positions=new Float32Array(count*3),sizes=new Float32Array(count);
+  const count=lowPower?60:150,positions=new Float32Array(count*3),sizes=new Float32Array(count);
   for(let i=0;i<count;i++){positions[i*3]=(random()-.5)*17;positions[i*3+1]=random()*8;positions[i*3+2]=(random()-.5)*13;sizes[i]=.5+random();}
   const particleGeometry=new THREE.BufferGeometry();
   particleGeometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
@@ -1204,13 +1383,17 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
   updatePauseLabel();
   function render(now){
     if(!running)return;
+    raf=0;
     const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused)elapsed+=dt;
     model.position.y=Math.sin(elapsed*.75)*.055;
     rearPanels.forEach((panel,i)=>{panel.position.z=-(i+1)*(.72+.12*Math.sin(elapsed*.8));});
     cards.forEach((card,i)=>{card.position.y=cardData[i].y+Math.sin(elapsed*1.1+i*1.7)*.12;});
     particles.rotation.y=elapsed*.018;particleMaterial.uniforms.uTime.value=elapsed;
-    controls.update();renderer.render(scene,camera);raf=requestAnimationFrame(render);
+    controls.update();renderer.render(scene,camera);
+    if(!paused)raf=requestAnimationFrame(render);
   }
+  function requestRender(){if(running&&!raf){last=performance.now();raf=requestAnimationFrame(render);}}
+  controls.addEventListener('change',()=>{if(paused)renderer.render(scene,camera);});
   const currentHome=home.clone();let lastMobile=null;
   function resize(){
     const width=demoStage.clientWidth,height=demoStage.clientHeight;if(!width||!height)return;
@@ -1218,18 +1401,31 @@ function createDemo3D(THREE, OrbitControls, RoundedBoxGeometry, RoomEnvironment)
     currentHome.copy(home).multiplyScalar(mobile?1.52:1);
     if(lastMobile===null||mobile!==lastMobile){camera.position.copy(currentHome);controls.update();lastMobile=mobile;}
     camera.aspect=width/height;camera.fov=mobile?50:38;camera.updateProjectionMatrix();renderer.setSize(width,height,false);
+    if(paused)renderer.render(scene,camera);
   }
-  const observer=new ResizeObserver(resize);observer.observe(demoStage);resize();raf=requestAnimationFrame(render);
+  const observer=new ResizeObserver(resize);observer.observe(demoStage);resize();requestRender();
   renderer.domElement.addEventListener('keydown',event=>{
     if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();model.rotation.y+=event.key==='ArrowLeft'?-.12:.12;renderer.render(scene,camera);}
     if(event.code==='Space'){event.preventDefault();api.togglePause();}
   });
   const api={
     resize,
-    stop(){running=false;cancelAnimationFrame(raf);},
-    resume(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(render);},
-    togglePause(){paused=!paused;updatePauseLabel();},
-    reset(){camera.position.copy(currentHome);controls.target.set(0,2.15,0);model.rotation.y=0;controls.update();renderer.render(scene,camera);}
+    togglePause(){paused=!paused;updatePauseLabel();if(paused){cancelAnimationFrame(raf);raf=0;renderer.render(scene,camera);}else requestRender();},
+    reset(){camera.position.copy(currentHome);controls.target.set(0,2.15,0);model.rotation.y=0;controls.update();renderer.render(scene,camera);},
+    dispose(){
+      running=false;cancelAnimationFrame(raf);observer.disconnect();controls.dispose();
+      const textures=new Set();
+      scene.traverse(object=>{
+        if(object.geometry)object.geometry.dispose();
+        const materials=object.material?(Array.isArray(object.material)?object.material:[object.material]):[];
+        materials.forEach(material=>{
+          Object.values(material).forEach(value=>{if(value&&value.isTexture)textures.add(value);});
+          material.dispose();
+        });
+      });
+      textures.forEach(texture=>texture.dispose());environment.dispose();
+      renderer.renderLists.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
+    }
   };
   return api;
 }
