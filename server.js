@@ -211,7 +211,7 @@ app.post('/api/generate', async (req, res) => {
   }
 
   if (!GROQ_API_KEY) {
-    console.error('❌ Génération refusée : GROQ_API_KEY absente (vérifie Render)');
+    console.error('❌ Génération refusée : GROQ_API_KEY absente (vérifie Railway)');
     return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
 
