@@ -443,6 +443,29 @@ app.get('/api/mobile/config', (req, res) => {
     payments: mobileOffers.getPaymentMethods()
   });
 });
+// ------ PROMPT2SITE MOBILE : APERÇU GRATUIT ------
+const mobilePreview = require('./lib/mobile-preview');
+
+app.post('/api/mobile/preview', (req, res) => {
+  try {
+    const description = req.body ? req.body.description : null;
+    const preview = mobilePreview.createMobilePreview(description);
+
+    res.json({
+      success: true,
+      preview
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+
+    res.status(statusCode).json({
+      success: false,
+      error: statusCode === 400
+        ? error.message
+        : 'Impossible de générer l’aperçu mobile.'
+    });
+  }
+});
 
 const apkBuilder = require('./lib/github-apk');
 apkBuilder.registerRoutes(app, checkAccess);
