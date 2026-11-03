@@ -897,6 +897,8 @@ function renderThumbs(){
 }
 
 /* ================= GENERATION FLOW ================= */
+let genAbort = null, genTimer = null;
+function showGen(){
 function showGen(){
   hideClarify();
   document.getElementById('preview').classList.remove('on');
