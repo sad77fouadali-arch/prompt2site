@@ -297,6 +297,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <div class="toolbar">
       <button class="tool-round" onclick="document.getElementById('imgInput').click()" title="Ajouter une image" aria-label="Ajouter une image">＋</button>
       <input type="file" id="imgInput" accept="image/*" class="hidden" style="display:none" onchange="addImage(this)" aria-label="Choisir une image à envoyer">
+          <div class="pill">📱 <select id="projectMode" aria-label="Type de projet">
+        <option value="site">Site web</option>
+        <option value="mobile">Application mobile</option>
+      </select></div>
       <div class="pill">🎨 <select id="styleSel" aria-label="Style visuel">
         <option value="" data-i18n="st_any">Style : Auto</option>
         <option value="Moderne">Moderne</option>
@@ -305,7 +309,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
         <option value="Minimal">Minimal</option>
         <option value="Luxe">Luxe</option>
         <option value="Coloré">Coloré</option>
-      </select></div>
+      </select></div> 
+
       <div class="pill">🌐 <select id="langSel" aria-label="Langue du site">
         <option value="français">FR</option>
         <option value="arabe">عربي</option>
@@ -463,6 +468,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       <p class="box-help">Scanne pour télécharger sur ton téléphone</p>
     </div>
   </details>
+</section>
+<!-- ===== APERÇU MOBILE SIMULÉ ===== -->
+<section class="preview" id="mobilePreview">
+  <div class="preview-head">
+    <h2>📱 Ton aperçu mobile est prêt</h2>
+    <p>Aperçu simulé et gratuit — aucune application n’est encore publiée.</p>
+  </div>
+  <div class="frame-wrap">
+    <div class="frame-phone">
+      <iframe id="mobileFrame" title="Aperçu de l’application mobile" sandbox="allow-scripts"></iframe>
+    </div>
+  </div>
 </section>
 
 <!-- ===== SECTIONS ===== -->
@@ -638,12 +655,14 @@ const API = {
   parseMenu:   '/api/parse-menu',
   parseImage:  '/api/parse-menu-image',
   generate:    '/api/generate',
+  mobilePreview: '/api/mobile/preview',
   modify:      '/api/modify',
   transcribe:  '/api/transcribe',
   apk:         '/api/generate-apk',
   apkStatus:   '/api/apk-status/',
   apkDownload: '/api/apk-download/'
-};
+};  
+
 const TUNNEL_URL = '/tunnel.html';
 const WHATSAPP_LINK = 'https://wa.link/7gp8wm';
 
@@ -878,10 +897,10 @@ function renderThumbs(){
 }
 
 /* ================= GENERATION FLOW ================= */
-let genAbort = null, genTimer = null;
 function showGen(){
   hideClarify();
   document.getElementById('preview').classList.remove('on');
+  document.getElementById('mobilePreview').classList.remove('on');
   const g = document.getElementById('gen'); g.classList.add('on');
   g.scrollIntoView({behavior:motionBehavior(), block:'center'});
   renderSteps();
@@ -954,7 +973,18 @@ function mergePanel(brief){
 
 async function onSend(){
   const text = promptEl.value.trim();
+  if(document.getElementById('projectMode').value === 'mobile'){
+    if(!text){
+      toast('⚠️ Décris ton application mobile');
+      return;
+    }
+    draft.text = text;
+    saveDraft();
+    await generateMobilePreview(text);
+    return;
+  }
   if(!text && !draft.images.length) return;
+ 
   draft.text = text; saveDraft();
   showGen();
   genAbort = new AbortController();
@@ -1022,6 +1052,38 @@ function syncPanelFromBrief(){
   set('p_nom',b.nom); set('p_secteur',b.secteur); set('p_objectif',b.objectif);
   set('p_tel',b.telephone); set('p_whatsapp',b.whatsapp); set('p_adresse',b.adresse); set('p_email',b.email);
   set('p_couleurs',b.couleurs); set('p_logo',b.logo); set('p_photos',b.photos); set('p_precisions',b.precisions);
+}
+/* ================= APERÇU MOBILE ================= */
+function showMobilePreview(html){
+  document.getElementById('mobileFrame').srcdoc = html;
+  document.getElementById('preview').classList.remove('on');
+  const section = document.getElementById('mobilePreview');
+  section.classList.add('on');
+  section.scrollIntoView({behavior:motionBehavior(), block:'start'});
+}
+
+async function generateMobilePreview(description){
+  const button = document.getElementById('sendBtn');
+  button.disabled = true;
+  hideClarify();
+  hideGen();
+  try{
+    const res = await fetch(API.mobilePreview, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({description: description})
+    });
+    const data = await res.json();
+    if(!res.ok || !data.success || !data.html){
+      throw new Error(data.error || t('err_gen'));
+    }
+    showMobilePreview(data.html);
+  }catch(e){
+    toast(e.message || t('err_net'), true);
+  }finally{
+    button.disabled = false;
+    updateSend();
+  }
 }
 
 /* ================= PREVIEW ================= */
