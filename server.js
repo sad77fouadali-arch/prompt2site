@@ -445,15 +445,18 @@ app.get('/api/mobile/config', (req, res) => {
 });
 // ------ PROMPT2SITE MOBILE : APERÇU GRATUIT ------
 const mobilePreview = require('./lib/mobile-preview');
+const mobileRenderer = require('./lib/mobile-renderer');
 
 app.post('/api/mobile/preview', (req, res) => {
   try {
     const description = req.body ? req.body.description : null;
     const preview = mobilePreview.createMobilePreview(description);
+    const html = mobileRenderer.renderMobileHtml(preview);
 
     res.json({
       success: true,
-      preview
+      preview,
+      html
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
