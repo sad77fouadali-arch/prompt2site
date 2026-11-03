@@ -432,6 +432,18 @@ app.post('/api/transcribe', async (req, res) => {
   }
 });
 
+
+// ------ PROMPT2SITE MOBILE : CONFIGURATION PUBLIQUE ------
+const mobileOffers = require('./lib/mobile-offers');
+
+app.get('/api/mobile/config', (req, res) => {
+  res.json({
+    success: true,
+    pricing: mobileOffers.MOBILE_OFFERS,
+    payments: mobileOffers.getPaymentMethods()
+  });
+});
+
 const apkBuilder = require('./lib/github-apk');
 apkBuilder.registerRoutes(app, checkAccess);
 const produitsRoutes = require('./lib/produits');
