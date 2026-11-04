@@ -22,7 +22,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LocalBusiness","name":"Prompt2Site","url":"https://prompt2site-production.up.railway.app/","image":"https://prompt2site-production.up.railway.app/og-image.png.jpg","description":"Création de sites web par IA et applications Android APK pour les commerces à Djibouti.","telephone":"+25377098637","areaServed":{"@type":"Country","name":"Djibouti"},"currenciesAccepted":"DJF","paymentAccepted":"Waafi, DahabPlus","priceRange":"10 000 DJF","makesOffer":{"@type":"Offer","price":"10000","priceCurrency":"DJF","itemOffered":{"@type":"Service","name":"Site web et application Android APK"}}}
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Prompt2Site","url":"https://prompt2site-production.up.railway.app/","image":"https://prompt2site-production.up.railway.app/og-image.png.jpg","description":"Création de sites web par IA et applications Android APK pour les commerces à Djibouti.","telephone":"+25377098637","areaServed":{"@type":"Country","name":"Djibouti"},"currenciesAccepted":"DJF","paymentAccepted":"Waafi, DahabPlus","priceRange":"À partir de 25 000 DJF"
+,"makesOffer":{"@type":"Offer","price":"25000"
+,"priceCurrency":"DJF","itemOffered":{"@type":"Service","name":"Application mobile Android - offre Standard"}}}
 </script>
 <style>
 :root{
@@ -449,7 +451,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <button class="btn btn-ghost" onclick="openFull()" data-i18n="pv_full">🔍 Plein écran</button>
     <button class="btn btn-ghost" onclick="toggleModify()" data-i18n="pv_modify">✏️ Modifier avec l'IA</button>
     <button class="btn btn-ghost" onclick="regenerate()" data-i18n="pv_regen">🔄 Régénérer</button>
-    <button class="btn btn-dark" onclick="goTunnel()" data-i18n="pv_order">Commander mon site + app Android — 10 000 DJF</button>
+    <button class="btn btn-dark" onclick="goTunnel()" data-i18n="pv_order">Commander mon application mobile — à partir de 25 000 DJF</button>
   </div>
   <div class="modify-box" id="modifyBox">
     <div class="modify-row">
@@ -498,7 +500,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 <section class="section">
   <div class="container">
     <h2 data-i18n="get_title">Ce que tu reçois</h2>
-    <p class="lead" data-i18n="get_lead">Tout inclus dans le prix unique.</p>
+    <p class="lead" data-i18n="get_lead">Choisis l’offre adaptée à ton application.
     <div class="get-grid" id="getGrid">
       <article class="get-item"><span aria-hidden="true">💻</span><div><h3>Site web professionnel</h3><p>Adapté au mobile et à l’ordinateur.</p></div></article>
       <article class="get-item"><span aria-hidden="true">🤖</span><div><h3>App Android à ton nom</h3><p>Un APK pour présenter ton activité.</p></div></article>
@@ -565,22 +567,42 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 
 <section class="section" id="tarifs">
   <div class="container">
-    <h2 data-i18n="pr_title">Un prix unique, tout inclus</h2>
-    <p class="lead" data-i18n="pr_lead">Paiement unique — aucun abonnement.</p>
+    <h2 data-i18n="pr_title">Choisis ton application mobile</h2>
+    <p class="lead" data-i18n="pr_lead">Aperçu gratuit et simulé — tu paies seulement si tu commandes.</p>
     <div class="price-card">
-      <p style="color:var(--muted);font-size:13px;font-weight:700" data-i18n="pr_unique">OFFRE UNIQUE</p>
-      <p class="price">10 000 <span style="font-size:22px">DJF</span></p>
+      <p class="box-help" data-i18n="pr_preview">Aperçu : 0 DJF — simulation gratuite, sans application publiée.</p>
+
+      <p style="color:var(--muted);font-size:13px;font-weight:700;margin-top:20px" data-i18n="pr_standard">STANDARD</p>
+      <p class="price">25 000 <span style="font-size:22px">DJF</span></p>
       <ul>
-        <li><b>✓ Site web professionnel</b> — mobile + ordinateur</li>
-        <li><b>✓ App Android (APK)</b> — au nom de ton business</li>
-        <li><b>✓ Bouton WhatsApp</b> — tes clients te contactent en 1 clic</li>
-        <li><b>✓ Bilingue FR / AR</b> sur demande</li>
-        <li><b>✓ 1 modification gratuite</b> après livraison</li>
-        <li><b>✓ Livraison en 24h</b> sur ton WhatsApp</li>
+        <li data-i18n="pr_standard_1"><b>✓ APK Android signé</b> — prêt à installer</li>
+        <li data-i18n="pr_standard_2"><b>✓ Catalogue</b> — tes produits ou services</li>
+        <li data-i18n="pr_standard_3"><b>✓ Bouton WhatsApp</b> — contact en un clic</li>
+        <li data-i18n="pr_standard_4"><b>✓ Mode hors ligne de base</b></li>
       </ul>
-      <button class="btn btn-dark" onclick="focusBox()" data-i18n="pr_cta">Commencer mon aperçu gratuit</button>
+      <div style="border-top:1px solid var(--border);padding-top:20px">
+        <p style="color:var(--muted);font-size:13px;font-weight:700" data-i18n="pr_premium">PREMIUM</p>
+        <p class="price">50 000 <span style="font-size:22px">DJF</span></p>
+        <ul>
+          <li data-i18n="pr_premium_1"><b>✓ Tout le Standard</b> inclus</li>
+          <li data-i18n="pr_premium_2"><b>✓ Base de données</b></li>
+          <li data-i18n="pr_premium_3"><b>✓ Comptes utilisateurs</b></li>
+          <li data-i18n="pr_premium_4"><b>✓ Notifications</b></li>
+          <li data-i18n="pr_premium_5"><b>✓ Aide pour le Play Store</b></li>
+        </ul>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:20px">
+        <p style="color:var(--muted);font-size:13px;font-weight:700" data-i18n="pr_enterprise">ENTREPRISE</p>
+        <p style="color:var(--muted);font-weight:700" data-i18n="pr_quote">Sur devis</p>
+        <p class="price" style="font-size:34px"><span data-i18n="pr_from">À partir de</span> 120 000 <span style="font-size:22px">DJF</span></p>
+        <ul>
+          <li data-i18n="pr_enterprise_1"><b>✓ API avancées</b></li>
+          <li data-i18n="pr_enterprise_2"><b>✓ Fonctionnalités spécifiques</b></li>
+        </ul>
+      </div>
+      <button class="btn btn-dark" onclick="focusBox()" data-i18n="pr_cta">Créer mon aperçu mobile gratuit</button>
       <p class="box-help" style="margin-top:12px" data-i18n="pr_pay">💳 Waafi ou DahabPlus · Paiement vérifié manuellement</p>
-    </div>
+    </div>       
   </div>
 </section>
 
@@ -589,8 +611,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <h2 data-i18n="faq_title">Questions fréquentes</h2>
     <p class="lead"></p>
     <div class="faq">
-      <details><summary data-i18n="q1">L'aperçu est vraiment gratuit ?</summary><p>Oui. Tu génères et modifies ton aperçu autant de fois que tu veux. Tu ne paies (10 000 DJF) que si tu commandes le site final + l'app Android.</p></details>
-      <details><summary data-i18n="q2">Comment je paie ?</summary><p>Par Waafi ou DahabPlus au 77 09 86 37, puis tu confirmes sur WhatsApp. Ton compte est activé manuellement après vérification.</p></details>
+      <details><summary data-i18n="q1">L'aperçu est vraiment gratuit ?</summary><p>Oui. L’aperçu mobile est gratuit et simulé. Tu paies seulement si tu commandes une application : Standard 25 000 DJF, Premium 50 000 DJF ou Entreprise sur devis à partir de 120 000 DJF.</p></details>
+      <details><summary data-i18n="q2">Comment je paie ?</summary><p>Par Waafi ou DahabPlus. Les instructions et le numéro de paiement s’affichent dans le tunnel de commande. Tu confirmes ensuite sur WhatsApp et le paiement est vérifié manuellement.</p></details>
       <details><summary data-i18n="q3">Je reçois quoi exactement ?</summary><p>Un site web complet (mobile + ordinateur) et une application Android (APK) téléchargeable, livrés sur ton WhatsApp en moins de 24h.</p></details>
       <details><summary data-i18n="q4">Je peux modifier après livraison ?</summary><p>Oui, 1 modification gratuite est incluse. Ensuite, chaque modification supplémentaire fait l'objet d'un accord.</p></details>
       <details><summary data-i18n="q5">Le nom de domaine et l'hébergement sont inclus ?</summary><p>Non inclus dans le prix de base : ton site est livré sous le lien Prompt2Site et ton APK porte le nom de ton business. Nom de domaine personnalisé : à valider avec nous sur WhatsApp.</p></details>
@@ -619,7 +641,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <ol style="display:grid;gap:12px;color:var(--muted);font-size:14px;line-height:1.6;padding-left:20px">
       <li><b style="color:var(--text)" data-i18n="g1">Écris une phrase</b> — ou envoie une photo de ton menu, ou dicte au micro.</li>
       <li><b style="color:var(--text)" data-i18n="g2">L'IA génère ton aperçu</b> — gratuit. Demande des changements par chat si besoin.</li>
-      <li><b style="color:var(--text)" data-i18n="g3">Commande</b> — 10 000 DJF par Waafi/DahabPlus, livraison site + app en 24h sur WhatsApp.</li>
+      <li><b style="color:var(--text)" data-i18n="g3">Commande</b> — à partir de 25 000 DJF par Waafi/DahabPlus, selon l’offre choisie.</li>
     </ol>
     <button class="btn btn-dark" style="margin-top:20px" onclick="closeGuide();focusBox()" data-i18n="g_cta">C'est parti</button>
   </div>
@@ -682,14 +704,30 @@ gen_title:'Je crée ton site…',gen_eta:'1 à 3 minutes — reste sur cette pag
 clarify_q:'Une dernière chose : c\u2019est quoi le nom de ton business ?',
 pv_title:'✅ Ton aperçu est prêt',pv_sub:'Aperçu gratuit et non publié — tu ne paies que si tu commandes. Une question ? Réponse sur WhatsApp en quelques minutes.',
 pv_full:'🔍 Plein écran',pv_modify:'✏️ Modifier avec l\u2019IA',pv_regen:'🔄 Régénérer',
-pv_order:'Commander mon site + app Android — 10 000 DJF',
+pv_order:'Commander mon application mobile — à partir de 25 000 DJF',
 how_title:'Comment ça marche',how_lead:'3 étapes, zéro code.',
 s1t:'Décris',s1p:'Une phrase, une photo de menu, ou dicte à la voix. L\u2019IA comprend ton business.',
 s2t:'Vois ton aperçu',s2p:'Gratuit et sans engagement. Modifie avec l\u2019IA autant de fois que tu veux.',
 s3t:'Reçois tout sur WhatsApp',s3p:'Site + App Android en moins de 24h après confirmation du paiement.',
-get_title:'Ce que tu reçois',get_lead:'Tout inclus dans le prix unique.',
+get_title:'Ce que tu reçois',get_lead:'Choisis l’offre adaptée à ton application.',
 ex_title:'Exemples de sites créés',ex_lead:'Touche un exemple pour pré-remplir la case.',
-pr_title:'Un prix unique, tout inclus',pr_lead:'Paiement unique — aucun abonnement.',pr_unique:'OFFRE UNIQUE',pr_cta:'Commencer mon aperçu gratuit',pr_pay:'💳 Waafi ou DahabPlus · Paiement vérifié manuellement',
+pr_title:'Choisis ton application mobile',pr_lead:'Aperçu gratuit et simulé — tu paies seulement si tu commandes.',
+pr_preview:'Aperçu : 0 DJF — simulation gratuite, sans application publiée.',
+pr_standard:'STANDARD',
+pr_standard_1:'✓ APK Android signé — prêt à installer',
+pr_standard_2:'✓ Catalogue — tes produits ou services',
+pr_standard_3:'✓ Bouton WhatsApp — contact en un clic',
+pr_standard_4:'✓ Mode hors ligne de base',
+pr_premium:'PREMIUM',
+pr_premium_1:'✓ Tout le Standard inclus',
+pr_premium_2:'✓ Base de données',
+pr_premium_3:'✓ Comptes utilisateurs',
+pr_premium_4:'✓ Notifications',
+pr_premium_5:'✓ Aide pour le Play Store',
+pr_enterprise:'ENTREPRISE',pr_quote:'Sur devis',pr_from:'À partir de',
+pr_enterprise_1:'✓ API avancées',
+pr_enterprise_2:'✓ Fonctionnalités spécifiques',
+pr_cta:'Créer mon aperçu mobile gratuit',pr_pay:'💳 Waafi ou DahabPlus · Paiement vérifié manuellement',
 faq_title:'Questions fréquentes',q1:"L'aperçu est vraiment gratuit ?",q2:'Comment je paie ?',q3:'Je reçois quoi exactement ?',q4:'Je peux modifier après livraison ?',q5:"Le nom de domaine et l'hébergement sont inclus ?",q6:'Combien de temps mon site reste-t-il en ligne ?',q7:'Que se passe-t-il si je veux mon propre nom de domaine ?',q8:'Mon APK est-il sur le Play Store ?',
 g_title:'📖 Guide en 3 étapes',g1:'Écris une phrase',g2:"L'IA génère ton aperçu",g3:'Commande',g_cta:'C\u2019est parti',
 phr:['Décris le site que tu veux créer…','Ex : Restaurant Le Palmier à Djibouti, menu et prix ci-joints…','Ex : Agence de voyage, excursions au Lac Assal…','Ou touche ＋ pour envoyer une photo de ton menu'],
@@ -710,14 +748,30 @@ gen_title:'Building your site…',gen_eta:'1 to 3 minutes — stay on this page'
 clarify_q:'One last thing: what is your business name?',
 pv_title:'✅ Your preview is ready',pv_sub:'Free, unpublished preview — pay only if you order. Questions? We reply on WhatsApp within minutes.',
 pv_full:'🔍 Full screen',pv_modify:'✏️ Edit with AI',pv_regen:'🔄 Regenerate',
-pv_order:'Order my site + Android app — 10,000 DJF',
+pv_order:'Order my mobile application — from 25,000 DJF',
 how_title:'How it works',how_lead:'3 steps, zero code.',
 s1t:'Describe',s1p:'One sentence, a photo of your menu, or dictate by voice. AI understands your business.',
 s2t:'See your preview',s2p:'Free, no commitment. Ask AI for changes as many times as you want.',
 s3t:'Receive everything on WhatsApp',s3p:'Site + Android app within 24h after payment confirmation.',
-get_title:'What you get',get_lead:'Everything included in the single price.',
+get_title:'What you get',get_lead:'Choose the offer that fits your application.',
 ex_title:'Example websites',ex_lead:'Tap an example to pre-fill the box.',
-pr_title:'One price, everything included',pr_lead:'One-time payment — no subscription.',pr_unique:'SINGLE OFFER',pr_cta:'Start my free preview',pr_pay:'💳 Waafi or DahabPlus · Payment verified manually',
+pr_title:'Choose your mobile application',pr_lead:'Free simulated preview — pay only if you order.',
+pr_preview:'Preview: 0 DJF — free simulation, no published application.',
+pr_standard:'STANDARD',
+pr_standard_1:'✓ Signed Android APK — ready to install',
+pr_standard_2:'✓ Catalogue — your products or services',
+pr_standard_3:'✓ WhatsApp button — one-tap contact',
+pr_standard_4:'✓ Basic offline mode',
+pr_premium:'PREMIUM',
+pr_premium_1:'✓ Everything in Standard included',
+pr_premium_2:'✓ Database',
+pr_premium_3:'✓ User accounts',
+pr_premium_4:'✓ Notifications',
+pr_premium_5:'✓ Google Play Store guidance',
+pr_enterprise:'ENTERPRISE',pr_quote:'Custom quote',pr_from:'From',
+pr_enterprise_1:'✓ Advanced APIs',
+pr_enterprise_2:'✓ Custom features',
+pr_cta:'Create my free mobile preview',pr_pay:'💳 Waafi or DahabPlus · Payment verified manually',
 faq_title:'Frequently asked questions',q1:'Is the preview really free?',q2:'How do I pay?',q3:'What exactly do I receive?',q4:'Can I edit after delivery?',q5:'Is a domain name and hosting included?',q6:'How long will my website stay online?',q7:'What if I want my own domain name?',q8:'Is my APK on the Play Store?',
 g_title:'📖 3-step guide',g1:'Write one sentence',g2:'AI generates your preview',g3:'Order',g_cta:'Let\u2019s go',
 phr:['Describe the website you want…','E.g.: Restaurant Le Palmier in Djibouti, menu and prices attached…','E.g.: Travel agency, Lake Assal excursions…','Or tap ＋ to send a photo of your menu'],
@@ -738,14 +792,30 @@ gen_title:'أُنشئ موقعك…',gen_eta:'من دقيقة إلى 3 دقائ�
 clarify_q:'أخيراً: ما اسم نشاطك التجاري؟',
 pv_title:'✅ معاينتك جاهزة',pv_sub:'معاينة مجانية وغير منشورة — تدفع فقط إذا طلبت. عندك سؤال؟ نجاوبك على واتساب خلال دقائق.',
 pv_full:'🔍 ملء الشاشة',pv_modify:'✏️ تعديل بالذكاء الاصطناعي',pv_regen:'🔄 إعادة إنشاء',
-pv_order:'اطلب موقعي + تطبيق أندرويد — 10,000 DJF',
+pv_order:'اطلب تطبيقي للهاتف المحمول — ابتداءً من 25,000 DJF',
 how_title:'كيف يعمل',how_lead:'3 خطوات، بدون برمجة.',
 s1t:'صِف',s1p:'جملة واحدة، صورة لقائمتك، أو اِملأ بالصوت. الذكاء الاصطناعي يفهم نشاطك.',
 s2t:'شاهد معاينتك',s2p:'مجانية وبدون التزام. اطلب التعديلات كما تشاء.',
 s3t:'استلم كل شيء على واتساب',s3p:'الموقع + تطبيق أندرويد خلال 24 ساعة بعد تأكيد الدفع.',
-get_title:'ماذا ستستلم',get_lead:'كل شيء مشمول في السعر الواحد.',
+get_title:'ماذا ستستلم',get_lead:'اختر العرض المناسب لتطبيقك.',
 ex_title:'أمثلة على مواقع تم إنشاؤها',ex_lead:'المس مثالاً لملء الصندوق.',
-pr_title:'سعر واحد، كل شيء مشمول',pr_lead:'دفعة واحدة — بدون اشتراك.',pr_unique:'عرض واحد',pr_cta:'ابدأ معاينتي المجانية',pr_pay:'💳 Waafi أو DahabPlus · يتم التحقق من الدفع يدوياً',
+pr_title:'اختر تطبيقك للهاتف المحمول',pr_lead:'معاينة مجانية تجريبية — تدفع فقط عند الطلب.',
+pr_preview:'المعاينة: 0 فرنك جيبوتي — محاكاة مجانية دون نشر التطبيق.',
+pr_standard:'STANDARD',
+pr_standard_1:'✓ ملف Android APK موقّع — جاهز للتثبيت',
+pr_standard_2:'✓ كتالوج — لمنتجاتك أو خدماتك',
+pr_standard_3:'✓ زر واتساب — للتواصل بنقرة واحدة',
+pr_standard_4:'✓ وضع أساسي دون اتصال بالإنترنت',
+pr_premium:'PREMIUM',
+pr_premium_1:'✓ يشمل كل مزايا Standard',
+pr_premium_2:'✓ قاعدة بيانات',
+pr_premium_3:'✓ حسابات المستخدمين',
+pr_premium_4:'✓ الإشعارات',
+pr_premium_5:'✓ مساعدة بشأن النشر على Play Store',
+pr_enterprise:'ENTERPRISE',pr_quote:'حسب عرض السعر',pr_from:'ابتداءً من',
+pr_enterprise_1:'✓ واجهات API متقدمة',
+pr_enterprise_2:'✓ ميزات مخصصة',
+pr_cta:'أنشئ معاينتي المجانية للتطبيق',pr_pay:'💳 Waafi أو DahabPlus · يتم التحقق من الدفع يدوياً',
 faq_title:'أسئلة شائعة',q1:'هل المعاينة مجانية حقاً؟',q2:'كيف أدفع؟',q3:'ماذا أستلم بالضبط؟',q4:'هل يمكنني التعديل بعد التسليم؟',q5:'هل اسم النطاق والاستضافة مشمولان؟',q6:'كم من الوقت يبقى موقعي على الإنترنت؟',q7:'ماذا أفعل إذا أردت اسم النطاق الخاص بي؟',q8:'هل ملف APK متاح على Play Store؟',
 g_title:'📖 دليل في 3 خطوات',g1:'اكتب جملة واحدة',g2:'الذكاء الاصطناعي ينشئ معاينتك',g3:'اطلب',g_cta:'هيا بنا',
 phr:['صف الموقع الذي تريد إنشاءه…','مثال: مطعم النخيل في جيبوتي، القائمة والأسعار مرفقة…','مثال: وكالة سفر، رحلات إلى بحيرة عسل…','أو اضغط ＋ لإرسال صورة قائمتك'],
