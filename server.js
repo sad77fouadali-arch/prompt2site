@@ -475,10 +475,9 @@ apkBuilder.registerRoutes(app, checkAccess);
 const produitsRoutes = require('./lib/produits');
 produitsRoutes.registerRoutes(app);
 
-// ========== PREWARM (anti cold-start) ==========
+// ======== PREWARM (anti cold-start) =========
 app.get('/api/warm', (req, res) => {
   res.json({ status: 'hot', ts: Date.now() });
-  });
 });
 
 // ROUTE RACINE - Servir le frontend
