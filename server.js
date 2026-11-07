@@ -478,6 +478,12 @@ produitsRoutes.registerRoutes(app);
 // ========== PREWARM (anti cold-start) ==========
 app.get('/api/warm', (req, res) => {
   res.json({ status: 'hot', ts: Date.now() });
+  });
+});
+
+// ROUTE RACINE - Servir le frontend
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // ------ LANCEMENT ------
