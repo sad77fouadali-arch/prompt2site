@@ -510,7 +510,7 @@ app.get('/apercu/:nomClient', (req, res) => {
     }
     
     // Relit le fichier à chaque requête (pas de cache)
-    let html = require('fs').readFileSync(__dirname + '/apercu.html', 'utf8');  
+    let html = require('fs').readFileSync(__dirname + '/apercu-template.html', 'utf8'); 
     html = html.replace(/{{ client.nom }}/g, client.nom)
                .replace(/{{ client.activite }}/g, client.activite)
                .replace(/{{ client.telephone }}/g, client.telephone)
