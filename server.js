@@ -509,8 +509,8 @@ app.get('/apercu/:nomClient', (req, res) => {
         return res.status(404).send('Aperçu non trouvé');
     }
     
-    // Remplace les variables dans le HTML
-    let html = require('fs').readFileSync(__dirname + '/apercu.html', 'utf8');
+    // Relit le fichier à chaque requête (pas de cache)
+    let html = require('fs').readFileSync(__dirname + '/apercu.html', 'utf8');  
     html = html.replace(/{{ client.nom }}/g, client.nom)
                .replace(/{{ client.activite }}/g, client.activite)
                .replace(/{{ client.telephone }}/g, client.telephone)
@@ -522,6 +522,8 @@ app.get('/apercu/:nomClient', (req, res) => {
     ).join('');
     html = html.replace(/{% for produit in client.produits %}[\s\S]*?{% endfor %}/, produitsHtml);
     
+      // Force le rechargement sans cache
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.send(html);
 });
 
