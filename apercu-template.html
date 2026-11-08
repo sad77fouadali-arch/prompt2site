@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperçu - {{ client.nom }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        
+        .header {
+            background: {{ client.couleur }};
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        
+        .badge-demo {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #ff9800;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .produits {
+            padding: 30px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .produit {
+            background: white;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .contact {
+            background: {{ client.couleur }};
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .contact a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        
+        .cta-vendre {
+            display: block;
+            width: fit-content;
+            margin: 30px auto;
+            background: #4caf50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="badge-demo">APERÇU DÉMO</div>
+    
+    <div class="header">
+        <h1>{{ client.nom }}</h1>
+        <p>{{ client.activite }}</p>
+    </div>
+    
+    <div class="produits">
+        <h2 style="text-align: center; margin-bottom: 20px;">Nos Produits</h2>
+        {% for produit in client.produits %}
+        <div class="produit">
+            <h3>{{ produit }}</h3>
+            <p>Description du produit...</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="contact">
+        <p>Contactez-nous</p>
+        <a href="tel:{{ client.telephone }}">{{ client.telephone }}</a>
+    </div>
+    
+    <a href="https://wa.me/{{ client.telephone | replace('+', '') }}?text=Je veux un site comme celui-ci" class="cta-vendre">
+        Je veux mon site →
+    </a>
+</body>
+</html>
