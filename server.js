@@ -202,43 +202,45 @@ function checkAccess(req, res) {
   return false;
 }
 
-// -------- ROUTE : GÉNÉRATION --------
+// ------- ROUTE : GÉNÉRATION -------
 app.post('/api/generate', async (req, res) => {
-  const body = req.body || {};
+try {
+  console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
+    
+  // Injection UI/UX Pro Max v2.0
+  const designConfig = buildDesignPrompt(body.description || body.secteur || body.nom || '', {
+    specificInstructions: buildUserPrompt(body)
+  });
 
-  const hasCode = isValidCode(body.code);
-  if (!hasCode && body.preview !== true) {
-    return res.json({ success: false, paywall: true, error: 'Abonnement requis' });
-  }
-
-  if (!GROQ_API_KEY) {
-    console.error('❌ Génération refusée : GROQ_API_KEY absente (vérifie Railway)');
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'openai/gpt-oss-120b',
+      messages: [
+                { role: 'system', content: designConfig.systemPrompt },
+        { role: 'user', content: designConfig.userPrompt }  
+      ],
+      temperature: 0.7,
+      max_tokens: 8000
+    })
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
     return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
-
-  try {
-    console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + GROQ_API_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'openai/gpt-oss-120b',
-        messages: [
-          { role: 'system', content: GENERATION_SYSTEM },
-          { role: 'user', content: buildUserPrompt(body) }
-        ],
-        temperature: 0.7,
-        max_tokens: 8000
-      })
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
-      return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
-    }
-    const html = cleanHtml(data.choices[0].message.content);
-    console.log('✅ Site généré (' + html.length + ' caractères)');
-    res.json({ success: true, html, preview: !hasCode });
+    let html = cleanHtml(data.choices[0].message.content);
+  
+  // Validation anti-patterns UI/UX
+  const validation = validateOutput(html);
+  if (!validation.clean) {
+    console.warn('⚠️ Violations UI/UX:', validation.violations);
+  }
+  
+  console.log('✅ Site généré (' + html.length + ' caractères) — Palette: ' + designConfig.palette.id);
+  res.json({ success: true, html, preview: !hasCode, design: designConfig.palette });
+  
   } catch (err) {
     console.log('❌ Erreur serveur :', err.message);
     res.status(500).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
