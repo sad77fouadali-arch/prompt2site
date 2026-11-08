@@ -485,6 +485,46 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// ====== ROUTE APERÇU CLIENT ======
+app.get('/apercu/:nomClient', (req, res) => {
+    const clients = {
+        'theshowroomdj': {
+            nom: 'The Showroom DJ',
+            activite: 'Boutique de mode',
+            telephone: '+25377000000',
+            couleur: '#e91e63',
+            produits: ['Ensemble oversize', 'Robe soirée', 'Accessoires']
+        },
+        'cafebarbara': {
+            nom: 'Café Barbara',
+            activite: 'Café & Restaurant',
+            telephone: '+25378000000',
+            couleur: '#795548',
+            produits: ['Café arabe', 'Thé à la menthe', 'Pâtisseries']
+        }
+    };
+    
+    const client = clients[req.params.nomClient];
+    if (!client) {
+        return res.status(404).send('Aperçu non trouvé');
+    }
+    
+    // Remplace les variables dans le HTML
+    let html = require('fs').readFileSync(__dirname + '/apercu.html', 'utf8');
+    html = html.replace(/{{ client.nom }}/g, client.nom)
+               .replace(/{{ client.activite }}/g, client.activite)
+               .replace(/{{ client.telephone }}/g, client.telephone)
+               .replace(/{{ client.couleur }}/g, client.couleur);
+    
+    // Remplace la boucle produits
+    const produitsHtml = client.produits.map(p => 
+        `<div class="produit"><h3>${p}</h3><p>Description du produit...</p></div>`
+    ).join('');
+    html = html.replace(/{% for produit in client.produits %}[\s\S]*?{% endfor %}/, produitsHtml);
+    
+    res.send(html);
+});
+
 // ------ LANCEMENT ------
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
