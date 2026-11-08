@@ -5,6 +5,7 @@
 // ======================================
 const express = require('express');
 const path = require('path');
+const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
