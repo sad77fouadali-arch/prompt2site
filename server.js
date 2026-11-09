@@ -204,10 +204,10 @@ function checkAccess(req, res) {
 
 // ------- ROUTE : GÉNÉRATION -------
 app.post('/api/generate', async (req, res) => {
-try {
   const body = req.body || {};
-  console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
-    
+  const hasCode = isValidCode(body.code);
+  try {
+    console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom')); 
   // Injection UI/UX Pro Max v2.0
   const designConfig = buildDesignPrompt(body.description || body.secteur || body.nom || '', {
     specificInstructions: buildUserPrompt(body)
