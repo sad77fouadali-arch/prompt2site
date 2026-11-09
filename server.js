@@ -208,7 +208,7 @@ try {
   console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
     
   // Injection UI/UX Pro Max v2.0
-  const designConfig = buildDesignPrompt(body.description || body.secteur || body.nom || '', {
+  const designConfig = buildDesignPrompt((typeof body !== 'undefined' && (body.description || body.secteur || body.nom)) || '', {
     specificInstructions: buildUserPrompt(body)
   });
 
