@@ -205,10 +205,11 @@ function checkAccess(req, res) {
 // ------- ROUTE : GÉNÉRATION -------
 app.post('/api/generate', async (req, res) => {
 try {
+  const body = req.body || {};  juste après la ligne 207 ( try { )
   console.log('🚀 Génération en cours pour : ' + (body.nom || 'projet sans nom'));
     
   // Injection UI/UX Pro Max v2.0
-  const designConfig = buildDesignPrompt((typeof body !== 'undefined' && (body.description || body.secteur || body.nom)) || '', {
+  const designConfig = buildDesignPrompt(body.description || body.secteur || body.nom || '', {
     specificInstructions: buildUserPrompt(body)
   });
 
