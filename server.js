@@ -2,7 +2,7 @@
 // PROMPT2SITE — Moteur de génération de sites
 // Phase 3 : système d'abonnement par codes
 // + Formulaire de personnalisation (secteur, objectif, pages, coordonnées)
-// ======================================// Redeploy pour injection variables Supabase
+// ==================================== // Redeploy clés Supabase corrigées
 const express = require('express');
 const path = require('path');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
