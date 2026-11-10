@@ -2,11 +2,11 @@
 // PROMPT2SITE — Moteur de génération de sites
 // Phase 3 : système d'abonnement par codes
 // + Formulaire de personnalisation (secteur, objectif, pages, coordonnées)
-// ======================================
+// ======================================// Redeploy pour injection variables Supabase
 const express = require('express');
 const path = require('path');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
-const { sauvegarderProjet } = require('./lib/supabase-client');
+const { sauvegarderProjet } = require('./lib/supabase-client'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
