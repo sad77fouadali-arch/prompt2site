@@ -7,6 +7,8 @@ const express = require('express');
 const path = require('path');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
 const { sauvegarderProjet } = require('./lib/supabase-client'); 
+console.log('🔍 DEBUG URL:', process.env.SUPABASE_URL ? 'OK (' + process.env.SUPABASE_URL.length + ' car.)' : 'VIDE');
+console.log('🔍 DEBUG KEY:', process.env.SUPABASE_SECRET_KEY ? 'OK (' + process.env.SUPABASE_SECRET_KEY.length + ' car.)' : 'VIDE');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
