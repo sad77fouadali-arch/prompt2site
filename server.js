@@ -179,7 +179,12 @@ Génère maintenant le fichier HTML complet.`;
 
 // -------- NETTOYAGE + VÉRIFICATION IA --------
 function cleanHtml(raw) {
-  const h = raw.replace(/```html/gi, '').replace(/```/g, '').trim();
+  let h = raw.replace(/```html/gi, '').replace(/```/g, '').trim();
+  // Couper tout ce qui est après </html> (texte parasite du prompt)
+  const endIndex = h.lastIndexOf('</html>');
+  if (endIndex !== -1) {
+    h = h.substring(0, endIndex + 7);
+  }
   if (h.length > 300000) throw new Error('Réponse IA trop longue');
   if (!/<html|<!doctype/i.test(h)) throw new Error('Réponse IA invalide (pas de HTML)');
   return h;
