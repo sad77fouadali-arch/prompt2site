@@ -6,6 +6,7 @@
 const express = require('express');
 const path = require('path');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
+const { sauvegarderProjet } = require('./lib/supabase-client');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -245,6 +246,17 @@ app.post('/api/generate', async (req, res) => {
   }
   
   console.log('✅ Site généré (' + html.length + ' caractères) — Palette: ' + designConfig.palette.id);
+    
+  // Sauvegarde Supabase (non-bloquante)
+  sauvegarderProjet({
+    nom: body.nom || 'Projet sans nom',
+    description: body.description || body.secteur || '',
+    secteur: designConfig.palette.id,
+    palette_id: designConfig.palette.id,
+    html_content: html,
+    statut: hasCode ? 'paye' : 'apercu'
+  });
+
   res.json({ success: true, html, preview: !hasCode, design: designConfig.palette });
   
   } catch (err) {
