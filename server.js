@@ -570,8 +570,6 @@ app.get('/apercu/:nomClient', (req, res) => {
     res.send(html);
 });
 
-});
-
 // ===== ROUTE SITES STATIQUES =====
 app.get('/sites/:nom', (req, res) => {
   const fichier = path.join(__dirname, 'sites', req.params.nom + '.html');
@@ -587,4 +585,3 @@ app.get('/sites/:nom', (req, res) => {
 app.listen(PORT, () => {
   console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
-
