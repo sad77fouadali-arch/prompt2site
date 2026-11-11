@@ -8,6 +8,11 @@ const path = require('path');
 const fs = require('fs');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
 const { sauvegarderProjet } = require('./lib/supabase-client'); 
+const { createClient } = require('@supabase/supabase-js');
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SECRET_KEY
+);
 console.log('🔍 DEBUG URL:', process.env.SUPABASE_URL ? 'OK (' + process.env.SUPABASE_URL.length + ' car.)' : 'VIDE');
 console.log('🔍 DEBUG KEY:', process.env.SUPABASE_SECRET_KEY ? 'OK (' + process.env.SUPABASE_SECRET_KEY.length + ' car.)' : 'VIDE');
 
@@ -569,6 +574,37 @@ app.get('/apercu/:nomClient', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.send(html);
 });
+
+// ===== ROUTE PROJET PAR SLUG =====
+app.get('/site/:slug', async (req, res) => {
+  try {
+    const slug = req.params.slug;
+    const id = slug.substring(slug.lastIndexOf('-') + 1);
+    
+    // Validation UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(id)) {
+      return res.status(400).send('Lien invalide');
+    }
+    
+    const { data, error } = await supabase
+      .from('projets')
+      .select('html_content, nom_projet')
+      .eq('id', id)
+      .single();
+    
+    if (error || !data) {
+      return res.status(404).send('Site non trouvé');
+    }
+    
+    res.send(data.html_content);
+  } catch (err) {
+    console.error('❌ Erreur /site/:slug :', err.message);
+    res.status(500).send('Erreur serveur');
+  }
+});
+// ===== FIN ROUTE =====
+
 
 // ------ LANCEMENT ------
 app.listen(PORT, () => {
