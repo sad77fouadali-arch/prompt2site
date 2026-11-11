@@ -608,5 +608,9 @@ app.get('/site/:slug', async (req, res) => {
     console.error('❌ Erreur /site/:slug :', err.message);
     res.status(500).send('Erreur serveur');
   }
-});
-// ===== FIN ROUTE =====
+  });
+  // ===== FIN ROUTE =====
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Serveur Prompt2Site démarré sur le port ${PORT}`);
+  });
