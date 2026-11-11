@@ -5,6 +5,7 @@
 // ==================================== // Redeploy clés Supabase corrigées
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
 const { sauvegarderProjet } = require('./lib/supabase-client'); 
 console.log('🔍 DEBUG URL:', process.env.SUPABASE_URL ? 'OK (' + process.env.SUPABASE_URL.length + ' car.)' : 'VIDE');
@@ -258,6 +259,24 @@ app.post('/api/generate', async (req, res) => {
     html_content: html,
     statut: hasCode ? 'paye' : 'apercu'
   });
+
+ // ===== SAUVEGARDE FICHIER HTML =====
+const nomFichier = (body.nom || 'site')
+  .toLowerCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]/g, '-')
+  .replace(/-+/g, '-')
+  .replace(/^-|-$/g, '') + '.html';
+
+const dossierSites = path.join(__dirname, 'sites');
+if (!fs.existsSync(dossierSites)) {
+  fs.mkdirSync(dossierSites, { recursive: true });
+}
+
+fs.writeFileSync(path.join(dossierSites, nomFichier), html);
+console.log('💾 Fichier sauvegardé: /sites/' + nomFichier);
+// ===== FIN SAUVEGARDE =====
+
 
   res.json({ success: true, html, preview: !hasCode, design: designConfig.palette });
   
@@ -550,6 +569,19 @@ app.get('/apercu/:nomClient', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.send(html);
 });
+
+});
+
+// ===== ROUTE SITES STATIQUES =====
+app.get('/sites/:nom', (req, res) => {
+  const fichier = path.join(__dirname, 'sites', req.params.nom + '.html');
+  if (fs.existsSync(fichier)) {
+    res.sendFile(fichier);
+  } else {
+    res.status(404).send('Site non trouvé');
+  }
+});
+// ===== FIN ROUTE =====
 
 // ------ LANCEMENT ------
 app.listen(PORT, () => {
