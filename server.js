@@ -570,25 +570,7 @@ app.get('/apercu/:nomClient', (req, res) => {
     res.send(html);
 });
 
-// ===== ROUTE SITES STATIQUES =====
-app.get('/sites/:nom', (req, res) => {
-  const nomFichier = req.params.nom + '.html';
-  const chemin1 = path.join(__dirname, 'sites', nomFichier);
-  const chemin2 = path.join(process.cwd(), 'sites', nomFichier);
-  
-  console.log('🔍 Recherche fichier:', chemin1);
-  console.log('🔍 Recherche fichier:', chemin2);
-  
-  if (fs.existsSync(chemin1)) {
-    console.log('✅ Trouvé:', chemin1);
-    return res.sendFile(chemin1);
-  }
-  if (fs.existsSync(chemin2)) {
-    console.log('✅ Trouvé:', chemin2);
-    return res.sendFile(chemin2);
-  }
-  
-  console.log('❌ Fichier non trouvé:', nomFichier);
-  res.status(404).send('Site non trouvé: ' + nomFichier);
+// ------ LANCEMENT ------
+app.listen(PORT, () => {
+  console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
 });
-// ===== FIN ROUTE =====
