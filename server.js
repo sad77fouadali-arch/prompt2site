@@ -576,7 +576,7 @@ app.get('/site/:slug', async (req, res) => {
         const slug = req.params.slug;
 
     const liensPublics = {
-      'chez-hasna': '159ff4bf-77b0-4fa3-aefa-28eb92ea436d'
+      'chez-hasna': 'd82aaf58-230b-4f4a-8abe-5afe8bd369ba'
     };
 
     const id = liensPublics[slug] || slug.slice(-36);
