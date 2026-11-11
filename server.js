@@ -3,18 +3,13 @@
 // Phase 3 : système d'abonnement par codes
 // + Formulaire de personnalisation (secteur, objectif, pages, coordonnées)
 // ==================================== // Redeploy clés Supabase corrigées
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
-const { sauvegarderProjet } = require('./lib/supabase-client'); 
-const { createClient } = require('@supabase/supabase-js');
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY
-);
-console.log('🔍 DEBUG URL:', process.env.SUPABASE_URL ? 'OK (' + process.env.SUPABASE_URL.length + ' car.)' : 'VIDE');
-console.log('🔍 DEBUG KEY:', process.env.SUPABASE_SECRET_KEY ? 'OK (' + process.env.SUPABASE_SECRET_KEY.length + ' car.)' : 'VIDE');
+   const express = require('express');
+   const path = require('path');
+   const fs = require('fs');
+   const { buildDesignPrompt, validateOutput } = require('./lib/uiux-pro-max/design-injector');
+  const { sauvegarderProjet } = require('./lib/supabase-client');
+  console.log('🔍 DEBUG URL:', process.env.SUPABASE_URL ? 'OK (' + process.env.SUPABASE_URL.length + ' car.)' : 'VIDE');
+  console.log('🔍 DEBUG KEY:', process.env.SUPABASE_SECRET_KEY ? 'OK (' + process.env.SUPABASE_SECRET_KEY.length + ' car.)' : 'VIDE');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -587,26 +582,31 @@ app.get('/site/:slug', async (req, res) => {
       return res.status(400).send('Lien invalide');
     }
     
-    const { data, error } = await supabase
-      .from('projets')
-      .select('html_content, nom_projet')
-      .eq('id', id)
-      .single();
+    // Requête Supabase avec fetch natif
+    const response = await fetch(
+      process.env.SUPABASE_URL + '/rest/v1/projets?id=eq.' + id + '&select=html_content,nom_projet',
+      {
+        headers: {
+          'apikey': process.env.SUPABASE_SECRET_KEY,
+          'Authorization': 'Bearer ' + process.env.SUPABASE_SECRET_KEY,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
     
-    if (error || !data) {
+    if (!response.ok) {
       return res.status(404).send('Site non trouvé');
     }
     
-    res.send(data.html_content);
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      return res.status(404).send('Site non trouvé');
+    }
+    
+    res.send(data[0].html_content);
   } catch (err) {
     console.error('❌ Erreur /site/:slug :', err.message);
     res.status(500).send('Erreur serveur');
   }
 });
 // ===== FIN ROUTE =====
-
-
-// ------ LANCEMENT ------
-app.listen(PORT, () => {
-  console.log('🌐 Prompt2Site démarré sur le port ' + PORT);
-});
