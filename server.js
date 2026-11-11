@@ -600,13 +600,16 @@ app.get('/site/:slug', async (req, res) => {
     );
     
     if (!response.ok) {
-      return res.status(404).send('Site non trouvé');
-    }
-    
+  const detailSupabase = await response.text();
+  console.error('Erreur lecture Supabase:', response.status, detailSupabase);
+  return res.status(500).send('Erreur lecture Supabase');
+}
+
     const data = await response.json();
     if (!data || data.length === 0) {
-      return res.status(404).send('Site non trouvé');
-    }
+  console.error('Aucun projet retourné par Supabase pour ID:', id);
+  return res.status(404).send('Site non trouvé');
+}
     
     res.send(data[0].html_content);
   } catch (err) {
