@@ -449,7 +449,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   </div>
   <div class="preview-actions">
     <button class="btn btn-ghost" onclick="openFull()" data-i18n="pv_full">🔍 Plein écran</button>
-    <button class="btn btn-ghost" onclick="toggleModify()" data-i18n="pv_modify">✏️ Modifier avec l'IA</button>
+    <button class="btn btn-ghost" id="copyPublicLink" onclick="copyPublicLink()" style="display:none">🔗 Copier le lien public</button>
     <button class="btn btn-ghost" onclick="regenerate()" data-i18n="pv_regen">🔄 Régénérer</button>
     <button class="btn btn-dark" onclick="goTunnel()" data-i18n="pv_order">Commander mon application mobile — à partir de 25 000 DJF</button>
   </div>
@@ -888,9 +888,9 @@ function useExample(i){
 }
 
 /* ================= STATE / DRAFT ================= */
-let draft = { text:'', images:[], brief:null, html:'' };
+let draft = { text:'', images:[], brief:null, html:'', publicPath:null };
 try { const d = JSON.parse(localStorage.getItem('p2s_draft_v2')||'null'); if(d) draft = d; } catch(e){}
-function saveDraft(){ try { localStorage.setItem('p2s_draft_v2', JSON.stringify({text:document.getElementById('prompt').value, images:draft.images, brief:draft.brief, html:draft.html})); } catch(e){} }
+function saveDraft(){ try { localStorage.setItem('p2s_draft_v2', JSON.stringify({text:document.getElementById('prompt').value, images:draft.images, brief:draft.brief, html:draft.html, publicPath:draft.publicPath || null})); } catch(e){} }
 function saveProjectCompat(b){
   // Même format que tunnel.html attend (clé 'p2s_project')
   try { localStorage.setItem('p2s_project', JSON.stringify(b)); } catch(e){}
@@ -1094,7 +1094,9 @@ async function generate(){
     const res = await fetch(API.generate, {method:'POST', headers:{'Content-Type':'application/json'}, signal:genAbort.signal, body:JSON.stringify(draft.brief)});
     const data = await res.json();
     if(data.success && data.html){
-      draft.html = data.html; saveDraft();
+      draft.html = data.html;
+draft.publicPath = data.publicPath || null;
+saveDraft();
       saveProjectCompat(draft.brief);
       genDone(); showPreview(data.html);
     } else if(data.paywall){
@@ -1161,8 +1163,22 @@ async function generateMobilePreview(description){
 function showPreview(html){
   document.getElementById('pvFrame').srcdoc = html;
   document.getElementById('preview').classList.add('on');
+  document.getElementById('copyPublicLink').style.display = draft.publicPath ? 'block' : 'none';
   document.getElementById('preview').scrollIntoView({behavior:motionBehavior(), block:'start'});
 }
+async function copyPublicLink(){
+  if(!draft.publicPath){
+    toast('⚠️ Lien public indisponible', true);
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(location.origin + draft.publicPath);
+    toast('✅ Lien public copié');
+  }catch(e){
+    toast('⚠️ Copie impossible sur ce navigateur', true);
+  }
+}
+
 function setDevice(d){
   document.getElementById('frame').classList.toggle('desktop', d==='desktop');
   document.getElementById('btnMobile').classList.toggle('on', d!=='desktop');
