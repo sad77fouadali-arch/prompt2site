@@ -258,22 +258,37 @@ const slug = (body.nom || 'site')
   .replace(/-+/g, '-')
   .replace(/^-|-$/g, '') || 'site';
 
-const projetSauvegarde = await sauvegarderProjet({
-  nom: body.nom || 'Projet sans nom',
-  description: body.description || body.secteur || '',
-  secteur: designConfig.palette.id,
-  palette_id: designConfig.palette.id,
-  html_content: html,
-  slug: slug,
-  statut: hasCode ? 'paye' : 'apercu'
-});
+let projetSauvegarde = null;
+let slugFinal = slug;
+
+for (let numero = 1; numero <= 20; numero++) {
+  slugFinal = numero === 1 ? slug : slug + '-' + numero;
+
+  const resultatSauvegarde = await sauvegarderProjet({
+    nom: body.nom || 'Projet sans nom',
+    description: body.description || body.secteur || '',
+    secteur: designConfig.palette.id,
+    palette_id: designConfig.palette.id,
+    html_content: html,
+    slug: slugFinal,
+    statut: hasCode ? 'paye' : 'apercu'
+  });
+
+  if (resultatSauvegarde && resultatSauvegarde.conflitSlug) {
+    continue;
+  }
+
+  projetSauvegarde = resultatSauvegarde;
+  break;
+}
 
 const publicPath = projetSauvegarde
   ? '/site/' + projetSauvegarde.slug
   : null;
 
 // ===== SAUVEGARDE FICHIER HTML =====
-const nomFichier = slug + '.html';
+const nomFichier = (projetSauvegarde ? projetSauvegarde.slug : slug) + '.html';
+
 
 const dossierSites = path.join(__dirname, 'sites');
 if (!fs.existsSync(dossierSites)) {
