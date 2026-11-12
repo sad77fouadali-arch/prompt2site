@@ -573,14 +573,12 @@ app.get('/apercu/:nomClient', (req, res) => {
 // ===== ROUTE PROJET PAR SLUG =====
 app.get('/site/:slug', async (req, res) => {
   try {
-        const slug = req.params.slug;
-
+    
     const liensPublics = {
-      'chez-hasna': 'd82aaf58-230b-4f4a-8abe-5afe8bd369ba'
+      'chez-hasna': 'd82aaf58-230b-4f8a-8abe-5afe8bd369ba'
     };
 
     const id = liensPublics[slug] || slug.slice(-36);
-
     // Validation UUID
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(id)) {
