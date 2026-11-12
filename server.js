@@ -250,23 +250,30 @@ app.post('/api/generate', async (req, res) => {
   
   console.log('✅ Site généré (' + html.length + ' caractères) — Palette: ' + designConfig.palette.id);
     
-  // Sauvegarde Supabase (non-bloquante)
-  sauvegarderProjet({
-    nom: body.nom || 'Projet sans nom',
-    description: body.description || body.secteur || '',
-    secteur: designConfig.palette.id,
-    palette_id: designConfig.palette.id,
-    html_content: html,
-    statut: hasCode ? 'paye' : 'apercu'
-  });
-
- // ===== SAUVEGARDE FICHIER HTML =====
-const nomFichier = (body.nom || 'site')
+  // Création du lien court et sauvegarde Supabase
+const slug = (body.nom || 'site')
   .toLowerCase()
   .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .replace(/[^a-z0-9]/g, '-')
   .replace(/-+/g, '-')
-  .replace(/^-|-$/g, '') + '.html';
+  .replace(/^-|-$/g, '') || 'site';
+
+const projetSauvegarde = await sauvegarderProjet({
+  nom: body.nom || 'Projet sans nom',
+  description: body.description || body.secteur || '',
+  secteur: designConfig.palette.id,
+  palette_id: designConfig.palette.id,
+  html_content: html,
+  slug: slug,
+  statut: hasCode ? 'paye' : 'apercu'
+});
+
+const publicPath = projetSauvegarde
+  ? '/site/' + projetSauvegarde.slug
+  : null;
+
+// ===== SAUVEGARDE FICHIER HTML =====
+const nomFichier = slug + '.html';
 
 const dossierSites = path.join(__dirname, 'sites');
 if (!fs.existsSync(dossierSites)) {
@@ -278,7 +285,7 @@ console.log('💾 Fichier sauvegardé: /sites/' + nomFichier);
 // ===== FIN SAUVEGARDE =====
 
 
-  res.json({ success: true, html, preview: !hasCode, design: designConfig.palette });
+  res.json({ success: true, html, preview: !hasCode, design: designConfig.palette, publicPath: publicPath });
   
   } catch (err) {
     console.log('❌ Erreur serveur :', err.message);
@@ -576,20 +583,15 @@ app.get('/site/:slug', async (req, res) => {
 
     const slug = req.params.slug;
 
-    const liensPublics = {
-      'chez-hasna': 'd82aaf58-230b-4f8a-8abe-5afe8bd369ba'
-    };
-
-    const id = liensPublics[slug] || slug.slice(-36) ;
-    // Validation UUID
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(id)) {
-      return res.status(400).send('Lien invalide');
-    }
-    
+
+const filtre = uuidRegex.test(slug)
+  ? 'id=eq.' + slug
+  : 'slug=eq.' + encodeURIComponent(slug);
+
     // Requête Supabase avec fetch natif
     const response = await fetch(
-      process.env.SUPABASE_URL + '/rest/v1/projets?id=eq.' + id + '&select=html_content,nom_projet',
+      process.env.SUPABASE_URL + '/rest/v1/projets?' + filtre + '&select=html_content,nom_projet',
       {
         headers: {
           'apikey': process.env.SUPABASE_SECRET_KEY,
@@ -607,7 +609,7 @@ app.get('/site/:slug', async (req, res) => {
 
     const data = await response.json();
     if (!data || data.length === 0) {
-  console.error('Aucun projet retourné par Supabase pour ID:', id);
+  console.error('Aucun projet retourné par Supabase pour le lien :', slug);
   return res.status(404).send('Site non trouvé');
 }
     
