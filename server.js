@@ -199,6 +199,39 @@ function cleanHtml(raw) {
   if (!/<html|<!doctype/i.test(h)) throw new Error('Réponse IA invalide (pas de HTML)');
   return h;
 }
+function securiserHtmlGenere(html) {
+  const titresInterdits = /^(témoignages?|avis clients?|livraison\b.*|garantie\b.*|certifications?\b.*|horaires\b.*)$/i;
+  const idsSupprimes = [];
+
+  let resultat = html.replace(/<section\b([^>]*)>([\s\S]*?)<\/section>/gi, (bloc, attributs, contenu) => {
+    const titres = [...contenu.matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)];
+
+    const interdit = titres.some((titre) => {
+      const texte = titre[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      return titresInterdits.test(texte);
+    });
+
+    if (!interdit) return bloc;
+
+    const id = attributs.match(/\bid=["']([^"']+)["']/i);
+    if (id) idsSupprimes.push(id[1]);
+    return '';
+  });
+
+  idsSupprimes.forEach((id) => {
+    const idEchappe = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const lien = new RegExp('<a\\b[^>]*href=["\']#' + idEchappe + '["\'][^>]*>[\\s\\S]*?<\\/a>', 'gi');
+    resultat = resultat.replace(lien, '');
+  });
+
+  const styleMobile = '<style>@media(max-width:767px){header{position:relative!important;}header>div{flex-wrap:wrap!important;}header nav{width:100%!important;overflow-x:auto!important;white-space:nowrap!important;}body{padding-top:0!important;}}</style>';
+
+  if (resultat.includes('</head>')) {
+    resultat = resultat.replace('</head>', styleMobile + '</head>');
+  }
+
+  return resultat;
+}
 
 // -------- ROUTE : ACTIVATION --------
 app.post('/api/activate', (req, res) => {
@@ -213,7 +246,8 @@ app.post('/api/activate', (req, res) => {
 // -------- VÉRIFICATION ACCÈS (abonnement) --------
 function checkAccess(req, res) {
   if (isValidCode(req.body?.code)) return true;
-  res.json({ success: false, paywall: true, error: 'Abonnement requis' });
+  function checkAccess(req, res) {
+  if (isValidCode(req.body?.code)) return true;
   return false;
 }
 
@@ -246,7 +280,7 @@ app.post('/api/generate', async (req, res) => {
     console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
     return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
-    let html = cleanHtml(data.choices[0].message.content);
+    let html = securiserHtmlGenere(cleanHtml(data.choices[0].message.content));
   
   // Validation anti-patterns UI/UX
   const validation = validateOutput(html);
