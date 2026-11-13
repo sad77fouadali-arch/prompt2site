@@ -246,8 +246,6 @@ app.post('/api/activate', (req, res) => {
 // -------- VÉRIFICATION ACCÈS (abonnement) --------
 function checkAccess(req, res) {
   if (isValidCode(req.body?.code)) return true;
-  function checkAccess(req, res) {
-  if (isValidCode(req.body?.code)) return true;
   return false;
 }
 
