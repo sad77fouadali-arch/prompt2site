@@ -56,13 +56,13 @@ Tu DOIS générer UN SEUL fichier HTML complet avec Tailwind CSS (CDN).
 3. TYPOGRAPHIE : titres en "text-4xl md:text-5xl" minimum, textes en "text-lg". Jamais de texte minuscule.
 4. GRILLE PRODUITS : minimum 3 colonnes sur grand écran ("grid md:grid-cols-3 lg:grid-cols-4"), 1-2 colonnes sur mobile UNIQUEMENT via breakpoints.
 5. INTERDICTION MOBILE : ne jamais supprimer d'images, d'arrière-plans, de sections ou de boutons sur mobile.
-6. STRUCTURE : header sticky avec navigation + footer complet avec coordonnées + WhatsApp.
-7. Chaque produit a : image, nom, description, prix, bouton "Commander" qui ouvre wa.me.
+6. STRUCTURE : header sticky avec navigation + footer complet. Affiche uniquement les coordonnées fournies. N'ajoute WhatsApp que si son numéro est fourni.
+7. Pour chaque produit fourni : image si disponible, nom et description. Affiche le prix uniquement s'il est fourni. Ajoute "Commander" vers wa.me uniquement si WhatsApp est fourni.
 8. COULEURS : maximum 3 couleurs (60% neutre fond / 30% couleur marque / 10% accent boutons). Accent jaune (#facc15) par défaut si non précisé.
 9. Réponds UNIQUEMENT avec le code HTML complet, sans texte avant ou après, sans balises de code.
-10. N'INVENTE JAMAIS de prix, d'adresse, d'horaires ou de promesses. Info manquante : omet la section ou écris [A CONFIRMER].
+10. N'INVENTE JAMAIS de prix, téléphone, WhatsApp, e-mail, adresse, horaires, témoignage, note client, certification, garantie, livraison ou promesse. Utilise uniquement les informations présentes dans le brief. Si une information manque, supprime le bloc correspondant. Ne crée jamais de fausse coordonnée, même temporaire.
 11. Rédige TOUT le site dans la langue demandée (français par défaut).
-12. Les APPELS À L'ACTION suivent l'objectif du brief (réservation/demande/vente/présentation). Un bouton WhatsApp visible en permanence.
+12. Les APPELS À L'ACTION suivent l'objectif du brief. Ajoute un bouton WhatsApp uniquement si le numéro WhatsApp est fourni ; sinon utilise un appel à l'action sans coordonnée inventée.
 13. Si une adresse est fournie : intégrer une carte Google Maps en iframe + lien "Ouvrir dans Google Maps".
 
 === QUALITÉ PRO — ANIMATIONS (obligatoire) ===
@@ -83,7 +83,7 @@ Tu DOIS générer UN SEUL fichier HTML complet avec Tailwind CSS (CDN).
 24. PHRASES INTERDITES : "Bienvenue sur notre site", "Nous sommes passionnés", "solutions innovantes", "votre satisfaction est notre priorité", "services de qualité", et tout slogan creux de carte de visite.
 25. Chaque phrase doit être FACTUELLE : nom du business, quartier, spécialités, prix réels du brief.
 26. Ton : phrases courtes, directes, vouvoiement, chaleureux comme un commerçant de quartier. Zéro jargon.
-27. Structure narrative : promesse claire en haut -> preuves (produits, prix, photos) -> confiance (adresse, horaires) -> contact WhatsApp présent dans CHAQUE grande section.
+27. Structure narrative : présentation factuelle -> produits ou services réellement fournis -> coordonnées réellement fournies. Ne mets pas WhatsApp dans chaque section si son numéro est absent.
 
 === STYLE SIGNATURE "ÉCLATANT" ===
 29. Le site doit donner FAIM ou ENVIE : mots gourmands, gros plans visuels, ambiance vivante.
@@ -104,9 +104,9 @@ function buildUserPrompt(body) {
   } else if (/demandes|devis/i.test(objectif)) {
     cta = '\n🎯 APPELS À L\'ACTION : boutons principaux « Demander un devis » et « Nous contacter ».';
   } else if (/vendre|produits/i.test(objectif)) {
-    cta = '\n🎯 APPELS À L\'ACTION : boutons principaux « Commander » et « Commander sur WhatsApp ».';
+   cta = '\n🎯 APPELS À L\'ACTION : bouton principal « Commander ». Ajoute « Commander sur WhatsApp » uniquement si un numéro WhatsApp est fourni.';
   } else {
-    cta = '\n🎯 APPELS À L\'ACTION : boutons principaux « Découvrir nos services » et « Nous contacter sur WhatsApp ».';
+  cta = '\n🎯 APPELS À L\'ACTION : boutons principaux « Découvrir nos services » et « Nous contacter ». Ajoute WhatsApp uniquement si son numéro est fourni.';
   }
 
   // WhatsApp du client → tous les boutons pointent vers lui
@@ -401,7 +401,7 @@ app.post('/api/parse-menu', async (req, res) => {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         messages: [
-          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commerçant. Tu reçois un texte libre (peut mélanger : présentation du business, menu/liste de produits avec prix, liens de photos URL, coordonnées) et tu réponds UNIQUEMENT avec un JSON valide (aucun texte avant ni après) au format exact : {"infos":{"nom":"","slogan":"","type":"","couleurs":"","cible":"","details":""},"produits":[{"nom":"","prix":"","desc":"","photo":""}]}. Règles STRICTES : 1. "type" : choisis UNIQUEMENT parmi : Tourisme, Hôtel, Restaurant / Fast-food / Café, Boutique, École / Formation, Beauté / Coiffure, Santé / Clinique, Autre. 2. Prix EXACTEMENT comme écrits (ex "1500 FD"). Pas de prix → "Sur demande". 3. "photo" : l\'URL si présente sur la ligne du produit, sinon "". 4. desc : 5-10 mots max. 5. Ne traduis rien, garde le texte original. 6. Si une info est absente du texte, mets "".' },
+          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commerçant. Tu reçois un texte libre (peut mélanger : présentation du business, menu/liste de produits avec prix, liens de photos URL, coordonnées) et tu réponds UNIQUEMENT avec un JSON valide (aucun texte avant ni après) au format exact : {"infos":{"nom":"","slogan":"","type":"","couleurs":"","cible":"","details":"","telephone":"","whatsapp":"","adresse":"","email":""},"produits":[{"nom":"","prix":"","desc":"","photo":""}]}. Règles STRICTES : 1. "type" : choisis UNIQUEMENT parmi : Tourisme, Hôtel, Restaurant / Fast-food / Café, Boutique, École / Formation, Beauté / Coiffure, Santé / Clinique, Autre. 2. Prix EXACTEMENT comme écrits (ex "1500 FD"). Pas de prix → "Sur demande". 3. "photo" : l\'URL si présente sur la ligne du produit, sinon "". 4. desc : 5-10 mots max. 5. Ne traduis rien, garde le texte original. 6. Si une info est absente du texte, mets "". 7. Recopie le téléphone, WhatsApp, l\'adresse et l\'e-mail exactement comme écrits, dans leurs champs respectifs. 8. N\'invente jamais une coordonnée absente : laisse son champ vide.' },
           { role: 'user', content: menu }
         ],
         temperature: 0.2,
@@ -439,7 +439,7 @@ app.post('/api/parse-menu-image', async (req, res) => {
       body: JSON.stringify({
         model: 'qwen/qwen3.8-27b',
         messages: [
-          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commerçant à partir d\'une photo de menu, carte ou flyer. Tu réponds UNIQUEMENT avec un JSON valide, sans texte avant ni après, de cette forme exacte : {"infos":{"type":"...","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, téléphone, horaires..."},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]}. Règles obligatoires : 1. LISTE EXHAUSTIVE : extrais TOUS les produits et services visibles sur la photo, un par un, sans en oublier aucun. 2. "desc" reprend la catégorie exacte du produit. 3. Dans "type", choisis UNE valeur parmi : Tourisme, Hôtel, Restaurant / Fast-food / Café, Boutique, École / Formation, Beauté / Coiffure, Santé / Clinique, Autre. 4. Extrais les vrais noms et prix exactement comme ils sont écrits, n\'invente rien.' },
+          { role: 'system', content: 'Tu es un assistant qui structure le brief d\'un commerçant à partir d\'une photo de menu, carte ou flyer. Tu réponds UNIQUEMENT avec un JSON valide, sans texte avant ni après, de cette forme exacte : {"infos":{"type":"...","nom":"...","slogan":"","couleurs":"","cible":"","details":"adresse, téléphone, horaires...","telephone":"","whatsapp":"","adresse":"","email":""},"produits":[{"nom":"...","prix":"...","desc":"","photo":""}]}. Règles obligatoires : 1. LISTE EXHAUSTIVE : extrais TOUS les produits et services visibles sur la photo, un par un, sans en oublier aucun. 2. "desc" reprend la catégorie exacte du produit. 3. Dans "type", choisis UNE valeur parmi : Tourisme, Hôtel, Restaurant / Fast-food / Café, Boutique, École / Formation, Beauté / Coiffure, Santé / Clinique, Autre. 4. Extrais les vrais noms et prix exactement comme ils sont écrits, n\'invente rien. 5. Recopie le téléphone, WhatsApp, l\'adresse et l\'e-mail visibles dans leurs champs respectifs. Si une coordonnée est absente ou illisible, laisse son champ vide.' },
           { role: 'user', content: [
               { type: 'text', text: 'Extrais TOUT le contenu visible de cette photo en respectant le format JSON. Ne néglige aucun produit, aucun prix.' },
               { type: 'image_url', image_url: { url: image } }
