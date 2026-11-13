@@ -1075,8 +1075,11 @@ async function onSend(){
       if(!j.success) throw new Error(j.error||'parse');
       data = j.data;
     }
-    draft.brief = mergePanel(mapBrief(data));
-    syncPanelFromBrief();
+    ['p_nom', 'p_tel', 'p_whatsapp', 'p_adresse', 'p_email'].forEach((id) => {
+  document.getElementById(id).value = '';
+});
+draft.brief = mergePanel(mapBrief(data));
+syncPanelFromBrief();
     if(!draft.brief.nom){ genDone(); showClarify(); return; }
     await generate();
   }catch(e){
