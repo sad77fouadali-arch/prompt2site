@@ -164,6 +164,11 @@ function buildUserPrompt(body) {
     productsText += 'Règle images : utilise les vraies URLs fournies en <img src="...">. Si un produit n\'a pas d\'image, utilise un emoji pertinent à la place.';
   }
 
+     const adresse = String(body.adresse || '').trim();
+  const carteRule = adresse
+    ? `\n📍 CARTE GOOGLE MAPS OBLIGATOIRE : utilise exactement l'adresse « ${adresse} ». Ajoute dans la section Contact : <iframe src="https://www.google.com/maps?q=${encodeURIComponent(adresse)}&output=embed" width="100%" height="350" style="border:0;border-radius:16px" loading="lazy"></iframe> et <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(adresse)}" target="_blank">Ouvrir dans Google Maps</a>. Ne remplace pas cette adresse par un lieu générique.`
+    : '';
+  const verrouContenu = `\n⛔ VERROU CONTENU : utilise uniquement les faits, produits, services et coordonnées présents dans ce brief. N'ajoute aucune section ou entrée de navigation Témoignages, Livraison, Garantie, Certification, Horaires, Note client ou Promesse si ces informations ne sont pas explicitement fournies. N'invente aucun service annexe. Si le brief interdit un contenu, ce contenu doit être totalement absent du HTML. Le header ne doit jamais recouvrir le contenu sur mobile.`;
   return `Génère un site web complet selon ce brief :
 
 🎯 Secteur d'activité : ${secteur}
@@ -175,6 +180,7 @@ function buildUserPrompt(body) {
 👥 Cible : ${body.cible || body.target || 'Grand public'}
 🌐 Langue du site : ${langue}
 ✨ Fonctionnalités : ${foncts}${cta}${waRule}${coordonnees}${medias}${productsText}
+${carteRule}${verrouContenu}
 📄 Description de l'activité : ${body.description || body.details || 'Aucune'}
 📄 Autres précisions : ${body.precisions || 'Aucune'}
 
