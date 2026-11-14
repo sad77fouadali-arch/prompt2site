@@ -199,7 +199,7 @@ function cleanHtml(raw) {
   if (!/<html|<!doctype/i.test(h)) throw new Error('Réponse IA invalide (pas de HTML)');
   return h;
 }
-function securiserHtmlGenere(html) {
+function securiserHtmlGenere(html, brief = {}) {
   const titresInterdits = /^(témoignages?|avis clients?|livraison\b.*|garantie\b.*|certifications?\b.*|horaires\b.*)$/i;
   const idsSupprimes = [];
 
@@ -223,6 +223,18 @@ function securiserHtmlGenere(html) {
     const lien = new RegExp('<a\\b[^>]*href=["\']#' + idEchappe + '["\'][^>]*>[\\s\\S]*?<\\/a>', 'gi');
     resultat = resultat.replace(lien, '');
   });
+  const telephoneFourni = String(brief.telephone || brief.whatsapp || '').trim();
+  const emailFourni = String(brief.email || '').trim();
+
+  if (!telephoneFourni) {
+    resultat = resultat.replace(/<(p|li|a)\b[^>]*>[\s\S]*?(?:téléphone|telephone|whatsapp|\+253)[\s\S]*?<\/\1>/gi, '');
+    resultat = resultat.replace(/\+\d{1,4}(?:[\s.-]*[\dXx]){7,}/g, '');
+  }
+
+  if (!emailFourni) {
+    resultat = resultat.replace(/<(p|li|a)\b[^>]*>[\s\S]*?(?:e-?mail|courriel|@)[\s\S]*?<\/\1>/gi, '');
+    resultat = resultat.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '');
+  }
 
   const styleMobile = '<style>@media(max-width:767px){header{position:relative!important;}header>div{flex-wrap:wrap!important;}header nav{width:100%!important;overflow-x:auto!important;white-space:nowrap!important;}body{padding-top:0!important;}}</style>';
 
@@ -278,7 +290,7 @@ app.post('/api/generate', async (req, res) => {
     console.error('❌ Erreur Groq (' + response.status + ') :', JSON.stringify(data.error || data));
     return res.status(503).json({ success: false, error: MSG_SERVICE_INDISPONIBLE });
   }
-    let html = securiserHtmlGenere(cleanHtml(data.choices[0].message.content));
+    let html = securiserHtmlGenere(cleanHtml(data.choices[0].message.content), body);
   
   // Validation anti-patterns UI/UX
   const validation = validateOutput(html);
